@@ -1,0 +1,39 @@
+.norm {
+	height: 10%;
+}
+.weekbox {
+	width: 11%;
+}
+.norm, .after, .before {
+	
+	border-style: solid;
+	height: 7em;
+	width: 11%;
+}
+
+.after, .before {
+	background-color: grey;
+}
+
+.left_edge {
+	width: 9%;
+}
+
+#left_panel {
+    position: fixed;
+    top:5%;
+    left:0px;
+    background-color: lightblue;
+    height: 72%;
+    border-radius: 5px;
+    padding-top: 1%;
+    width: 7%;
+}
+h1, h2, h3 {
+    font-family: "Arial Verdana";
+}
+
+#yearpicker {
+    margin-left: 19%;
+    margin-bottom: 6%;
+}

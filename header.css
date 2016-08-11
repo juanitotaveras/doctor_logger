@@ -1,0 +1,552 @@
+/*
+@media only screen and (max-width: 768px) {
+    // For mobile phones: 
+	#settings_icon {
+//		margin-left: 50%;
+		font-size: 235% !important;
+	}
+	#signup_cell {
+		position: absolute;
+		left: 2%;
+	}
+	#login_cell {
+		position: absolute;
+		left: 25%;
+	}
+	#settings_cell {
+		position: absolute;
+		right: -2% !important;
+	}
+	#sign_in {
+		margin-bottom: 15%;
+	} 
+	#logo {
+	}
+	#top_row {
+	//	height: 100%;
+	}
+	#main_container {
+		//padding: 0;
+		margin-right: -1px;
+	//	width: 99%;
+		//width: 100%;
+	}
+	#signin_text {
+		font-size: 120% !important;
+		top: 5%;
+	}
+	#home_button {
+		position: relative;
+		bottom: 3.5px;
+		left: 3px;
+	}
+	#home_icon {
+		font-size: 150%;
+		//position: absolute;
+		//top: 100px;
+		//left: 300px;
+		position: relative;
+		left: 2px;
+		//bottom: 10px;
+		//margin-bottom: 10px;
+	}
+	.affix {
+		width:105% !important;
+	}
+}
+*/
+/* TEMPORARY AFFIX SETTINGS */
+.affix {
+	top: 0;
+	width: 98%;
+	z-index: 999 !important;
+}
+.navbar {
+//	margin-bottom: 0px;
+	
+}
+#navbar_main {
+	position: fixed;
+	z-index: 20;
+	width: 99.5%;
+	top: 0px;
+	
+}
+.affix ~ container-fluid {
+	position: relative;
+	top: 50px;
+//	margin-right: 20px;
+}
+
+#nav.affix {
+	position: fixed;
+	top: 0;
+	//width: 100%;
+	//z-index:10;
+	//margin-right: 1%;
+}
+ 
+#kahuna {
+	padding: 0px;
+}
+#top_row {
+	margin-top: 0.9%;
+	height: 110px;
+}
+#logout_link {
+	color: white;
+	position: absolute;
+	right: 2%;
+	top: 20%;
+
+}
+#logo {
+	height: 55px;
+	right: 4%;
+	position: relative;
+	bottom: 80%;
+}
+#login_cell {
+	position: absolute;
+	right: 12%;
+}
+#signup_cell {
+	position: absolute;
+	right: 30%;
+}
+#settings_cell {
+	position: absolute;
+	right: 1%;
+}
+#home_icon {
+	font-size: 130%;
+}
+#home_button {
+	position: relative;
+	bottom: 3.5px;
+}
+.headertxt {
+	color: #D7D2D2;
+	font-color: #D7D2D2;
+}
+#top_envelope {
+	font-size: 126%;
+	position: relative;
+	color: white;
+	top: 4px;
+	left: 2px;
+}
+#settings_icon {
+	font-size: 195%;
+	//position: relative;
+	//right: -70%;
+//	top: 10%;
+//	margin-left: 10%;
+}
+.navbar-right {
+	float: right;
+	position: absolute;
+	right: 5%;
+}
+#loginbtn {
+//	position: relative;
+//	left: 110%;
+	position: absolute;
+	//right: 30px;
+	top: 6px;
+}
+#signupbtn {
+	position: relative;
+//	right: -150%;
+	right: 20px;
+	top: 6px;
+}
+#usrname { // username text box for log in modal
+	width: 80%;
+}
+#psw {
+	width: 80%;
+}
+#signin_text {
+	position: absolute;
+	//white-space: nowrap;
+	right: 50%;
+	width: 50%;
+	top: 2.5%;
+	font-size: 130%;
+}
+#logout_cell {
+	position: absolute;
+	left: 130%;
+	top: 5%;
+}
+#settings_menu {
+	position: relative;
+	right: 200%;
+	top: 80%;
+	
+} 
+
+.row {
+	padding: 0px;
+}
+
+
+#nav_container {
+	padding-bottom: 0px;
+	margin-bottom: 0px;
+}
+#row_1 {
+	padding-top: 0px;
+	margin-top: 0px;
+}
+#monotxt {
+//  position: absolute;
+ // right: 5px;
+ // text-align: center;  
+}
+
+/* -----------MODAL PROPERTIES ---------*/
+
+/* ----- Signup modal ---------*/
+#usname, #pswd, #repeat, #email {
+	width: 90%;
+}
+@media only screen and (max-width: 768px) {
+    /* For mobile phones: */
+    .modal {
+       // width: 100%;
+    }
+}
+#uname_field_icon {
+	float: right;
+	position: relative;
+	bottom: 30px;
+	font-size: 170%;
+}
+#password_field_icon {
+	float: right;
+	position: relative;
+	bottom: 35px;
+	font-size: 170%;
+}
+#repeat_field_icon {
+	float: right;
+	position: relative;
+	bottom: 30px;
+	font-size: 170%;
+}
+#email_field_icon {
+	float: right;
+	position: relative;
+	bottom: 30px;
+	font-size: 170%;
+}
+.glyphicon-remove {
+	color: red;
+}
+.glyphicon-ok {
+	color: green;
+}
+  .modal-header, h4, .close {
+      background-color: #4C0106;
+      color:white !important;
+      text-align: center;
+      font-size: 30px;
+  }
+  .modal-footer {
+      background-color: #D0CBD1;
+  }
+
+#search_container {
+//	width: 190%;
+//	margin-top: 8px;
+	position: absolute;
+	margin-top: 0.5%;
+	right: 7%;
+	display: none;
+}
+#welcome_function{
+//	font-color: white;
+//	color: white;
+}
+#blank_tab {
+	width: 200%;
+}
+#welcome_list {
+//	position: absolute;
+	//right: 50px;
+	float: right;
+}
+#welcome_span {
+	color: white;
+	position: absolute;
+	right: 9%;
+	top: 20%;
+}
+#set_list {
+	right: 100%;
+	width: 110%;
+}
+#set_icon {
+	color: white;
+	font-size: 140%;
+	top: 1px;
+}
+#message_list {
+	position: absolute;
+	top: 3%;
+	right: 30%;
+}
+#u_welcome {
+	color: white;
+}
+#navsearch {
+	font-size: 140%;
+	color: grey;
+//	padding-top: 36%;
+//	right: 5%;
+	position: relative;
+	top: 13px;
+	left: 8%;
+}
+#uberman_title {
+	position: relative;
+	left: 10%;
+	margin-bottom: 1%;
+}
+#stampi_video {
+	position: relative;
+	left: 100px;
+}
+#main_container {
+/*        background-color: black; */
+	margin-right: 5px !important;
+	margin-left: 5px !important;
+//	margin-top: 5px !important;
+//	margin-left: 1%;
+}
+#after_nav {
+	margin-top: 3%;
+}
+.container-fluid {
+/*	padding: 12px; */
+	//padding: 0px;
+//	margin-right: 0%;
+}
+.schedule_caption {
+	//display: none;
+}
+#uberman_title {
+	display: none;
+}
+.intrinsic-container {
+	position: relative;
+	height: 100%;
+	overflow: hidden;
+}
+/* 16x9 Aspect Ratio */
+.instrinsic-container-16x9 {
+	padding-bottom: 56.25%;
+}
+/* 4x3 Aspect Ratio */
+.instrinsic-container-4x3 {
+	padding-bottom: 75%;
+}
+.instrinsic-container iframe {
+	position: absolute;
+	top: 0;
+	left: 0;
+	width: 100%;
+	height: 100%;
+}
+#row_1 {
+/*	position: relative;
+	bottom: 1.4em; */
+//	background-color: #EEEEEE;	
+}
+#row_2 {
+	padding-top: 4%;
+	padding-bottom: 4%;
+}
+.jumbotron {
+	margin-top: 3%;
+//	background-color: #D0CBD1;
+//	border: 3px solid black;
+}
+#top_row, #row_2, #row_4 {
+//	background-color: white;
+	background-color: #D9D9D9;
+//	background-color: #01302B;
+//	text-color: white;
+}
+#notice {
+  color: red;
+}
+nav {
+	padding: 0px;
+	margin-bottom: 0px;
+}
+.navbar-right {
+	white-space: nowrap;	
+}
+#about_big {
+  margin-top: 10px;
+  margin-left: 0px;
+}
+
+body{
+/*	background-color: #992A31; */
+	background-color: #4C0106;  /* darker red */
+}
+li {
+	font-size: 1.2em;
+}
+sup {
+	font-size: 0.9em; 
+}
+body p{
+/*	font-family: "Palatino Linotype", "Book Antiqua", Palatino, serif; */     /* Trying out Verdana look */
+	font-family: Verdana;
+	color: black;
+}
+
+body h1, h2, h3 {
+	font-family: "Lucida Sans Unicode", "Lucida Grande", sans-serif;
+	color: black ;
+}
+
+.panels{
+        background-color: #D0CBD1;
+	padding: 10px;
+
+} 
+
+#welcome, #term {
+	padding: 15px;
+}
+
+header{
+	background-color:#D0CBD1;
+
+}
+td{
+	/*width:20%;*/
+}
+
+a{
+	color:#444554;
+/*	font-size: 120%;	*/
+
+}
+p {
+
+}
+
+#navigation {
+	background-color:#483C46;
+}
+#sign_in{
+/*	background-color:#483C46; */
+/*	text-color: white;	*/
+}
+
+#uname,#passwd{
+	height:20px;
+	font-size:75%;;
+	width:100px;	
+}
+
+#main{
+/*	margin-left: 10%;
+	margin-right: 10%; */
+	position: relative;
+	bottom: 20px;
+}
+
+#evidence {
+	padding: 15px;
+	position: relative;
+	left: 5px;
+}
+
+#evidence_sub {
+	position: relative;
+	left: 10px;
+}
+
+#news_head {
+	margin-bottom: 20px;
+}
+
+
+#news_panel {
+	padding: 10px;
+	padding-left: 2.5%;
+      /*  float: right; 
+	bottom: 200px; 
+	position: relative;
+	width: 50%;
+	height: 600px;
+	top: 20px;*/
+}
+
+#latest_posts {
+	position: relative;
+	left: 15px;
+}
+
+#well {
+	width: 50%;
+}
+
+#sched_down {
+	/* color: red; */
+	z-index: 10;
+}
+
+#schedule_button2 {
+	
+	z-index: -1;
+}
+
+#schedule_menu {
+	
+	z-index: 10;
+}
+
+
+#search{
+	width: 100%;
+	position: absolute;
+	right: 100%;
+	margin-top: 8px;
+	top: 2px;
+	display: none;
+}
+#demo{
+	margin-left: 10%;
+	margin-right: 10%;
+	margin-top: 5%;
+	border: 1px solid white;
+	text-align: center;
+	color: white;
+	background-color: #483C46;
+}
+
+#chatbox {
+	width: 25%;
+	position: fixed;
+	bottom: -29px;
+	right: 113px;
+	height: 70px;
+}
+
+#login_text {
+	color: white;
+	font-family: Georgia;
+	position: fixed;
+	right: 235px;
+	bottom: -5px;
+	z-index: 10;
+}
