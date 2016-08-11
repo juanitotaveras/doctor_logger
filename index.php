@@ -86,7 +86,6 @@ if (!isset($_COOKIE["year"])) {
 	cal_gen(val)
 	';
 ?>
-	// select current month
 
   }); 
   </script>
