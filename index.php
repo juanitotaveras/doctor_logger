@@ -163,6 +163,11 @@ echo '
 
 
   </div> <!-- end main container -->
+  <div class="container" id="right-panel-contract">
+    <!-- fetch doctors -->
+
+
+  </div> <!-- end right-panel-contract -->
 </body>
 </html>';
 ?>
