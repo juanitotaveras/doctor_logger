@@ -164,9 +164,27 @@ echo '
 
   </div> <!-- end main container -->
   <div class="container" id="right-panel-contract">
-    <!-- fetch doctors -->
+    <!-- fetch doctors -->';
 
+$sql = "SELECT * FROM names;";
+$result = $connect->query($sql);
+$docs = [];
+if ($result->num_rows > 0) {
+	while ($row = $result->fetch_assoc()) {
+		$basket = [];
+		array_push($basket, $row["DOC"]);
+		array_push($basket, $row["FIRST_NAME"]);
+		array_push($basket, $row["LAST_NAME"]);
+		array_push($basket, $row["CLASS"]);
+		array_push($docs, $basket);
+	}
+}
 
+for ($h = 0; $h < count($docs); $h++) {
+	echo $docs[$h][1] . $docs[$h][2];
+}
+
+echo '
   </div> <!-- end right-panel-contract -->
 </body>
 </html>';
