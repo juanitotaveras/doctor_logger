@@ -35,9 +35,6 @@ $str = '
         $str .= '
   		<div class="row">
   		<div class="col-xs-1 left_edge"></div>';
-	$colorin = 'document.getElementById(this).style.background-color=\'green\'';
-
-	$colorout = 'document.getElementById(this).style.background-color=\'white\'';
 	$attr = 'onmouseover="colorin(this)" onmouseout="colorout(this)"';
         for ($j = 0; $j < 7; $j++) {
             $start = $weekdays[$cur_mon][0];
@@ -52,22 +49,30 @@ $str = '
                         $lastdec = ['25', '26', '27', '28', '29', '30', '31'];
                         $daynum = $lastdec[count($lastdec) - $tmp];
                     }
-		            $str .= '<div class="col-xs-12 col-md-1 before day" ' . $attr . 'id="' . (strval($cur_mon) . "-" . strval($daynum) . "-" . strval($year) . "-box") . '">' . strval($daynum) . '</div>';
+                    $class = (strval($cur_mon) . '-' . strval($daynum) . '-'. strval($year) . '-'. 'add add');
+                    $plus = '<a id="plus_link" class="' . $class . '" href="#"> <span style="margin:3px" class="glyphicon glyphicon-plus ' . $class . '" id="add-icon"></a>';
+		            $str .= '<div class="col-xs-12 col-md-1 before day" ' . $attr . 'id="' . (strval($cur_mon) . "-" . strval($daynum) . "-" . strval($year) . "-box") . '">' . strval($daynum) . $plus . '</div>';
                 }
                 else {
                       $daynum = $days[$cur_mon][$head];
                       $head ++;
-		              $str .= '<div class="col-xs-12 col-md-1 norm day" ' . $attr . 'id="' . (strval($cur_mon) . "-" . strval($daynum) . "-" . strval($year) . "-box") . '">'. strval($daynum) . '</div>';
+                      $class = (strval($cur_mon) . '-' . strval($daynum) . '-'. strval($year) . '-'. 'add add');
+                      $plus = '<a id="plus_link" class="' . $class . '" href="#"> <span style="margin:3px" class="glyphicon glyphicon-plus ' . $class . '" id="add-icon"></a>';
+		              $str .= '<div class="col-xs-12 col-md-1 norm day" ' . $attr . 'id="' . (strval($cur_mon) . "-" . strval($daynum) . "-" . strval($year) . "-box") . '">'. strval($daynum) . $plus . '</div>';
                 }
             }
             else if (($i > 3) && (count($days[$cur_mon]) <= $head)) {
-		        $str .= '<div class="col-xs-12 col-md-1 after day" ' . $attr . 'id="'. (strval($cur_mon) . "-" . strval($end) . "-" . strval($year) . "-box") .'">' . strval($end) . '</div>';
+                $class = (strval($cur_mon) . '-' . strval($end) . '-'. strval($year) . '-'. 'add add');
+                $plus = '<a id="plus_link" class="' . $class . '" href="#"> <span style="margin:3px" class="glyphicon glyphicon-plus ' . $class . '" id="add-icon"></a>';
+		        $str .= '<div class="col-xs-12 col-md-1 after day" ' . $attr . 'id="'. (strval($cur_mon) . "-" . strval($end) . "-" . strval($year) . "-box") .'">' . strval($end) . $plus . '</div>';
                 $end++;
             }
             else {
                 $daynum = $days[$cur_mon][$head];
                 $head++;
-		        $str .= '<div class="col-xs-12 col-md-1 norm day" ' . $attr . 'id="' . (strval($cur_mon) . "-" . strval($daynum) . "-" . strval($year) . "-box") . '">' . strval($daynum) . '</div>';
+                $class = (strval($cur_mon) . '-' . strval($daynum) . '-'. strval($year) . '-'. 'add add');
+                $plus = '<a id="plus_link" class="' . $class . '" href="#"><span style="margin:3px" class="glyphicon glyphicon-plus ' . $class . '" id="add-icon"></a>';
+		        $str .= '<div class="col-xs-12 col-md-1 norm day" ' . $attr . 'id="' . (strval($cur_mon) . "-" . strval($daynum) . "-" . strval($year) . "-box") . '">' . strval($daynum) . $plus . '</div>';
             }
         }
         $str .= '<div class="col-xs-3"></div></div>';

@@ -47,8 +47,19 @@ h1, h2, h3 {
 }
 
 .right-pan {
-    #width: 50%;
+   /* width: 50%;  */
 }
 .day {
     z-index: 1;
+}
+#add-icon {
+    font-size: 1.8em;
+    color: green;
+    position: absolute;
+    left: 80%;
+    top: 43%;
+}
+
+.add {
+   display: none; 
 }

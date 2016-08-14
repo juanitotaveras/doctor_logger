@@ -6,6 +6,7 @@
 session_start();
 ini_set('display_errors', 'On');   // error checking
 error_reporting(E_ALL);    // error checking
+setcookie("logged_in", "true", time() + (30*30), "/");
 // set cookie to detect if first logged in
 $localtime_assoc = localtime(time(), true);
 $localmonth = $localtime_assoc["tm_mon"];
@@ -78,6 +79,23 @@ for ($i = 0; $i < 3; $i++) {
 	$calendar .= '</div>';
 }
 
+//fetches docs
+
+$sql = "SELECT * FROM names;";
+$result = $connect->query($sql);
+$docs = [];
+if ($result->num_rows > 0) {
+	while ($row = $result->fetch_assoc()) {
+		$basket = [];
+		array_push($basket, $row["ID"]);
+		array_push($basket, $row["FIRST_NAME"]);
+		array_push($basket, $row["LAST_NAME"]);
+		array_push($basket, $row["CLASS"]);
+		array_push($docs, $basket);
+	}
+}
+
+
 ?>
 
 <!DOCTYPE html>
@@ -105,9 +123,41 @@ for ($i = 0; $i < 3; $i++) {
 	  function colorin(id) {
 		  prevcolor = $(id).css("background-color");
 		  $(id).css("background-color", "lightgreen");
+<?php
+		  if (isset($_COOKIE["logged_in"])) {
+			  if ($_COOKIE["logged_in"] == "true") {
+				  // make plus available when hovering
+
+				  echo '
+				  	 var txt = $(id).attr("id");
+				  	 txt = txt.slice(0, -4);
+				  	 txt = "." + txt + "-add";
+				     $(txt).show();
+				  		';
+
+			  }
+		  }
+?>
 	  }
 	  function colorout(id) {
+		  // if you are not having over plus_link
+		 // if (!$("#plus_link").is(":hover") && !$("#add-icon").is(":hover")) {
 		  $(id).css("background-color", prevcolor);
+		  //console.log("test");
+		 // $(".add").hide();
+<?php
+		  if (isset($_COOKIE["logged_in"])) {
+			  if ($_COOKIE["logged_in"] == "true") {
+				  // remove plus when hover out
+				  echo '
+				  	 var txt = $(id).attr("id");
+				  	 txt = txt.slice(0, -4);
+				  	 txt = "." + txt + "-add";
+				     $(txt).hide();
+				  ';
+			  }
+		  }
+?>       // } // ends if hover
 	  }
 	function yearswitcher(val) { // if user selects a different year
   		$.post("./changeyear.php", { //changes year cookie
@@ -129,7 +179,8 @@ for ($i = 0; $i < 3; $i++) {
 			  }
 		  ); // ends post
 	  }
-	  function update_month(year_req, month_req) { // AJAX call that updates month stats only
+	  function update_month(year_req, month_req) { // implemented every time month switched
+		  /*
 		  $.post("./docstatsmonth.php", {
 				  year: year_req,
 				  month: month_req
@@ -138,7 +189,9 @@ for ($i = 0; $i < 3; $i++) {
 				  response.trim();
 				  // delete current span, insert new updated span
 			  }
-		  ); // ends post
+		  ); // ends post */
+		  // fetch all doc stats for current month
+
 	  }
 
   $(document).ready(function() {
@@ -157,7 +210,21 @@ for ($i = 0; $i < 3; $i++) {
 		  echo '
 			$.scrollTo( $("#month-head-0"), 500);';
 	  }
+	  if (isset($_COOKIE["logged_in"])) {
+		  if ($_COOKIE["logged_in"] == "true") {
+			  // make plus available when hovering
+		  }
+	  }
+
+
+
 	  ?>
+	  $('#monthscroll').on('activate.bs.scrollspy', function () {
+		  var activeSection = $(this).find("li.active a").attr("href");
+			// fetch month and year stats
+		  console.log(activeSection);
+		  // go through all doc divs and update month count
+	  });
   }); // ends document.ready
   </script>
 
@@ -223,20 +290,6 @@ echo '
   <div class="container right-pan" id="right-panel-contract">
     <!-- fetch doctors -->';
 
-$sql = "SELECT * FROM names;";
-$result = $connect->query($sql);
-$docs = [];
-if ($result->num_rows > 0) {
-	while ($row = $result->fetch_assoc()) {
-		$basket = [];
-		array_push($basket, $row["ID"]);
-		array_push($basket, $row["FIRST_NAME"]);
-		array_push($basket, $row["LAST_NAME"]);
-		array_push($basket, $row["CLASS"]);
-		array_push($docs, $basket);
-	}
-}
-
 for ($h = 0; $h < count($docs); $h++) {
 	$doc_id = $docs[$h][0];
 	echo '<div class="row-right-pan">
@@ -252,10 +305,10 @@ for ($h = 0; $h < count($docs); $h++) {
 		}
 	}
 	echo $total_year;
-	//print_r($doc1_list);
+	// now get total for current month
 	echo '
 		  </div> <!-- end total days -->
-		  <div class="col-xs-2" id="total_month"></div>
+		  <div class="col-xs-2" id="total-month-doc-' . $doc_id . '"></div>
 	      </div> <!-- end unique doctor row -->
 																				';
 }
@@ -264,4 +317,5 @@ echo '
   </div> <!-- end right-panel-contract -->
 </body>
 </html>';
+
 ?>
