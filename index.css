@@ -41,5 +41,11 @@ h1, h2, h3 {
 #right-panel-contract {
     position: fixed;
     right: 0px;
-    top: 0px;
+    top: 7%;
+    width: 14%;
+    background-color: lightblue;
+}
+
+.right-pan {
+    #width: 50%;
 }

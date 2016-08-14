@@ -73,12 +73,30 @@ if (!isset($_COOKIE["year"])) {
 		';
 		}
 ?>
-
-		//$(".day").hover(function() {
-		//	$(".day").css("background-color", "green");
-		//});
 	            }); // ends post
-	}
+		}
+	  	function update() { // AJAX call that updates right table when there's a change
+			// must generate doctor stats
+			$.post("./docstats.php", {
+					year: val
+				},
+				function (response) {
+					response.trim();
+				}
+			); // ends post
+		}
+	  	function update_month(year_req, month_req) { // AJAX call that updates month stats only
+			$.post("./docstatsmonth.php", {
+					year: year_req,
+					month: month_req
+				},
+				function (response) {
+					response.trim();
+					// delete current span, insert new updated span
+				}
+			); // ends post
+		}
+
 
 
 <?php
@@ -163,8 +181,7 @@ echo '
 
 
   </div> <!-- end main container -->
-  <div class="container" id="right-panel-contract">
-    <div class="row"> <!-- start row w doc names -->
+  <div class="container right-pan" id="right-panel-contract">
     <!-- fetch doctors -->';
 
 $sql = "SELECT * FROM names;";
@@ -182,13 +199,18 @@ if ($result->num_rows > 0) {
 }
 
 for ($h = 0; $h < count($docs); $h++) {
-	echo '<div class="col-xs-1">' . $docs[$h][1] . ' ' . $docs[$h][2] . '</div>
-		 
+
+	echo '<div class="row-right-pan">
+	      <div class="col-xs-5">' . $docs[$h][1] . '</div><div class="col-xs-5"> ' . $docs[$h][2] . '</div>
+	      <div class="col-xs-2" id="doc-' . $docs[$h][0] . '-total-days"></div>
+	      <!-- fetch how many days for that year -->';
+
+	echo '
+	      </div> <!-- end unique doctor row -->
 																				';
 }
 
 echo '
-  </div> <!-- end doc names -->
   </div> <!-- end right-panel-contract -->
 </body>
 </html>';
