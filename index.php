@@ -164,6 +164,7 @@ echo '
 
   </div> <!-- end main container -->
   <div class="container" id="right-panel-contract">
+    <div class="row"> <!-- start row w doc names -->
     <!-- fetch doctors -->';
 
 $sql = "SELECT * FROM names;";
@@ -181,10 +182,13 @@ if ($result->num_rows > 0) {
 }
 
 for ($h = 0; $h < count($docs); $h++) {
-	echo $docs[$h][1] . $docs[$h][2];
+	echo '<div class="col-xs-1">' . $docs[$h][1] . ' ' . $docs[$h][2] . '</div>
+		 
+																				';
 }
 
 echo '
+  </div> <!-- end doc names -->
   </div> <!-- end right-panel-contract -->
 </body>
 </html>';
