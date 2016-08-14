@@ -49,3 +49,6 @@ h1, h2, h3 {
 .right-pan {
     #width: 50%;
 }
+.day {
+    z-index: 1;
+}

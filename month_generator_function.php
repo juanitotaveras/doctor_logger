@@ -5,7 +5,6 @@
  * Date: 8/8/16
  * Time: 3:21 PM
  */
-session_start();
 ini_set('display_errors', 'On');   // error checking
 error_reporting(E_ALL);    // error checking
 
@@ -77,70 +76,4 @@ $str = '
 }
 // end month generator function
 
-// connect to DB (can you put this at beginning of file?
-$file = fopen("./db.txt", "r") or die("Error opening file.");
-$dbinfo = [];
-while (!feof($file)) {
-    $info = trim(fgets($file));
-    array_push($dbinfo, $info);
-}
-$connect = mysqli_connect($dbinfo[0], $dbinfo[1], $dbinfo[2], $dbinfo[3], $dbinfo[4]);
-if (empty($connect)) {
-    die ("mysqli_connect failed " . mysqli_connect_error());
-}
-$year_in = $_POST["year"];
-$sql = "SELECT * FROM doctor_logger WHERE YEAR = " . $year_in . " ORDER BY MONTH, DAY";
-$result = $connect->query($sql);
-$months = [];
-for ($x = 0; $x < 12; $x++) {
-    array_push($months, $x);
-}
-$days = [];
-$weekdays = [];
-if ($result->num_rows > 0) {
-    while($row = $result->fetch_assoc()) {
-        $cur_day = $row["DAY"];
-        if ($cur_day == "1") {
-            if (isset($days_list) && isset($weekdays_list)) {
-                array_push($days, $days_list);
-                array_push($weekdays, $weekdays_list);
-                array_push($doc1_list, $days_list);
-                array_push($doc2_list, $weekdays_list);
-
-            }
-            $days_list = [];
-            $weekdays_list = [];
-            $doc1_list = [];
-            $doc2_list = [];
-            array_push($days_list, $cur_day);
-            array_push($weekdays_list, $row["WEEKDAY"]);
-            array_push($doc1_list, $row["DOC1"]);
-            array_push($doc2_list, $row["DOC2"]);
-        }
-        else {
-            array_push($days_list, $cur_day);
-            array_push($weekdays_list, $row["WEEKDAY"]);
-            array_push($doc1_list, $row["DOC1"]);
-            array_push($doc2_list, $row["DOC2"]);
-        }
-    }
-    array_push($days, $days_list);
-    array_push($weekdays, $weekdays_list);
-    array_push($doc1_list, $days_list);
-    array_push($doc2_list, $weekdays_list);
-}
-
-$output = "";
-$p = 0;
-for ($i = 0; $i < 3; $i++) {
-    $output .= '<div class="row">';
-    for ($j = 0; $j < 4; $j++) {
-        $output .= month_generator($p, $days, $weekdays, $year_in);
-        $p++;
-    }
-    $output .= '</div>';
-}
-//$output .= '<script src="//cdnjs.cloudflare.com/ajax/libs/jquery-scrollTo/2.1.0/jquery.scrollTo.min.js"></script>';
-//$output .= '<script> $.scrollTo( $("#month-head-8"), 500); </script>';
-echo $output;
 ?>

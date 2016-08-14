@@ -14,6 +14,70 @@ $localyear = $localtime_assoc["tm_year"] + 1900;
 if (!isset($_COOKIE["year"])) {
 	setcookie("year", $localyear, time() + (86400 * 30), "/"); // set to direct
 }
+$year_in = $_COOKIE["year"];
+// connect to DB
+$file = fopen("./db.txt", "r") or die("Error opening file.");
+$dbinfo = [];
+while (!feof($file)) {
+	$info = trim(fgets($file));
+	array_push($dbinfo, $info);
+}
+$connect = mysqli_connect($dbinfo[0], $dbinfo[1], $dbinfo[2], $dbinfo[3], $dbinfo[4]);
+if (empty($connect)) {
+	die ("mysqli_connect failed " . mysqli_connect_error());
+}
+$sql = "SELECT * FROM doctor_logger WHERE YEAR = " . $year_in . " ORDER BY MONTH, DAY";
+$result = $connect->query($sql);
+$months = [];
+for ($x = 0; $x < 12; $x++) {
+	array_push($months, $x);
+}
+$days = [];
+$weekdays = [];
+if ($result->num_rows > 0) {
+	while($row = $result->fetch_assoc()) {
+		$cur_day = $row["DAY"];
+		if ($cur_day == "1") {
+			if (isset($days_list) && isset($weekdays_list)) {
+				array_push($days, $days_list);
+				array_push($weekdays, $weekdays_list);
+				array_push($doc1_list, $days_list);
+				array_push($doc2_list, $weekdays_list);
+
+			}
+			$days_list = [];
+			$weekdays_list = [];
+			$doc1_list = [];
+			$doc2_list = [];
+			array_push($days_list, $cur_day);
+			array_push($weekdays_list, $row["WEEKDAY"]);
+			array_push($doc1_list, $row["DOC1"]);
+			array_push($doc2_list, $row["DOC2"]);
+		}
+		else {
+			array_push($days_list, $cur_day);
+			array_push($weekdays_list, $row["WEEKDAY"]);
+			array_push($doc1_list, $row["DOC1"]);
+			array_push($doc2_list, $row["DOC2"]);
+		}
+	}
+	array_push($days, $days_list);
+	array_push($weekdays, $weekdays_list);
+	array_push($doc1_list, $days_list);
+	array_push($doc2_list, $weekdays_list);
+}
+include("./month_generator_function.php");
+$calendar = "";
+$p = 0;
+for ($i = 0; $i < 3; $i++) {
+	$calendar .= '<div class="row">';
+	for ($j = 0; $j < 4; $j++) {
+		$calendar .= month_generator($p, $days, $weekdays, $year_in);
+		$p++;
+	}
+	$calendar .= '</div>';
+}
+
 ?>
 
 <!DOCTYPE html>
@@ -55,67 +119,53 @@ if (!isset($_COOKIE["year"])) {
 
 	}
 
+	  function update() { // AJAX call that updates right table when there's a change
+		  // must generate doctor stats
+		  $.post("./docstats.php", {
+				  year: val
+			  },
+			  function (response) {
+				  response.trim();
+			  }
+		  ); // ends post
+	  }
+	  function update_month(year_req, month_req) { // AJAX call that updates month stats only
+		  $.post("./docstatsmonth.php", {
+				  year: year_req,
+				  month: month_req
+			  },
+			  function (response) {
+				  response.trim();
+				  // delete current span, insert new updated span
+			  }
+		  ); // ends post
+	  }
+
   $(document).ready(function() {
-       function cal_gen(val) {
-          $.post("./month_generator.php", {
-                year : val
-            },
-            function(response) {
-                response.trim();
-                $("#main_container").append(response);
-<?php
-		if ($_COOKIE["year"] == $localyear) {
-			echo '
+
+
+	  <?php
+	  if ($_COOKIE["year"] == $localyear) {
+		  echo '
 			$.scrollTo( $("#month-head-' . $localmonth . '"), 500);
 			// also color our current current day cell yellow
 			var cur_day_box = "#' . $localmonth . '-' . $localday . '-' . $localyear . '-box";
 			$(cur_day_box).delay("fast").css("background-color", "yellow");
 		';
-		}
-?>
-	            }); // ends post
-		}
-	  	function update() { // AJAX call that updates right table when there's a change
-			// must generate doctor stats
-			$.post("./docstats.php", {
-					year: val
-				},
-				function (response) {
-					response.trim();
-				}
-			); // ends post
-		}
-	  	function update_month(year_req, month_req) { // AJAX call that updates month stats only
-			$.post("./docstatsmonth.php", {
-					year: year_req,
-					month: month_req
-				},
-				function (response) {
-					response.trim();
-					// delete current span, insert new updated span
-				}
-			); // ends post
-		}
-
-
-
-<?php
-	echo 'var val =' . strval($_COOKIE["year"]) . ';
-	cal_gen(val)
-	';
-?>
-
-  }); 
+	  }
+	  else {
+		  echo '
+			$.scrollTo( $("#month-head-0"), 500);';
+	  }
+	  ?>
+  }); // ends document.ready
   </script>
-    <script src="./index.js">
-    </script>
+
 <!--
-  <script src="' . $addr . '/header.js"></script>
   <script src="' . $addr . '/bootstrap-modal-bs3patch.css"></script>
   <script src="' . $addr . '/bootstrap-modal.css"></script>
   <script src="' . $addr . '/bootstrap-modalmanager.js"></script>
-  <script src="' . $addr . '/bootstrap-modal.js"></script>
-  <script src="' . $addr . '/jstz.min.js"></script> -->
+  <script src="' . $addr . '/bootstrap-modal.js"></script> -->
 </head>
 
 <body data-spy="scroll" data-target="#monthscroll" data-offset="20">
@@ -123,20 +173,9 @@ if (!isset($_COOKIE["year"])) {
 
 
 <?php
+	echo $calendar;
 
 
-
-
-$file = fopen("./db.txt", "r") or die("Error opening file.");
-$dbinfo = [];
-while (!feof($file)) {
-	$info = trim(fgets($file));
-	array_push($dbinfo, $info);
-}
-$connect = mysqli_connect($dbinfo[0], $dbinfo[1], $dbinfo[2], $dbinfo[3], $dbinfo[4]);
-if (empty($connect)) {
-	die ("mysqli_connect failed " . mysqli_connect_error());
-}
 
 $sql = "SELECT DISTINCT YEAR FROM doctor_logger;";
 $result = $connect->query($sql);
@@ -199,13 +238,24 @@ if ($result->num_rows > 0) {
 }
 
 for ($h = 0; $h < count($docs); $h++) {
-
+	$doc_id = $docs[$h][0];
 	echo '<div class="row-right-pan">
-	      <div class="col-xs-5">' . $docs[$h][1] . '</div><div class="col-xs-5"> ' . $docs[$h][2] . '</div>
-	      <div class="col-xs-2" id="doc-' . $docs[$h][0] . '-total-days"></div>
+          <div class="col-xs-8"> ' . $docs[$h][2] . '</div>
+	      <div class="col-xs-2" id="doc-' . $doc_id . '-total-days">
 	      <!-- fetch how many days for that year -->';
-
+	$total_year = 0;
+	for ($a = 0; $a < count($doc1_list); $a++) {
+		for ($b = 0; $b < count($doc1_list[$a]); $b++) {
+			if ($doc_id == $doc1_list[$a][$b] || $doc_id == $doc2_list[$a][$b]) {
+				$total_year ++;
+			}
+		}
+	}
+	echo $total_year;
+	//print_r($doc1_list);
 	echo '
+		  </div> <!-- end total days -->
+		  <div class="col-xs-2" id="total_month"></div>
 	      </div> <!-- end unique doctor row -->
 																				';
 }
