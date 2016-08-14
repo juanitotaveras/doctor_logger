@@ -172,7 +172,7 @@ $docs = [];
 if ($result->num_rows > 0) {
 	while ($row = $result->fetch_assoc()) {
 		$basket = [];
-		array_push($basket, $row["DOC"]);
+		array_push($basket, $row["ID"]);
 		array_push($basket, $row["FIRST_NAME"]);
 		array_push($basket, $row["LAST_NAME"]);
 		array_push($basket, $row["CLASS"]);
