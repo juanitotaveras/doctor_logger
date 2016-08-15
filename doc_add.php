@@ -18,7 +18,10 @@ $doc = $_POST["doc"];
 $sql = 'SELECT DOC1, DOC2 FROM doctor_logger WHERE MONTH=' . $date[0] . ' and DAY=' . $date[1] . ' and YEAR=' . $date[2];
 $result = $connect->query($sql);
 $row = $result->fetch_assoc();
-if ($row["DOC1"] == NULL) {  // if no doc has been added to it yet, add to doc 1
+if ($row["DOC1"] == $doc || $row["DOC2"] == $doc) {
+    echo "already_added";
+}
+else if ($row["DOC1"] == NULL) {  // if no doc has been added to it yet, add to doc 1
     $sql = 'UPDATE doctor_logger SET DOC1=' . $doc . ' WHERE MONTH=' . $date[0] . ' and DAY=' . $date[1] . ' and YEAR=' . $date[2];
     $stmt = mysqli_prepare ($connect, $sql);  // fill in the blank
 //mysqli_stmt_bind_param ($stmt, 'iii', $date[2], $date[0], $date[1]);
@@ -34,6 +37,7 @@ else if ($row["DOC2"] == NULL) {
     mysqli_stmt_close($stmt);
     echo "doc_2_added " . $_POST["date"] . "docname-2 " . $doc;
 }
+
 else {
     echo "full";
 }

@@ -49,6 +49,7 @@ h1, h2, h3 {
 .right-pan {
    /* width: 50%;  */
     border-radius: 10px;
+    padding: 1%;
 }
 .day {
     z-index: 1;
@@ -101,3 +102,86 @@ h1, h2, h3 {
     cursor: pointer;
 }
 
+.n1 {
+    position:absolute;
+    top:24%;
+    display: pointer; !important
+}
+.n2 {
+    position: absolute;
+    top: 51%;
+    display: pointer; !important
+}
+
+
+.doc-col-cont {
+    position: relative;
+    right: 3%;
+
+}
+.mon-col-cont {
+    position: relative;
+    right: 11%;
+}
+.tot-col-cont {
+    position:relative;
+    right: 25%;
+
+}
+.month_section {
+    padding-top: 4%;
+}
+
+#expand_icon {
+    font-size: 140%;
+    margin-top:3%;
+}
+
+
+.opts {
+    position: relative;
+    top: 1.8em;
+    left: 6em;
+}
+
+.clearbtn {
+    position: relative;
+    left: 9em;
+}
+
+.autopopbtn {
+    position: absolute;
+    left: 9em;
+}
+
+#admin_panel {
+    position:fixed;
+    right: 0px;
+    top: 80%;
+    width: 14%;
+    padding-top: .8%;
+    padding-bottom: .8%;
+    padding-left: 0px;
+    padding-right: 0px;
+    border-radius: 10px;
+    background-color:lightblue;
+}
+
+#u_box {
+    padding-bottom: 3%;
+}
+
+
+#log_box {
+    padding-top: 3%;
+}
+
+#log_in_button {
+    position: relative;
+    left: 6%;
+}
+#u_input, #p_input {
+    width: 90%;
+    position: relative;
+    left: 5%;
+}

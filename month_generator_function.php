@@ -13,15 +13,24 @@ function month_generator($cur_mon, $days, $weekdays, $year, $doc1_list, $doc2_li
     $mon_list = ['January', 'February', 'March', 'April', 'May', 'June', 'July', 'August', 'September', 'October', 'November', 'December'];
 
 $str = '
-  <div class="row">
+  <div class="row month_section block-'. strval($cur_mon) . '">
     <div class="col-xs-5"></div>
     <div class="col-xs-2" id="month-head-' . strval($cur_mon) . '">
       <h1 id="mon-name-' . strval($cur_mon) . '">' . $mon_list[$cur_mon] .
     '</h1>
     </div>
-    <div class="col-xs-5"></div>
+    <div class="col-xs-1">
+      <button type="button" onClick="autopop(' . strval($cur_mon) . ')" class="btn btn-warning autopopbtn admin-only opts"> Auto-populate </button>
+    </div>
+    <div class="col-xs-1">
+      <button type="button" onClick="clear(' . strval($cur_mon) . ')" class="btn btn-danger clearbtn admin-only opts"> Clear </button>
+    </div>
+    <div class="col-xs-1">
+      <button type="button" onClick="print_month(' . strval($cur_mon) . ')" class="btn btn-primary printbtn opts"> Print </button>
+    </div>
+        <div class="col-xs-2"></div>
   </div> <!-- end row with month name -->
-  <div class="row">
+  <div class="row block-' . strval($cur_mon) . '">
     <div class="col-xs-1 left_edge">
     </div>';
 
@@ -33,7 +42,7 @@ $str = '
     $end = 1;
     for ($i = 0; $i < 6; $i++) {
         $str .= '
-  		<div class="row">
+  		<div class="row block-' . strval($cur_mon) . '">
   		<div class="col-xs-1 left_edge"></div>';
 	$attr = 'onmouseover="colorin(this)" onmouseout="colorout(this)"';
         for ($j = 0; $j < 7; $j++) {
@@ -49,7 +58,7 @@ $str = '
                         $lastdec = ['25', '26', '27', '28', '29', '30', '31'];
                         $daynum = $lastdec[count($lastdec) - $tmp];
                     }
-		            $str .= '<div class="col-xs-12 col-md-1 before" ' . $attr .  '">' . strval($daynum) . '</div>';
+		            $str .= '<div class="col-xs-12 col-md-1 before">' . strval($daynum) . '</div>';
                 }
                 else {
                       $daynum = $days[$cur_mon][$head];
@@ -59,19 +68,19 @@ $str = '
                       $plus = '<span style="margin:3px" class="glyphicon glyphicon-plus ' . $class . '" id="add-icon"></span>';
                       $remove_doc = '<span class="glyphicon glyphicon-remove deletedoc"></span>';
                       if (isset($doc1_list[$cur_mon][$daynum - 1])) {
-                          $dox = '<span class="docname" id="' . $docid . '-1">' . $docs[($doc1_list[$cur_mon][$daynum - 1])][1] . " " . $docs[($doc1_list[$cur_mon][$daynum - 1])][2] . $remove_doc . '</span>';
+                          $dox = '<span class="docname n1" id="' . $docid . '-1">' . $docs[($doc1_list[$cur_mon][$daynum - 1])][1] . " " . $docs[($doc1_list[$cur_mon][$daynum - 1])][2] . $remove_doc . '</span>';
                       }
                       else {
                           $dox = '';
                       }
                       if (isset($doc2_list[$cur_mon][$daynum - 1])) {
-                          $dox .=  '<span class="docname" id="' . $docid . '-2">' . $docs[($doc2_list[$cur_mon][$daynum - 1])][1] . " " . $docs[($doc2_list[$cur_mon][$daynum - 1])][2] . $remove_doc . '</span>';
+                          $dox .=  '<span class="docname n2" id="' . $docid . '-2">' . $docs[($doc2_list[$cur_mon][$daynum - 1])][1] . " " . $docs[($doc2_list[$cur_mon][$daynum - 1])][2] . $remove_doc . '</span>';
                       }
                       $str .= '<div class="col-xs-12 col-md-1 norm day" ' . $attr . 'id="' . (strval($cur_mon) . "-" . strval($daynum) . "-" . strval($year) . "-box") . '">' . strval($daynum) . $plus . $dox . '</div>';
                 }
             }
             else if (($i > 3) && (count($days[$cur_mon]) <= $head)) {
-		        $str .= '<div class="col-xs-12 col-md-1 after" ' . $attr . '">' . strval($end) . '</div>';
+		        $str .= '<div class="col-xs-12 col-md-1 after">' . strval($end) . '</div>';
                 $end++;
             }
             else {
@@ -82,13 +91,13 @@ $str = '
                 $plus = '<span style="margin:3px" class="glyphicon glyphicon-plus ' . $class . '" id="add-icon"></span>';
                 $remove_doc = '<span class="glyphicon glyphicon-remove deletedoc"></span>';
                 if (isset($doc1_list[$cur_mon][$daynum - 1])) {
-                    $dox = '<span class="docname" id="' . $docid . '-1">' . $docs[($doc1_list[$cur_mon][$daynum - 1])][1] . " " . $docs[($doc1_list[$cur_mon][$daynum - 1])][2] . $remove_doc . '</span>';
+                    $dox = '<span class="docname n1" id="' . $docid . '-1">' . $docs[($doc1_list[$cur_mon][$daynum - 1])][1] . " " . $docs[($doc1_list[$cur_mon][$daynum - 1])][2] . $remove_doc . '</span>';
                 }
                 else {
                     $dox = '';
                 }
                 if (isset($doc2_list[$cur_mon][$daynum - 1])) {
-                    $dox .=  '<span class="docname" id="' . $docid . '-2">' . $docs[($doc2_list[$cur_mon][$daynum - 1])][1] . " " . $docs[($doc2_list[$cur_mon][$daynum - 1])][2] . $remove_doc . '</span>';
+                    $dox .=  '<span class="docname n2" id="' . $docid . '-2">' . $docs[($doc2_list[$cur_mon][$daynum - 1])][1] . " " . $docs[($doc2_list[$cur_mon][$daynum - 1])][2] . $remove_doc . '</span>';
                 }
                 $str .= '<div class="col-xs-12 col-md-1 norm day" ' . $attr . 'id="' . (strval($cur_mon) . "-" . strval($daynum) . "-" . strval($year) . "-box") . '">' . strval($daynum) . $plus . $dox . '</div>';
             }

@@ -15,6 +15,9 @@ $localyear = $localtime_assoc["tm_year"] + 1900;
 if (!isset($_COOKIE["year"])) {
 	setcookie("year", $localyear, time() + (86400 * 30), "/"); // set to direct
 }
+if (!isset($_COOKIE["logged_in"])) {
+    setcookie("logged_in", "false", time() + (86400 * 30 * 30), "/");
+}
 $year_in = $_COOKIE["year"];
 // connect to DB
 $file = fopen("./db.txt", "r") or die("Error opening file.");
@@ -125,6 +128,7 @@ for ($i = 0; $i < 3; $i++) {
   <script src="//cdn.jsdelivr.net/jquery.scrollto/2.1.2/jquery.scrollTo.min.js"></script> <!-- scroll to function -->
   <!-- scrollto plugin -->
   <script>
+
       // make local month count for docs
       var dox1 = [];
       var dox2 = [];
@@ -207,6 +211,16 @@ for ($i = 0; $i < 3; $i++) {
 		  }
 ?>       // } // ends if hover
 	  }
+
+      function autopop(mon) {
+        alert(mon);
+      }
+      function clear(mon) {
+
+      }
+      function print_month(mon) {
+
+      }
 	function yearswitcher(val) { // if user selects a different year
   		$.post("./changeyear.php", { //changes year cookie
                 	year : val
@@ -273,7 +287,7 @@ for ($i = 0; $i < 3; $i++) {
                       var ident = response[1];
                       // insert first and last name of doc
                       var docid = response[2];
-                      var elem = '<span class="docname" id="' + ident + '" >' + doxnames[docid][1] + " " + doxnames[docid][2]   + '<span class="glyphicon glyphicon-remove deletedoc"></span></span>';
+                      var elem = '<span class="docname n1" id="' + ident + '" >' + doxnames[docid][1] + " " + doxnames[docid][2]   + '<span class="glyphicon glyphicon-remove deletedoc"></span></span>';
                       var boxid = "#" + ident.slice(0, -9) + "box";
                       //console.log(boxid + "pooop");
                       $(boxid).append(elem);
@@ -317,7 +331,7 @@ for ($i = 0; $i < 3; $i++) {
                       var ident = response[1];
                       // insert first and last name of doc
                       var docid = response[2];
-                      var elem = '<span class="docname" id="' + ident + '" >' + doxnames[docid][1] + " " + doxnames[docid][2]   + '<span class="glyphicon glyphicon-remove deletedoc"></span></span>';
+                      var elem = '<span class="docname n2" id="' + ident + '" >' + doxnames[docid][1] + " " + doxnames[docid][2]   + '<span class="glyphicon glyphicon-remove deletedoc"></span></span>';
                       var boxid = "#" + ident.slice(0, -9) + "box";
                       //console.log(boxid + "pooop");
                       $(boxid).append(elem);
@@ -355,8 +369,12 @@ for ($i = 0; $i < 3; $i++) {
                       })
                   }
                   if (response[0] == "full") {
-                      console.log("Doctor already assigned.");
-                      alert("Doctor already assigned to day.");
+                     // console.log("Doctor already assigned.");
+                      alert("This day is full. Delete a doctor.");
+                  }
+                  if (response[0] == "already_added") {
+                      console.log("already assigned.");
+                      alert("Doctor already assigned to this day.");
                   }
                   // add physical name to cal
 
@@ -395,7 +413,31 @@ for ($i = 0; $i < 3; $i++) {
 	  var droppy = false;
 	  var plusoff = false;
   $(document).ready(function() {
-
+      $("#log_in_button").click(function() {
+          log_me_in();
+      });
+      $("#u_input, #p_input").keypress(function(e) {
+          if(e.which == 13) {
+              log_me_in();
+          }
+      });
+      function log_me_in() {
+          $.post("./log_in.php", { //changes year cookie
+                  uname : $("#u_input").val(),
+                  pass : $("#p_input").val()
+              },
+              function(response) {
+                  //alert(response);
+                  if (response == "PASS") {
+                      window.location.reload(true);
+                  }
+                  else {
+                      alert("Incorrect login info");
+                  }
+                  //console.log(response);
+                  //window.location.reload(true);
+              }); // ends post
+      }
 
 	  <?php
 	  if ($_COOKIE["year"] == $localyear) {
@@ -563,13 +605,19 @@ echo '
 
   </div> <!-- end main container -->
   <div class="container right-pan" id="right-panel-contract">
+  <div class="row-right-pan">
+    <div class="col-xs-8 doc-col-cont"><b>Doctor</b></div>
+    <div class="col-xs-2 tot-col-cont"><b>Year</b></div>
+    <div class="col-xs-2 mon-col-cont"><b>Month</b></div>
+
+</div>
     <!-- fetch doctors -->';
 
 for ($h = 0; $h < count($docs); $h++) {
 	$doc_id = $docs[$h][0];
 	echo '<div class="row-right-pan">
-          <div class="col-xs-8"> ' . $docs[$h][2] . '</div>
-	      <div class="col-xs-2" id="doc-' . $doc_id . '-total-days">
+          <div class="col-xs-8 doc-col-cont"> ' . $docs[$h][2] . '</div>
+	      <div class="col-xs-2 tot-col-cont" id="doc-' . $doc_id . '-total-days">
 	      <!-- fetch how many days for that year -->';
 	$total_year = 0;
 	for ($a = 0; $a < count($docs1); $a++) {
@@ -583,13 +631,35 @@ for ($h = 0; $h < count($docs); $h++) {
 	// now get total for current month
 	echo '
 		  </div> <!-- end total days -->
-		  <div class="col-xs-2" id="total-month-doc-' . $doc_id . '"></div>
+		  <div class="col-xs-2 mon-col-cont" id="total-month-doc-' . $doc_id . '"></div>
 	      </div> <!-- end unique doctor row -->
 																				';
 }
 
 echo '
   </div> <!-- end right-panel-contract -->
+  <div id="admin_panel" class="container">
+    <form>
+    <div class="row" id="u_box">
+      <div class="col-xs-12">
+        <input type="text" name="username" id="u_input" placeholder="Username">
+      </div>
+    </div>
+    <div class="row" id="p_box">
+      <div class="col-xs-12">
+        <input type="password" name="password" id="p_input" placeholder="Password">
+      </div>
+    </div>
+    <div class="row" id="log_box">
+      <div class="col-xs-6" >
+
+      </div>
+      <div class="col-xs-6">
+        <button type="button" class="btn btn-default" id="log_in_button">Log In</button>
+      </div>
+    </div>
+    </form>
+  </div>
 </body>
 </html>';
 
