@@ -79,3 +79,7 @@ h1, h2, h3 {
     position: absolute;
 
 }
+.docname {
+    top: 40%;
+    position: absolute;
+}

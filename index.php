@@ -67,13 +67,15 @@ if ($result->num_rows > 0) {
 	array_push($doc1_list, $days_list);
 	array_push($doc2_list, $weekdays_list);
 }
+//print_r($doc1_list);
+echo count($doc1_list[0]);
 include("./month_generator_function.php");
 $calendar = "";
 $p = 0;
 for ($i = 0; $i < 3; $i++) {
 	$calendar .= '<div class="row">';
 	for ($j = 0; $j < 4; $j++) {
-		$calendar .= month_generator($p, $days, $weekdays, $year_in);
+		$calendar .= month_generator($p, $days, $weekdays, $year_in, $doc1_list, $doc2_list);
 		$p++;
 	}
 	$calendar .= '</div>';
@@ -202,7 +204,7 @@ if ($result->num_rows > 0) {
 		  strr = strr.split(" ");
 		  strr = strr[2];
 		  strr = (strr.slice(0, -3));
-		  $(".remove-drop, .remove_lyst").remove();
+		  $(".remove-drop, .remove_lyst, #add_menu").remove();
 		  $("#" + strr + "box").css("background-color", "white");
 		  // add update master list, make function that emerges save button
 		//  strr = strr.split("-"); // you must do AJAX, might as well update DB (it will reload every time anyway)
@@ -219,6 +221,7 @@ if ($result->num_rows > 0) {
 				  response.trim();
                 //  alert(response);
                   console.log(response);
+
 			  }
 		  ); // ends post
 		  // add save button
@@ -289,15 +292,12 @@ if ($result->num_rows > 0) {
 		  var boxid = $(this).attr("class");
 		  var tempid = boxid;
 		  boxid = boxid.slice(25, -7) + 'box';
-
+         // alert( (($(this).attr("class")).split(" ")) );
 		  if (!droppy) {
 			  var str = '<div id="add_menu"><select id="' + tempid + 'drop" class="remove-drop" onchange="doc_add(this)" onClick="doc_add(this)">' +
 				  <?php
 				  foreach ($docs as $bin) {
-
-
                       echo '\'<option value="' . $bin[0] . '">' . $bin[1] . ' ' . $bin[2] . '</option>\' +';
-
 				  }
 				  ?>
 
