@@ -56,10 +56,26 @@ h1, h2, h3 {
     font-size: 1.8em;
     color: green;
     position: absolute;
-    left: 80%;
-    top: 43%;
+    left: 82%;
+    top: 65%;
 }
 
 .add {
-   display: none; 
+   display: none;
+    cursor: pointer;
+}
+
+.remove_lyst {
+    cursor: pointer;
+    position:absolute;
+    right:1%;
+    top:70%;
+    color: darkred;
+    font-size:1.4em;
+}
+.remove-drop {
+    bottom: 10%;
+    right:15%;
+    position: absolute;
+
 }

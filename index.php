@@ -123,6 +123,7 @@ if ($result->num_rows > 0) {
 	  function colorin(id) {
 		  prevcolor = $(id).css("background-color");
 		  $(id).css("background-color", "lightgreen");
+		  if (!plusoff) {
 <?php
 		  if (isset($_COOKIE["logged_in"])) {
 			  if ($_COOKIE["logged_in"] == "true") {
@@ -137,13 +138,13 @@ if ($result->num_rows > 0) {
 
 			  }
 		  }
-?>
+?>	} // ends plusoff
 	  }
 	  function colorout(id) {
 		  // if you are not having over plus_link
 		 // if (!$("#plus_link").is(":hover") && !$("#add-icon").is(":hover")) {
 		  $(id).css("background-color", prevcolor);
-		  //console.log("test");
+		 // console.log("test");
 		 // $(".add").hide();
 <?php
 		  if (isset($_COOKIE["logged_in"])) {
@@ -193,7 +194,63 @@ if ($result->num_rows > 0) {
 		  // fetch all doc stats for current month
 
 	  }
+	  function add_save_button() {
 
+	  }
+	  function doc_add(id) {
+		  var strr = ($(id).attr("id"));
+		  strr = strr.split(" ");
+		  strr = strr[2];
+		  strr = (strr.slice(0, -3));
+		  $(".remove-drop, .remove_lyst").remove();
+		  $("#" + strr + "box").css("background-color", "white");
+		  // add update master list, make function that emerges save button
+		//  strr = strr.split("-"); // you must do AJAX, might as well update DB (it will reload every time anyway)
+		  // add to $doc1_lyst
+		  // must generate doctor stats
+		  plusoff = false;
+          droppy = false;
+          //alert(id.value);
+		  $.post("./doc_add.php", {
+				  date: strr,
+			  	  doc: id.value
+			  },
+			  function (response) {
+				  response.trim();
+                //  alert(response);
+                  console.log(response);
+			  }
+		  ); // ends post
+		  // add save button
+	  }
+      // add function that will do all this if same person is clicked
+
+	  function removedrop(dis) {
+		  $(dis).remove();
+	  }
+	  function remove_lyst(dis) {
+		 // alert($(dis).attr("id"));
+
+		  var strr = $(dis).attr("id");
+		  strr = strr.split(" ");
+		  strr = strr[2];
+		//  alert(strr.slice(0, -4) + "box");
+		  $("#" + strr.slice(0, -3) + "box").css("background-color", "white");
+		  console.log("#" + strr.slice(0, -4) + "box");
+		 // $(dis).remove();
+		  $(".remove-drop, .remove_lyst").remove()
+		  $(".add").hide(); // check this later
+		  droppy = false;
+		  plusoff = false;
+		//  $("#" + strr.slice(0, -3) + "plus").hide();
+
+		  //$(dis).remove();
+
+		  //alert(strr);
+	  }
+
+	  var droppy = false;
+	  var plusoff = false;
   $(document).ready(function() {
 
 
@@ -225,6 +282,37 @@ if ($result->num_rows > 0) {
 		  console.log(activeSection);
 		  // go through all doc divs and update month count
 	  });
+
+	  $(".add").click(function() {
+		  //this.append("<div></div>");
+		  //alert($(this).attr("class"));
+		  var boxid = $(this).attr("class");
+		  var tempid = boxid;
+		  boxid = boxid.slice(25, -7) + 'box';
+
+		  if (!droppy) {
+			  var str = '<div id="add_menu"><select id="' + tempid + 'drop" class="remove-drop" onchange="doc_add(this)" onClick="doc_add(this)">' +
+				  <?php
+				  foreach ($docs as $bin) {
+
+
+                      echo '\'<option value="' . $bin[0] . '">' . $bin[1] . ' ' . $bin[2] . '</option>\' +';
+
+				  }
+				  ?>
+
+
+				  '</select><span class="glyphicon glyphicon-remove remove_lyst" id="' + tempid + '-rl" onClick="remove_lyst(this)"></div><!--end add menu-->';
+
+			  $("#" + boxid).append(str);
+			  plusoff = true;
+			  $(".add").hide();
+			  droppy = true;
+		  }
+		  else {
+			  alert("Close current dropdown or refresh page.");
+		  }
+	  })
   }); // ends document.ready
   </script>
 
