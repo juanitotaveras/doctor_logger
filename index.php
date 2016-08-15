@@ -35,6 +35,8 @@ for ($x = 0; $x < 12; $x++) {
 }
 $days = [];
 $weekdays = [];
+$docs1 = [];
+$docs2 = [];
 if ($result->num_rows > 0) {
 	while($row = $result->fetch_assoc()) {
 		$cur_day = $row["DAY"];
@@ -42,8 +44,8 @@ if ($result->num_rows > 0) {
 			if (isset($days_list) && isset($weekdays_list)) {
 				array_push($days, $days_list);
 				array_push($weekdays, $weekdays_list);
-				array_push($doc1_list, $days_list);
-				array_push($doc2_list, $weekdays_list);
+				array_push($docs1, $doc1_list);
+				array_push($docs2, $doc2_list);
 
 			}
 			$days_list = [];
@@ -64,21 +66,8 @@ if ($result->num_rows > 0) {
 	}
 	array_push($days, $days_list);
 	array_push($weekdays, $weekdays_list);
-	array_push($doc1_list, $days_list);
-	array_push($doc2_list, $weekdays_list);
-}
-//print_r($doc1_list);
-echo count($doc1_list[0]);
-include("./month_generator_function.php");
-$calendar = "";
-$p = 0;
-for ($i = 0; $i < 3; $i++) {
-	$calendar .= '<div class="row">';
-	for ($j = 0; $j < 4; $j++) {
-		$calendar .= month_generator($p, $days, $weekdays, $year_in, $doc1_list, $doc2_list);
-		$p++;
-	}
-	$calendar .= '</div>';
+	array_push($docs1, $doc1_list);
+	array_push($docs2, $doc2_list);
 }
 
 //fetches docs
@@ -87,15 +76,30 @@ $sql = "SELECT * FROM names;";
 $result = $connect->query($sql);
 $docs = [];
 if ($result->num_rows > 0) {
-	while ($row = $result->fetch_assoc()) {
-		$basket = [];
-		array_push($basket, $row["ID"]);
-		array_push($basket, $row["FIRST_NAME"]);
-		array_push($basket, $row["LAST_NAME"]);
-		array_push($basket, $row["CLASS"]);
-		array_push($docs, $basket);
-	}
+    while ($row = $result->fetch_assoc()) {
+        $basket = [];
+        array_push($basket, $row["ID"]);
+        array_push($basket, $row["FIRST_NAME"]);
+        array_push($basket, $row["LAST_NAME"]);
+        array_push($basket, $row["CLASS"]);
+        array_push($docs, $basket);
+    }
 }
+//print_r($doc1_list);
+//echo count($doc1_list[0]);
+include("./month_generator_function.php");
+$calendar = "";
+$p = 0;
+for ($i = 0; $i < 3; $i++) {
+	$calendar .= '<div class="row">';
+	for ($j = 0; $j < 4; $j++) {
+		$calendar .= month_generator($p, $days, $weekdays, $year_in, $docs1, $docs2, $docs);
+		$p++;
+	}
+	$calendar .= '</div>';
+}
+
+
 
 
 ?>
@@ -385,9 +389,9 @@ for ($h = 0; $h < count($docs); $h++) {
 	      <div class="col-xs-2" id="doc-' . $doc_id . '-total-days">
 	      <!-- fetch how many days for that year -->';
 	$total_year = 0;
-	for ($a = 0; $a < count($doc1_list); $a++) {
-		for ($b = 0; $b < count($doc1_list[$a]); $b++) {
-			if ($doc_id == $doc1_list[$a][$b] || $doc_id == $doc2_list[$a][$b]) {
+	for ($a = 0; $a < count($docs1); $a++) {
+		for ($b = 0; $b < count($docs1[$a]); $b++) {
+			if ($doc_id == $docs1[$a][$b] || $doc_id == $docs2[$a][$b]) {
 				$total_year ++;
 			}
 		}

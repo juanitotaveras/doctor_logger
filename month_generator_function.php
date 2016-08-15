@@ -8,7 +8,7 @@
 ini_set('display_errors', 'On');   // error checking
 error_reporting(E_ALL);    // error checking
 
-function month_generator($cur_mon, $days, $weekdays, $year, $doc1_list, $doc2_list) {
+function month_generator($cur_mon, $days, $weekdays, $year, $doc1_list, $doc2_list, $docs) {
     $week = ['Sun', 'Mon', 'Tues', 'Wed', 'Thurs', 'Fri', 'Sat'];
     $mon_list = ['January', 'February', 'March', 'April', 'May', 'June', 'July', 'August', 'September', 'October', 'November', 'December'];
 
@@ -56,8 +56,14 @@ $str = '
                       $head ++;
                       $class = (strval($cur_mon) . '-' . strval($daynum) . '-'. strval($year) . '-'. 'add add');
                       $plus = '<span style="margin:3px" class="glyphicon glyphicon-plus ' . $class . '" id="add-icon"></span>';
-                      $dox = '<span class="docname">' . $doc1_list[$cur_mon][$daynum]. '</span>';
-		              $str .= '<div class="col-xs-12 col-md-1 norm day" ' . $attr . 'id="' . (strval($cur_mon) . "-" . strval($daynum) . "-" . strval($year) . "-box") . '">'. strval($daynum) . $plus . $dox . '</div>';
+                      $idx =  $doc1_list[$cur_mon][$daynum - 1];
+                      if (isset($docs[$idx][1])) {
+                          $dox = '<span class="docname">' . $docs[$idx][1] . " " . $docs[$idx][2] . '</span>';
+                          $str .= '<div class="col-xs-12 col-md-1 norm day" ' . $attr . 'id="' . (strval($cur_mon) . "-" . strval($daynum) . "-" . strval($year) . "-box") . '">' . strval($daynum) . $plus . $dox . '</div>';
+                      }
+                    else {
+                        $str .= '<div class="col-xs-12 col-md-1 norm day" ' . $attr . 'id="' . (strval($cur_mon) . "-" . strval($daynum) . "-" . strval($year) . "-box") . '">' . strval($daynum) . $plus . '</div>';
+                    }
                 }
             }
             else if (($i > 3) && (count($days[$cur_mon]) <= $head)) {
@@ -69,8 +75,14 @@ $str = '
                 $head++;
                 $class = (strval($cur_mon) . '-' . strval($daynum) . '-'. strval($year) . '-'. 'add add');
                 $plus = '<span style="margin:3px" class="glyphicon glyphicon-plus ' . $class . '" id="add-icon"></span>';
-                $dox = '<span class="docname">' . $doc1_list[$cur_mon][$daynum] . '</span>';
-		        $str .= '<div class="col-xs-12 col-md-1 norm day" ' . $attr . 'id="' . (strval($cur_mon) . "-" . strval($daynum) . "-" . strval($year) . "-box") . '">' . strval($daynum) . $plus . $dox . '</div>';
+                $idx =  $doc1_list[$cur_mon][$daynum - 1];
+                if (isset($docs[$idx][1])) {
+                    $dox = '<span class="docname">' . $docs[$idx][1] . " " . $docs[$idx][2] . '</span>';
+                    $str .= '<div class="col-xs-12 col-md-1 norm day" ' . $attr . 'id="' . (strval($cur_mon) . "-" . strval($daynum) . "-" . strval($year) . "-box") . '">' . strval($daynum) . $plus . $dox . '</div>';
+                }
+                else {
+                    $str .= '<div class="col-xs-12 col-md-1 norm day" ' . $attr . 'id="' . (strval($cur_mon) . "-" . strval($daynum) . "-" . strval($year) . "-box") . '">' . strval($daynum) . $plus . '</div>';
+                }
             }
         }
         $str .= '<div class="col-xs-3"></div></div>';
