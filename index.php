@@ -125,6 +125,33 @@ for ($i = 0; $i < 3; $i++) {
   <script src="//cdn.jsdelivr.net/jquery.scrollto/2.1.2/jquery.scrollTo.min.js"></script> <!-- scroll to function -->
   <!-- scrollto plugin -->
   <script>
+      // make local month count for docs
+      var dox1 = [];
+      var dox2 = [];
+      var doxnames = [];
+      <?php
+      foreach ($docs1 as $bin) {
+          echo 'var bin = [];';
+          foreach ($bin as $elem) {
+              echo 'bin.push(' . $elem . ');';
+          }
+          echo 'dox1.push(bin);';
+      }
+      foreach ($docs2 as $bin) {
+          echo 'var bin = [];';
+          foreach ($bin as $elem) {
+              echo 'bin.push(' . $elem . ');';
+          }
+          echo 'dox2.push(bin);';
+      }
+      foreach ($docs as $bin) {
+          echo 'var bin = [];';
+          foreach ($bin as $elem) {
+              echo 'bin.push("' . $elem . '");';
+          }
+          echo 'doxnames.push(bin);';
+      }
+      ?>
 	  var prevcolor;
 	  function colorin(id) {
 		  prevcolor = $(id).css("background-color");
@@ -292,15 +319,13 @@ for ($i = 0; $i < 3; $i++) {
 		  console.log(activeSection);
           var doc = activeSection.split("-");
           doc = doc[-1]; // gets what month we are currently on
-          <?php
-          for ($q = 0; $q < count($docs); $q++) {
-              // find doc stats for current month
-              echo '
-              $("#total-month-doc-' . $q . '").text("test");
-              ';
+          // dox1 = docs1, dox2 = docs2
+          // fetch doc stats for this month and update table
+
+          for (var i = 0; i < (dox1[doc]).length; i++) {  // we're only checking current month
+              console.log(dox1[doc][i]);
           }
-          ?>
-          doc = "#total-month-doc";
+          var poo = "#total-month-doc";
 		  // go through all doc divs and update month count
 	  });
 
