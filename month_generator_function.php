@@ -55,15 +55,19 @@ $str = '
                       $daynum = $days[$cur_mon][$head];
                       $head ++;
                       $class = (strval($cur_mon) . '-' . strval($daynum) . '-'. strval($year) . '-'. 'add add');
+                      $docid = (strval($cur_mon) . '-' . strval($daynum) . '-'. strval($year) . '-'. 'docname');
                       $plus = '<span style="margin:3px" class="glyphicon glyphicon-plus ' . $class . '" id="add-icon"></span>';
-                      $idx =  $doc1_list[$cur_mon][$daynum - 1];
-                      if (isset($docs[$idx][1])) {
-                          $dox = '<span class="docname">' . $docs[$idx][1] . " " . $docs[$idx][2] . '</span>';
-                          $str .= '<div class="col-xs-12 col-md-1 norm day" ' . $attr . 'id="' . (strval($cur_mon) . "-" . strval($daynum) . "-" . strval($year) . "-box") . '">' . strval($daynum) . $plus . $dox . '</div>';
+                      $remove_doc = '<span class="glyphicon glyphicon-remove deletedoc"></span>';
+                      if (isset($doc1_list[$cur_mon][$daynum - 1])) {
+                          $dox = '<span class="docname" id="' . $docid . '-1">' . $docs[($doc1_list[$cur_mon][$daynum - 1])][1] . " " . $docs[($doc1_list[$cur_mon][$daynum - 1])][2] . $remove_doc . '</span>';
                       }
-                    else {
-                        $str .= '<div class="col-xs-12 col-md-1 norm day" ' . $attr . 'id="' . (strval($cur_mon) . "-" . strval($daynum) . "-" . strval($year) . "-box") . '">' . strval($daynum) . $plus . '</div>';
-                    }
+                      else {
+                          $dox = '';
+                      }
+                      if (isset($doc2_list[$cur_mon][$daynum - 1])) {
+                          $dox .=  '<span class="docname" id="' . $docid . '-2">' . $docs[($doc2_list[$cur_mon][$daynum - 1])][1] . " " . $docs[($doc2_list[$cur_mon][$daynum - 1])][2] . $remove_doc . '</span>';
+                      }
+                      $str .= '<div class="col-xs-12 col-md-1 norm day" ' . $attr . 'id="' . (strval($cur_mon) . "-" . strval($daynum) . "-" . strval($year) . "-box") . '">' . strval($daynum) . $plus . $dox . '</div>';
                 }
             }
             else if (($i > 3) && (count($days[$cur_mon]) <= $head)) {
@@ -72,17 +76,21 @@ $str = '
             }
             else {
                 $daynum = $days[$cur_mon][$head];
-                $head++;
+                $head ++;
                 $class = (strval($cur_mon) . '-' . strval($daynum) . '-'. strval($year) . '-'. 'add add');
+                $docid = (strval($cur_mon) . '-' . strval($daynum) . '-'. strval($year) . '-'. 'docname');
                 $plus = '<span style="margin:3px" class="glyphicon glyphicon-plus ' . $class . '" id="add-icon"></span>';
-                $idx =  $doc1_list[$cur_mon][$daynum - 1];
-                if (isset($docs[$idx][1])) {
-                    $dox = '<span class="docname">' . $docs[$idx][1] . " " . $docs[$idx][2] . '</span>';
-                    $str .= '<div class="col-xs-12 col-md-1 norm day" ' . $attr . 'id="' . (strval($cur_mon) . "-" . strval($daynum) . "-" . strval($year) . "-box") . '">' . strval($daynum) . $plus . $dox . '</div>';
+                $remove_doc = '<span class="glyphicon glyphicon-remove deletedoc"></span>';
+                if (isset($doc1_list[$cur_mon][$daynum - 1])) {
+                    $dox = '<span class="docname" id="' . $docid . '-1">' . $docs[($doc1_list[$cur_mon][$daynum - 1])][1] . " " . $docs[($doc1_list[$cur_mon][$daynum - 1])][2] . $remove_doc . '</span>';
                 }
                 else {
-                    $str .= '<div class="col-xs-12 col-md-1 norm day" ' . $attr . 'id="' . (strval($cur_mon) . "-" . strval($daynum) . "-" . strval($year) . "-box") . '">' . strval($daynum) . $plus . '</div>';
+                    $dox = '';
                 }
+                if (isset($doc2_list[$cur_mon][$daynum - 1])) {
+                    $dox .=  '<span class="docname" id="' . $docid . '-2">' . $docs[($doc2_list[$cur_mon][$daynum - 1])][1] . " " . $docs[($doc2_list[$cur_mon][$daynum - 1])][2] . $remove_doc . '</span>';
+                }
+                $str .= '<div class="col-xs-12 col-md-1 norm day" ' . $attr . 'id="' . (strval($cur_mon) . "-" . strval($daynum) . "-" . strval($year) . "-box") . '">' . strval($daynum) . $plus . $dox . '</div>';
             }
         }
         $str .= '<div class="col-xs-3"></div></div>';

@@ -82,4 +82,21 @@ h1, h2, h3 {
 .docname {
     top: 40%;
     position: absolute;
+    width: 75%
+    cursor: pointer;
+    border-radius: 5px;
+    padding: 1%;
+    padding-left: 1%;
 }
+
+.deletedoc {
+    position: relative;
+    left: 5%;
+    top: .2em;
+    margin-right: 5%;
+    font-size: 112%;
+    color: darkred;
+    display: none;
+    cursor: pointer;
+}
+

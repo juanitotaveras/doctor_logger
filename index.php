@@ -225,6 +225,9 @@ for ($i = 0; $i < 3; $i++) {
 				  response.trim();
                 //  alert(response);
                   console.log(response);
+                  // add physical name to cal
+
+                  // now append to our counter
 
 			  }
 		  ); // ends post
@@ -287,8 +290,50 @@ for ($i = 0; $i < 3; $i++) {
 		  var activeSection = $(this).find("li.active a").attr("href");
 			// fetch month and year stats
 		  console.log(activeSection);
+          var doc = activeSection.split("-");
+          doc = doc[-1]; // gets what month we are currently on
+          <?php
+          for ($q = 0; $q < count($docs); $q++) {
+              // find doc stats for current month
+              echo '
+              $("#total-month-doc-' . $q . '").text("test");
+              ';
+          }
+          ?>
+          doc = "#total-month-doc";
 		  // go through all doc divs and update month count
 	  });
+
+      $(".docname").hover(function() {
+          var id = $(this).attr("id");
+          $("#" + id).css("background-color", "red");
+          // show x
+          $("#" + id + " span").show();
+      }, function() {
+          var id = $(this).attr("id");
+          $("#" + id).css("background-color", "transparent");
+          // hide x
+          $("#" + id + " span").hide();
+      });
+
+      $(".docname").click(function() {
+          var id = $(this).attr("id");
+          $.post("./deletedoc.php", { //changes year cookie
+                  box : id
+              },
+              function(response) {
+                  //window.location.reload(true);
+                  //alert(response);
+                  console.log(response);
+                  var tmp = "#" + response;
+                  //alert(tmp);
+                  $(tmp).remove();
+                  // now implement colorout to change color back
+                  tmp = tmp.slice(0, -9) + "box";
+                  colorout(tmp);
+                  // update table on right
+              }); // ends post
+      });
 
 	  $(".add").click(function() {
 		  //this.append("<div></div>");
