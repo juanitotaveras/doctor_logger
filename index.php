@@ -133,14 +133,24 @@ for ($i = 0; $i < 3; $i++) {
       foreach ($docs1 as $bin) {
           echo 'var bin = [];';
           foreach ($bin as $elem) {
-              echo 'bin.push(' . $elem . ');';
+              if (isset($elem)) {
+                  echo 'bin.push(' . $elem . ');';
+              }
+              else {
+                  echo 'bin.push(-1);';
+              }
           }
           echo 'dox1.push(bin);';
       }
       foreach ($docs2 as $bin) {
           echo 'var bin = [];';
           foreach ($bin as $elem) {
-              echo 'bin.push(' . $elem . ');';
+              if (!isset($elem)) {
+                  echo 'bin.push(' . $elem . ');';
+              }
+              else {
+                  echo 'bin.push(-1);';
+              }
           }
           echo 'dox2.push(bin);';
       }
@@ -152,6 +162,10 @@ for ($i = 0; $i < 3; $i++) {
           echo 'doxnames.push(bin);';
       }
       ?>
+      for (var x in doxnames) {
+       //   console.log(doxnames[x]);
+         // console.log(doxnames[x].length);
+      }
 	  var prevcolor;
 	  function colorin(id) {
 		  prevcolor = $(id).css("background-color");
@@ -273,7 +287,7 @@ for ($i = 0; $i < 3; $i++) {
 		  strr = strr[2];
 		//  alert(strr.slice(0, -4) + "box");
 		  $("#" + strr.slice(0, -3) + "box").css("background-color", "white");
-		  console.log("#" + strr.slice(0, -4) + "box");
+		 // console.log("#" + strr.slice(0, -4) + "box");
 		 // $(dis).remove();
 		  $(".remove-drop, .remove_lyst").remove()
 		  $(".add").hide(); // check this later
@@ -316,17 +330,23 @@ for ($i = 0; $i < 3; $i++) {
 	  $('#monthscroll').on('activate.bs.scrollspy', function () {
 		  var activeSection = $(this).find("li.active a").attr("href");
 			// fetch month and year stats
-		  console.log(activeSection);
+		  //console.log(activeSection);
           var doc = activeSection.split("-");
-          doc = doc[-1]; // gets what month we are currently on
+          var monc = doc[2]; // gets what month we are currently on
           // dox1 = docs1, dox2 = docs2
           // fetch doc stats for this month and update table
 
-          for (var i = 0; i < (dox1[doc]).length; i++) {  // we're only checking current month
-              console.log(dox1[doc][i]);
+          for (var docid = 0; docid < doxnames.length; docid++) {
+              var doccount = 0;
+              for (var i = 0; i < (dox1[monc]).length; i++) {  // we're only checking current month
+                  var tmp = dox1[monc][i];
+                  if (tmp == docid) {
+                      doccount ++;
+                  }
+              }
+              //console.log(doxnames[docid] + doccount);
+              $('#total-month-doc-' + docid).text(doccount);
           }
-          var poo = "#total-month-doc";
-		  // go through all doc divs and update month count
 	  });
 
       $(".docname").hover(function() {
