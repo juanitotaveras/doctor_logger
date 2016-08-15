@@ -266,6 +266,98 @@ for ($i = 0; $i < 3; $i++) {
 				  response.trim();
                 //  alert(response);
                   console.log(response);
+                  response = response.split(" ");
+                  if (response[0] == "doc_1_added") {
+                    // add doc 1 span and update year and month js bins
+                      //console.log("pooper");
+                      var ident = response[1];
+                      // insert first and last name of doc
+                      var docid = response[2];
+                      var elem = '<span class="docname" id="' + ident + '" >' + doxnames[docid][1] + " " + doxnames[docid][2]   + '<span class="glyphicon glyphicon-remove deletedoc"></span></span>';
+                      var boxid = "#" + ident.slice(0, -9) + "box";
+                      //console.log(boxid + "pooop");
+                      $(boxid).append(elem);
+                      $("#" + ident).hover(function() {
+                        //  var id = $(this).attr("id");
+                          $("#" + ident).css("background-color", "red");
+                          // show x
+                          $("#" + ident + " span").show();
+                      }, function() {
+                          //var id = $(ident).attr("id");
+                          $("#" + ident).css("background-color", "transparent");
+                          // hide x
+                          $("#" + ident + " span").hide();
+                      });
+
+
+                      var id = ident;
+                      $("#" + id).click(function() {
+                      $.post("./deletedoc.php", { //changes year cookie
+                              box : id
+                          },
+                          function(response) {
+                              //window.location.reload(true);
+                              //alert(response);
+                              console.log(response);
+                              var tmp = "#" + response;
+                              //alert(tmp);
+                              $(tmp).remove();
+                              // now implement colorout to change color back
+                              tmp = tmp.slice(0, -9) + "box";
+                              colorout(tmp);
+                              // update table on right
+                          }); // ends post
+
+                      })
+
+                  }
+                  if (response[0] == "doc_2_added") {
+                      // add doc 1 span and update year and month js bins
+                      //console.log("pooper");
+                      var ident = response[1];
+                      // insert first and last name of doc
+                      var docid = response[2];
+                      var elem = '<span class="docname" id="' + ident + '" >' + doxnames[docid][1] + " " + doxnames[docid][2]   + '<span class="glyphicon glyphicon-remove deletedoc"></span></span>';
+                      var boxid = "#" + ident.slice(0, -9) + "box";
+                      //console.log(boxid + "pooop");
+                      $(boxid).append(elem);
+                      $("#" + ident).hover(function() {
+                          //  var id = $(this).attr("id");
+                          $("#" + ident).css("background-color", "red");
+                          // show x
+                          $("#" + ident + " span").show();
+                      }, function() {
+                          //var id = $(ident).attr("id");
+                          $("#" + ident).css("background-color", "transparent");
+                          // hide x
+                          $("#" + ident + " span").hide();
+                      });
+
+
+                      var id = ident;
+                      $("#" + id).click(function() {
+                          $.post("./deletedoc.php", { //changes year cookie
+                                  box : id
+                              },
+                              function(response) {
+                                  //window.location.reload(true);
+                                  //alert(response);
+                                  console.log(response);
+                                  var tmp = "#" + response;
+                                  //alert(tmp);
+                                  $(tmp).remove();
+                                  // now implement colorout to change color back
+                                  tmp = tmp.slice(0, -9) + "box";
+                                  colorout(tmp);
+                                  // update table on right
+                              }); // ends post
+
+                      })
+                  }
+                  if (response[0] == "full") {
+                      console.log("Doctor already assigned.");
+                      alert("Doctor already assigned to day.");
+                  }
                   // add physical name to cal
 
                   // now append to our counter
@@ -348,6 +440,7 @@ for ($i = 0; $i < 3; $i++) {
               $('#total-month-doc-' + docid).text(doccount);
           }
 	  });
+
 
       $(".docname").hover(function() {
           var id = $(this).attr("id");
