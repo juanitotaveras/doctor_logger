@@ -154,7 +154,7 @@ h1, h2, h3 {
     left: 9em;
 }
 
-#admin_panel {
+#login_panel {
     position:fixed;
     right: 0px;
     top: 80%;
@@ -184,4 +184,12 @@ h1, h2, h3 {
     width: 90%;
     position: relative;
     left: 5%;
+}
+#admin_panel {
+    position: fixed;
+    top: 80%;
+    right: 0px;
+    /*width: 20%; */
+    border-radius: 10px;
+    background-color:transparent;
 }

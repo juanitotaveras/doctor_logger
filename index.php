@@ -412,7 +412,19 @@ for ($i = 0; $i < 3; $i++) {
 
 	  var droppy = false;
 	  var plusoff = false;
+
+      function log_out() {
+          $.post("./log_out.php", {
+
+              },
+              function(response) {
+                  // maybe have some confirmation
+                  window.location.reload(true);
+              }); // ends post
+      } // ends log_out function
   $(document).ready(function() {
+
+
       $("#log_in_button").click(function() {
           log_me_in();
       });
@@ -453,9 +465,47 @@ for ($i = 0; $i < 3; $i++) {
 			$.scrollTo( $("#month-head-0"), 500);';
 	  }
 	  if (isset($_COOKIE["logged_in"])) {
-		  if ($_COOKIE["logged_in"] == "true") {
+		  if ($_COOKIE["logged_in"] == "false") {
 			  // make plus available when hovering
+             echo ' $(".admin-only").hide();
+                    plusoff=true;
+             ';
 		  }
+          else {
+              // if user logged in
+              echo '
+              $(".docname").hover(function() {
+                  var id = $(this).attr("id");
+                  $("#" + id).css("background-color", "red");
+                  // show x
+                  $("#" + id + " span").show();
+              }, function() {
+                  var id = $(this).attr("id");
+                  $("#" + id).css("background-color", "transparent");
+                  // hide x
+                  $("#" + id + " span").hide();
+              });
+              $(".docname").click(function() {
+                  var id = $(this).attr("id");
+              $.post("./deletedoc.php", { //changes year cookie
+                  box : id
+              },
+              function(response) {
+                  //window.location.reload(true);
+                  //alert(response);
+                  console.log(response);
+                  var tmp = "#" + response;
+                  //alert(tmp);
+                  $(tmp).remove();
+                  // now implement colorout to change color back
+                  tmp = tmp.slice(0, -9) + "box";
+                  colorout(tmp);
+                  // update table on right
+              }); // ends post
+      });
+
+              ';
+          }
 	  }
 
 
@@ -484,36 +534,8 @@ for ($i = 0; $i < 3; $i++) {
 	  });
 
 
-      $(".docname").hover(function() {
-          var id = $(this).attr("id");
-          $("#" + id).css("background-color", "red");
-          // show x
-          $("#" + id + " span").show();
-      }, function() {
-          var id = $(this).attr("id");
-          $("#" + id).css("background-color", "transparent");
-          // hide x
-          $("#" + id + " span").hide();
-      });
 
-      $(".docname").click(function() {
-          var id = $(this).attr("id");
-          $.post("./deletedoc.php", { //changes year cookie
-                  box : id
-              },
-              function(response) {
-                  //window.location.reload(true);
-                  //alert(response);
-                  console.log(response);
-                  var tmp = "#" + response;
-                  //alert(tmp);
-                  $(tmp).remove();
-                  // now implement colorout to change color back
-                  tmp = tmp.slice(0, -9) + "box";
-                  colorout(tmp);
-                  // update table on right
-              }); // ends post
-      });
+
 
 	  $(".add").click(function() {
 		  //this.append("<div></div>");
@@ -637,8 +659,26 @@ for ($h = 0; $h < count($docs); $h++) {
 }
 
 echo '
-  </div> <!-- end right-panel-contract -->
-  <div id="admin_panel" class="container">
+  </div> <!-- end right-panel-contract -->';
+
+if (isset($_COOKIE["logged_in"]) && $_COOKIE["logged_in"] == "true") {
+    //produce admin panel
+    echo '<div id="admin_panel" class="container">
+      <div class="row">
+        <div class="col-xs-10">
+
+        </div>
+        <div class="col-xs-2">
+          <button class="btn btn-default" onClick="log_out()">Log out</button>
+        </div>
+      </div>
+
+    </div><!-- end admin_panel -->
+    ';
+}
+else {
+    echo '
+  <div id="login_panel" class="container">
     <form>
     <div class="row" id="u_box">
       <div class="col-xs-12">
@@ -659,7 +699,9 @@ echo '
       </div>
     </div>
     </form>
-  </div>
+  </div> <!-- end login_panel -->';
+}
+echo '
 </body>
 </html>';
 
