@@ -7,5 +7,9 @@ Written in PHP, Javascript (with Jquery), and SQL.
 ./indexphp is the main file, builds page
 other php files are used for AJAX.
 
+## TODO
+1. Number of weekends worked per doctor is only updated when you refresh the page. Need to write functions that update without refreshing.
+2. When new doctor is added, days and weekends are not evenly distributed anymore. Not a big deal, since current doctors won't really change.
+3. Add support for viewing on mobile device.
 
 ## Created by Juanito Taveras
