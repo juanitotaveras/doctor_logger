@@ -19,10 +19,6 @@ $str = '
       <h1 id="mon-name-' . strval($cur_mon) . '">' . $mon_list[$cur_mon] .
     '</h1>
     </div>
-    <!--
-    <div class="col-xs-1">
-      <button type="button" onClick="autopop(' . strval($cur_mon) . ')" class="btn btn-warning autopopbtn admin-only opts"> Auto-populate </button>
-    </div>-->
     <div class="col-xs-1">
       <button type="button" onClick="clear_month(' . strval($cur_mon) . ')" class="btn btn-danger clearbtn admin-only opts"> Clear </button>
     </div>

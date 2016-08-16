@@ -302,10 +302,6 @@ for ($i = 0; $i < 3; $i++) {
 		  }
 ?>       // } // ends if hover
 	  }
-
-      function autopop(mon) {
-        alert(mon);
-      }
       function autopop_all() {
           if (window.confirm("Are you certain you want auto-populate " + cur_year + "? \n This will erase all current entrees.")) {
               $.post("./autopopyear.php", { //changes year cookie
