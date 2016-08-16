@@ -661,12 +661,7 @@ for ($i = 0; $i < 3; $i++) {
 
   }); // ends document.ready
   </script>
-
-<!--
-  <script src="' . $addr . '/bootstrap-modal-bs3patch.css"></script>
-  <script src="' . $addr . '/bootstrap-modal.css"></script>
-  <script src="' . $addr . '/bootstrap-modalmanager.js"></script>
-  <script src="' . $addr . '/bootstrap-modal.js"></script> -->
+    
 </head>
 
 <body data-spy="scroll" data-target="#monthscroll" data-offset="20">
