@@ -1,6 +1,9 @@
 ## Doctor Logger
 This is a simple interactive app that physicians can use to schedule the times they are on call.
-App is live at http://www.juanitotaveras.com/doctor_logger/index.php#month-head-1
+You can add or remove physicians, automatically generate a schedule, clear schedules, and generate a printer-friendly version of
+your work schedule.
+
+App is live at http://www.juanitotaveras.com/doctor_logger/index.php
 
 ## Files
 Written in PHP, Javascript (with Jquery), and SQL.
