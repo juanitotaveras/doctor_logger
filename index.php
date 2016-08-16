@@ -647,13 +647,13 @@ for ($i = 0; $i < 3; $i++) {
 		  var tempid = boxid;
 		  boxid = boxid.slice(25, -7) + 'box';
 		  if (!droppy) {
-			  var str = '<div id="add_menu"><select id="' + tempid + 'drop" class="remove-drop" onchange="doc_add(this)" onClick="doc_add(this)">' +
+			  var str = '<div id="add_menu"><select id="' + tempid + 'drop" class="remove-drop" onchange="doc_add(this)" onclick="alert("test");"><option></option>' +
 				  <?php
-				  foreach ($docs as $bin) {
+                  foreach ($docs as $bin) {
                       echo '\'<option value="' . $bin[0] . '">' . $bin[1] . ' ' . $bin[2] . '</option>\' +';
-				  }
+                  }
 				  ?>
-				  '</select><span class="glyphicon glyphicon-remove remove_lyst" id="' + tempid + '-rl" onClick="remove_lyst(this)"></div><!--end add menu-->';
+				  '</select><span class="glyphicon glyphicon-remove deletedoc remove_lyst" id="' + tempid + '-rl" onClick="remove_lyst(this)"></div><!--end add menu-->';
 
 			  $("#" + boxid).append(str);
 			  plusoff = true;
@@ -735,7 +735,7 @@ for ($h = 0; $h < count($docs); $h++) {
 	$doc_id = $docs[$h][0];
 	echo '<div class="row">
           <div class="col-xs-6 doc-col-cont" > ' . $docs[$h][2] . '</div>
-	      <div class="col-xs-2 tot-col-cont" style="color:green" id="doc-' . $doc_id . '-total-weekends">
+	      <div class="col-xs-2 tot-col-cont" style="color:green" id="doc-' . $doc_id . '-total-days">
 	      <!-- fetch how many days for that year -->';
 	$total_year = 0;
 	for ($a = 0; $a < count($docs1); $a++) {
@@ -765,7 +765,7 @@ for ($h = 0; $h < count($docs); $h++) {
     }
 
     echo $total_year;
-    echo '</div><div class="col-xs-2 tot-col-cont" style="color:darkred" id="doc-' . $doc_id . '-total-days">';
+    echo '</div><div class="col-xs-2 tot-col-cont" style="color:darkred" id="doc-' . $doc_id . '-total-weekends">';
     echo $total_weekends;
 
 	// now get total for current month

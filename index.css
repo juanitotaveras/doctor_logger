@@ -85,11 +85,11 @@ h1, h2, h3 {
 .docname {
     top: 40%;
     position: absolute;
-    width: 75%
+    width: 75%;
     cursor: pointer;
     border-radius: 5px;
     padding: 1%;
-    padding-left: 1%;
+    left: 13%;
 }
 
 .deletedoc {
@@ -274,4 +274,12 @@ h1, h2, h3 {
 #mon_head {
     position: relative;
     right: 18%;
+}
+
+/* for firefox bug */
+.deletedoc {
+    position: absolute;
+    left: 82% !important;
+    top: 8%;
+    font-size: 150%;
 }

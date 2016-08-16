@@ -60,7 +60,7 @@ function month_gen_simple($cur_mon, $days, $weekdays, $year, $doc1_list, $doc2_l
                         $lastdec = ['25', '26', '27', '28', '29', '30', '31'];
                         $daynum = $lastdec[count($lastdec) - $tmp];
                     }
-                    $str .= '<div class="col-xs-1 col-md-1 before">' . strval($daynum) . '</div>';
+                    $str .= '<div class="col-xs-1 col-md-1 before"></div>';
                 }
                 else {
                     $daynum = $days[$cur_mon][$head];
@@ -79,7 +79,7 @@ function month_gen_simple($cur_mon, $days, $weekdays, $year, $doc1_list, $doc2_l
                 }
             }
             else if (($i > 3) && (count($days[$cur_mon]) <= $head)) {
-                $str .= '<div class="col-xs-1 col-md-1 after">' . strval($end) . '</div>';
+                $str .= '<div class="col-xs-1 col-md-1 after"></div>';
                 $end++;
             }
             else {
