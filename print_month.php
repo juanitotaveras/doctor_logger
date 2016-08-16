@@ -9,7 +9,7 @@ ini_set('display_errors', 'On');   // error checking
 error_reporting(E_ALL);    // error checking
 session_start();
 
-$file = fopen("./db.txt", "r") or die("Error opening file.");
+$file = fopen("../../db.txt", "r") or die("Error opening file.");
 $dbinfo = [];
 while (!feof($file)) {
     $info = trim(fgets($file));
