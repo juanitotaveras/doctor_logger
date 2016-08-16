@@ -12,11 +12,16 @@ if (empty($connect)) {
 }
 
 
+
 $date = explode("-", $_POST["box"]);
-$sql = 'UPDATE doctor_logger SET DOC' . $date[4] . '=NULL WHERE MONTH=' . $date[0] . ' and DAY=' . $date[1] . ' and YEAR=' . $date[2];
+// detect what doctor already there
+$sql = 'SELECT DOC' . $date[4] . ' FROM doctor_logger WHERE MONTH=' . $date[0] . ' and DAY=' . $date[1] . ' and YEAR=' . $date[2] . ';';
+$result = $connect->query($sql);
+$row = $result->fetch_assoc();
+$curdoc = $row["DOC" . $date[4]];
+$sql = 'UPDATE doctor_logger SET DOC' . $date[4] . '=NULL WHERE MONTH=' . $date[0] . ' and DAY=' . $date[1] . ' and YEAR=' . $date[2] . ';';
 $stmt = mysqli_prepare ($connect, $sql);  // fill in the blank
 //mysqli_stmt_bind_param ($stmt, 'iii', $date[2], $date[0], $date[1]);
 mysqli_stmt_execute($stmt);
 mysqli_stmt_close($stmt);
-echo $_POST["box"];
-?>
+echo $curdoc;
