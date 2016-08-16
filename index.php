@@ -128,7 +128,19 @@ for ($i = 0; $i < 3; $i++) {
   <script src="//cdn.jsdelivr.net/jquery.scrollto/2.1.2/jquery.scrollTo.min.js"></script> <!-- scroll to function -->
   <!-- scrollto plugin -->
   <script>
+      function clear_month(mon) {
+          $.post("./clear_month.php", { //changes year cookie
+                  month: mon
+              },
+              function(response) {
+                  console.log(response);
+                  window.location.reload(true);
+              }); // ends post
+        // physically update
+      }
+      function print_month(mon) {
 
+      }
       // make local month count for docs
       var dox1 = [];
       var dox2 = [];
@@ -215,12 +227,7 @@ for ($i = 0; $i < 3; $i++) {
       function autopop(mon) {
         alert(mon);
       }
-      function clear(mon) {
 
-      }
-      function print_month(mon) {
-
-      }
 	function yearswitcher(val) { // if user selects a different year
   		$.post("./changeyear.php", { //changes year cookie
                 	year : val
@@ -564,6 +571,7 @@ for ($i = 0; $i < 3; $i++) {
 			  alert("Close current dropdown or refresh page.");
 		  }
 	  })
+
   }); // ends document.ready
   </script>
 
@@ -638,8 +646,8 @@ echo '
 for ($h = 0; $h < count($docs); $h++) {
 	$doc_id = $docs[$h][0];
 	echo '<div class="row-right-pan">
-          <div class="col-xs-8 doc-col-cont"> ' . $docs[$h][2] . '</div>
-	      <div class="col-xs-2 tot-col-cont" id="doc-' . $doc_id . '-total-days">
+          <div class="col-xs-8 doc-col-cont" > ' . $docs[$h][2] . '</div>
+	      <div class="col-xs-2 tot-col-cont" style="color:green" id="doc-' . $doc_id . '-total-days">
 	      <!-- fetch how many days for that year -->';
 	$total_year = 0;
 	for ($a = 0; $a < count($docs1); $a++) {
@@ -653,7 +661,7 @@ for ($h = 0; $h < count($docs); $h++) {
 	// now get total for current month
 	echo '
 		  </div> <!-- end total days -->
-		  <div class="col-xs-2 mon-col-cont" id="total-month-doc-' . $doc_id . '"></div>
+		  <div class="col-xs-2 mon-col-cont" style="color:blue" id="total-month-doc-' . $doc_id . '"></div>
 	      </div> <!-- end unique doctor row -->
 																				';
 }

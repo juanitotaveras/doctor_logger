@@ -23,7 +23,7 @@ $str = '
       <button type="button" onClick="autopop(' . strval($cur_mon) . ')" class="btn btn-warning autopopbtn admin-only opts"> Auto-populate </button>
     </div>
     <div class="col-xs-1">
-      <button type="button" onClick="clear(' . strval($cur_mon) . ')" class="btn btn-danger clearbtn admin-only opts"> Clear </button>
+      <button type="button" onClick="clear_month(' . strval($cur_mon) . ')" class="btn btn-danger clearbtn admin-only opts"> Clear </button>
     </div>
     <div class="col-xs-1">
       <button type="button" onClick="print_month(' . strval($cur_mon) . ')" class="btn btn-primary printbtn opts"> Print </button>
