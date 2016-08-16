@@ -13,10 +13,6 @@ $localyear = $localtime_assoc["tm_year"] + 1900;
 if (!isset($_COOKIE["year"])) {
 	setcookie("year", $localyear, time() + (86400 * 30), "/"); // set to direct
 }
-/*
-if (!isset($_COOKIE["logged_in"])) {
-    setcookie("logged_in", "false", time() + (86400 * 30 * 30), "/");
-} */
 $year_in = $_COOKIE["year"];
 // connect to DB
 $file = fopen("./db.txt", "r") or die("Error opening file.");
@@ -31,10 +27,6 @@ if (empty($connect)) {
 }
 $sql = "SELECT * FROM doctor_logger WHERE YEAR = " . $year_in . " ORDER BY MONTH, DAY";
 $result = $connect->query($sql);
-$months = [];
-for ($x = 0; $x < 12; $x++) {
-	array_push($months, $x);
-}
 $days = [];
 $weekdays = [];
 $docs1 = [];
@@ -172,7 +164,21 @@ for ($i = 0; $i < 3; $i++) {
         // physically update
       }
       function print_month(mon) {
-          alert("Print button is not fully functional yet. \n You'll have to do a screenshot for now.");
+          alert("When you print, make sure to set orientation to \"landscape\".");
+          $.post("./print_month.php", {
+                  mon: mon
+              },
+              function (response) {
+                  var win = window.open('./printhere.php', '_blank');
+                  if (win) {
+                      //Browser has allowed it to be opened
+                      win.focus();
+                  } else {
+                      //Browser has blocked it
+                      alert('Please allow popups so you can print this month.');
+                  }
+              }
+          ); // ends post
       }
       // make local month count for docs
       var dox1 = [];

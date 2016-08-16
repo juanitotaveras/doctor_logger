@@ -108,5 +108,3 @@ $str = '
     return $str;
 }
 // end month generator function
-
-?>
