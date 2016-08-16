@@ -127,11 +127,13 @@ for ($i = 0; $i < 3; $i++) {
                       var b = 0;
                       do  {
                           if (dox1[mon][b] != -1) {
+                              var c = b + 1;
                               var st =  "#" + mon + "-" + b + "-" + cur_year + "-" + "docname-1";
+                              var st2 =  "#" + mon + "-" + c + "-" + cur_year + "-" + "docname-1";
                               $(st).remove();
-                             // console.log(st);
+                              $(st2).remove();
                               // update month table
-                              var ident = "#doc-" + dox1[mon][b] + "-total-days"
+                              var ident = "#doc-" + dox1[mon][b] + "-total-days";
                               var counter = parseInt($(ident).text());
                               counter --;
                               $(ident).text(counter);
@@ -142,9 +144,12 @@ for ($i = 0; $i < 3; $i++) {
                               dox1[mon][b] = -1;
                           }
                           if (dox2[mon][b] != -1) {
+                              var c = b + 1;
                               var st =  "#" + mon + "-" + b + "-" + cur_year + "-" + "docname-2";
+                              var st2 =  "#" + mon + "-" + c + "-" + cur_year + "-" + "docname-2";
                               $(st).remove();
-                              var ident = "#doc-" + dox2[mon][b] + "-total-days"
+                              $(st2).remove();
+                              var ident = "#doc-" + dox2[mon][b] + "-total-days";
                               var counter = parseInt($(ident).text());
                               counter --;
                               $(ident).text(counter);
@@ -394,7 +399,7 @@ for ($i = 0; $i < 3; $i++) {
                       });
                       var id = ident;
                       $("#" + id).click(function() {
-                      $.post("./deletedoc.php", { //changes year cookie
+                      $.post("./deletedoc.php", {
                               box : id
                           },
                           function(response) {
@@ -409,11 +414,26 @@ for ($i = 0; $i < 3; $i++) {
                               if (dox1[monup[0]][monup[1]] != -1) {
                                   dox1[monup[0]][monup[1]] = -1; // place4
                               }
-                              console.log(dox1[monup[0]][monup[1]] + "elem changed");
                               // now physically append to current month counter
                               var counter = parseInt($("#total-month-doc-" + response).text());
                               counter --;
                               $("#total-month-doc-" + response).text(counter);
+
+                              /*
+                              // check if weekend value deleted
+                              var enddays = [5, 6, 0];
+                              var temp = weekdays[monup[0]][monup[1]]; // what day of the week are we deleting?
+                              var todelete = false; // turns true if we want to decrease weekend count
+                              for (var i in enddays) {
+                                  if (temp == i) {
+
+                                  }
+                              }
+                              if ($.inArray(weekdays[monup[0]][monup[1]], enddays)) {
+                                  var counter = parseInt($("#doc-" + response + "-total-weekends").text());
+                                  counter--;
+                                  $("#doc-" + response + "-total-weekends").text(counter);
+                              }  */
                               var tmp = "#" + id;
                               //alert(tmp);
                               $(tmp).remove();
@@ -457,7 +477,7 @@ for ($i = 0; $i < 3; $i++) {
                       });
                       var id = ident;
                       $("#" + id).click(function() {
-                          $.post("./deletedoc.php", { //changes year cookie
+                          $.post("./deletedoc.php", {
                                   box : id
                               },
                               function(response) {
@@ -585,7 +605,7 @@ for ($i = 0; $i < 3; $i++) {
               });
               $(".docname").click(function() {
                   var id = $(this).attr("id");
-              $.post("./deletedoc.php", { //changes year cookie
+              $.post("./deletedoc.php", {
                   box : id
               },
               function(response) {
@@ -653,7 +673,7 @@ for ($i = 0; $i < 3; $i++) {
                       echo '\'<option value="' . $bin[0] . '">' . $bin[1] . ' ' . $bin[2] . '</option>\' +';
                   }
 				  ?>
-				  '</select><span class="glyphicon glyphicon-remove deletedoc remove_lyst" id="' + tempid + '-rl" onClick="remove_lyst(this)"></div><!--end add menu-->';
+				  '</select><span class="glyphicon glyphicon-remove remove_lyst" id="' + tempid + '-rl" onClick="remove_lyst(this)"></div><!--end add menu-->';
 
 			  $("#" + boxid).append(str);
 			  plusoff = true;
