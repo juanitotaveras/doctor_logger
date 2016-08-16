@@ -140,7 +140,7 @@ for ($i = 0; $i < 3; $i++) {
                   },
                   function (response) {
                       var b = 0;
-                      while (b < dox1[mon].length) {
+                      do  {
                           if (dox1[mon][b] != -1) {
                               var st =  "#" + mon + "-" + b + "-" + cur_year + "-" + "docname-1";
                               $(st).remove();
@@ -170,7 +170,10 @@ for ($i = 0; $i < 3; $i++) {
                               dox2[mon][b] = -1;
                           }
                           b++;
-                      }
+                      } while (b < dox1[mon].length);
+                      var st =  "#" + mon + "-" + dox1[mon].length + "-" + cur_year + "-" + "docname-";
+                      $(st + "2").remove();
+                      $(st + "1").remove();
                       //window.location.reload(true);
 
                       // remove all .docnames that are in this month
@@ -182,12 +185,13 @@ for ($i = 0; $i < 3; $i++) {
         // physically update
       }
       function print_month(mon) {
-
+          alert("Print button is not fully functional yet. \n You'll have to do a screenshot for now.");
       }
       // make local month count for docs
       var dox1 = [];
       var dox2 = [];
       var doxnames = [];
+      var weekdays = [];
       <?php
       foreach ($docs1 as $bin) {
           echo 'var bin = [];';
@@ -220,10 +224,44 @@ for ($i = 0; $i < 3; $i++) {
           }
           echo 'doxnames.push(bin);';
       }
+      foreach ($weekdays as $bin) {
+          echo 'var bin = [];';
+          foreach ($bin as $elem) {
+              echo 'bin.push("' . $elem . '");';
+          }
+          echo 'weekdays.push(bin);';
+      }
       ?>
       for (var x in doxnames) {
        //   console.log(doxnames[x]);
          // console.log(doxnames[x].length);
+      }
+      function add_doctor() {
+          console.log("test");
+          $.post("./add_doctor.php", {
+                   first: $("#fname").val(),
+                   last: $("#lname").val()
+              },
+              function (response) {
+                  response.trim();
+                  //alert(response);
+                  window.location.reload(true);
+              }
+          ); // ends post
+      }
+      function remove_doctor() {
+          if (window.confirm("Are you sure you want to remove " + doxnames[$("#r_drop").val()][1] + " " + doxnames[$("#r_drop").val()][2] + "?\n You might have to clear the calendar."))
+          {
+              $.post("./remove_doctor.php", {
+                      id: $("#r_drop").val()
+                  },
+                  function (response) {
+                      response.trim();
+                      window.location.reload(true);
+                      //alert(response);
+                  }
+              ); // ends post
+          }
       }
 	  var prevcolor;
 	  function colorin(id) {
@@ -271,12 +309,13 @@ for ($i = 0; $i < 3; $i++) {
         alert(mon);
       }
       function autopop_all() {
-          if (window.confirm("Are you certain you want auto-populate " + cur_year + "? This will erase all current entrees.")) {
+          if (window.confirm("Are you certain you want auto-populate " + cur_year + "? \n This will erase all current entrees.")) {
               $.post("./autopopyear.php", { //changes year cookie
                       year : cur_year
                   },
                   function(response) {
                       window.location.reload(true);
+                     // window.location.reload(true);
                   }); // ends post
           }
       }
@@ -522,7 +561,9 @@ for ($i = 0; $i < 3; $i++) {
               }); // ends post
       } // ends log_out function
   $(document).ready(function() {
-
+      $("#add-remove-btn").click(function() {
+        $('#add-remove-modal').modal('show');
+      });
 
       $("#log_in_button").click(function() {
           log_me_in();
@@ -763,6 +804,28 @@ for ($h = 0; $h < count($docs); $h++) {
 		}
 	}
 	echo $total_year;
+    // now fetch how many weekends per year
+    $total_weekends = 0;
+    $week_end = [5, 6, 0];
+    $tab = 0;
+    for ($a = 0; $a < count($docs1); $a++) {
+        for ($b = 0; $b < count($docs1[$a]); $b++) {
+            if ($doc_id == $docs1[$a][$b] || $doc_id == $docs2[$a][$b]) {
+                if (in_array($weekdays[$a][$b], $week_end)){ // only count if it's three days in a row
+                    $tab++;
+                } else {
+                    $tab = 0;
+                }
+                if ($tab > 2) {
+                    $total_weekends ++;
+                }
+            }
+        }
+    }
+
+    echo "/" . $total_weekends;
+
+
 	// now get total for current month
 	echo '
 		  </div> <!-- end total days -->
@@ -779,12 +842,12 @@ if (isset($_COOKIE["logged_in"]) && $_COOKIE["logged_in"] == "true") {
     echo '<div id="admin_panel" class="container">
       <div class="row">
         <div class="col-xs-12">
-          <button type="button" class="btn btn-default" id="add-remove-btn">Add / remove doctors</button>
+          <button type="button" class="btn btn-primary" id="add-remove-btn">Modify doctors</button>
         </div>
       </div>
       <div class="row">
         <div class="col-xs-12">
-          <button type="button" class="btn btn-warning" id="autopop-all-btn" onclick="autopop_all()">Auto-populate all</button>
+          <button type="button" class="btn btn-warning" id="autopop-all-btn" onclick="autopop_all()">Auto-populate</button>
         </div>
       </div>
       <div class="row">
@@ -826,8 +889,55 @@ else {
     </form>
   </div> <!-- end login_panel -->';
 }
-echo '
-</body>
-</html>';
 
 ?>
+      <!-- add-remove-modal -->
+      <div class="modal fade" id="add-remove-modal" role="dialog">
+          <div class="modal-dialog">
+              <!-- Modal content-->
+              <div class="modal-content">
+                  <div class="modal-header" style="padding:35px 50px;">
+                      <button type="button" class="close" data-dismiss="modal">&times;</button>
+                      <h2 id="mod-doc-head"><span class="glyphicon glyphicon-user" id="user-icon"></span>Modify Doctors</h2>
+                  </div>
+                  <div class="modal-body" style="padding:40px 50px;">
+                    <div class="container" id="container-in-modal">
+                        <div clas="row">
+                            <div class="col-xs-3 offset-xs-3">
+                                <input type="text" placeholder="First name" id="fname" name="fname">
+                            </div>
+                            <div class="col-xs-3">
+                                <input type="text" placeholder="Last name" id="lname" name="lname">
+                            </div>
+                            <div class="col-xs-3">
+                                <button type="button" onclick="add_doctor()" class="btn btn-primary" id="add_button">Add</button>
+                            </div>
+                        </div>     <!-- end row -->
+                        <div class="row">
+                            <div class="col-xs-12">
+                              <hr style="padding:0; height: 2px;">
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="col-xs-4">
+                                <select id="r_drop">
+                                <?php
+                                foreach ($docs as $bin) {
+                                    echo '\'<option value="' . $bin[0] . '">' . $bin[1] . ' ' . $bin[2] . '</option>\' +';
+                                }
+                                ?>
+                                </select>
+                            </div>
+                            <div class="col-xs-4">
+                                <button type="button" id="rmv-btn" onclick="remove_doctor()" class="btn btn-danger">Remove</button>
+                            </div>
+                        </div> <!-- end row -->
+                     </div> <!-- end container -->
+
+                  </div> <!-- end modal body -->
+              </div> <!-- end modal header -->
+          </div> <!-- end modal content -->
+      </div>
+      <!-- end #add-remove-modal -->
+</body>
+</html>
