@@ -20,7 +20,7 @@ if ($result->num_rows > 0) {
     }
 }
 
-/////////////// copypasta///////////////////////////////////////////////////////////////////
+/////////////// fetch stats///////////////////////////////////////////////////////////////////
 $sql = "SELECT * FROM doctor_logger WHERE YEAR = " . $_POST["year"] . " ORDER BY MONTH, DAY";
 $result = $connect->query($sql);
 $months = [];
@@ -64,7 +64,6 @@ for ($i = 0; $i < count($days); $i++) {
         }
         $sql = 'UPDATE doctor_logger SET DOC1=' . $ids[$idx] . ', DOC2=NULL WHERE MONTH=' . $i . ' AND YEAR=' . $_POST["year"] . ' AND DAY=' . $days[$i][$j] . ';';
         $stmt = mysqli_prepare ($connect, $sql);  // fill in the blank
-//mysqli_stmt_bind_param ($stmt, 'iii', $date[2], $date[0], $date[1]);
         mysqli_stmt_execute($stmt);
         mysqli_stmt_close($stmt);
         if (!in_array($weekdays[$i][$j], $week_end)) {
@@ -72,9 +71,4 @@ for ($i = 0; $i < count($days); $i++) {
         }
     }
 }
-/*
-$stmt = mysqli_prepare ($connect, $sql);  // fill in the blank
-//mysqli_stmt_bind_param ($stmt, 'iii', $date[2], $date[0], $date[1]);
-mysqli_stmt_execute($stmt);
-mysqli_stmt_close($stmt); */
 echo $sql;
