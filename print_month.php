@@ -34,7 +34,7 @@ function month_gen_simple($cur_mon, $days, $weekdays, $year, $doc1_list, $doc2_l
         <div class="col-xs-5"></div>
   </div> <!-- end row with month name -->
   <div class="row">
-    <div class="col-xs-1 left_edge">
+    <div class="col-xs-1 left-edge-print">
     </div>';
 
     for ($x = 0; $x < count($week); $x++) {
@@ -46,7 +46,7 @@ function month_gen_simple($cur_mon, $days, $weekdays, $year, $doc1_list, $doc2_l
     for ($i = 0; $i < 6; $i++) {
         $str .= '
   		<div class="row block-' . strval($cur_mon) . '">
-  		<div class="col-xs-1 left_edge"></div>';
+  		<div class="col-xs-1 left-edge-print"></div>';
         for ($j = 0; $j < 7; $j++) {
             $start = $weekdays[$cur_mon][0];
             if ($i == 0) {
@@ -163,20 +163,20 @@ $output = month_gen_simple($_POST["mon"], $days, $weekdays, $_COOKIE["year"], $d
 
 // now add our panel with our stats ////////////////////////////////////////////////////////////////////////////////////
 $output .= '
-<div class="container rpan">
+<div class="container rpan-print">
   <div class="row">
-    <div class="col-xs-8 doc-col"><b>Doctor</b></div>
-    <div class="col-xs-2 yr-col"><b>Year</b></div>
-    <div class="col-xs-2 mon-col"><b>Month</b></div>
+    <div class="col-xs-5 doc-col"><b>Doctor</b></div>
+    <div class="col-xs-3 yr-col"><b>Year</b></div>
+    <div class="col-xs-3 mon-col"><b>Month</b></div>
 
-</div>
+</div> <!-- end row with names -->
     <!-- fetch doctors -->';
 
 for ($h = 0; $h < count($docs); $h++) {
 	$doc_id = $docs[$h][0];
-	echo '<div class="row">
-          <div class="col-xs-8 doc-col" > ' . $docs[$h][2] . '</div>
-	      <div class="col-xs-1 tot-col" style="color:green" id="doc-' . $doc_id . '-total-days">
+	$output .= '<div class="row">
+          <div class="col-xs-5 doc-col doc-print" > ' . $docs[$h][2] . '</div>
+	      <div class="col-xs-1 tot-col year-print" style="color:green">
 	      <!-- fetch how many days for that year -->';
 	$total_year = 0;
 	for ($a = 0; $a < count($docs1); $a++) {
@@ -205,16 +205,25 @@ for ($h = 0; $h < count($docs); $h++) {
         }
     }
 
-    $output .= $total_year . '__';
-    //echo '</div><div class="col-xs-1 tot-col-cont" style="color:orange" id="doc-' . $doc_id . '-total-days">';
+    $total_month = 0;
+    $m = $_POST["mon"];
+    for ($b = 0; $b < count($docs1[$m]); $b++) {
+        if ($doc_id == $docs1[$m][$b] || $doc_id == $docs2[$m][$b]) {
+            $total_month ++;
+        }
+    }
+
+
+    $output .= $total_year . '</div>';
+    $output .= '<div class="col-xs-1 tot-col week-print" style="color:orange" >';
     $output .= $total_weekends;
 
 	// now get total for current month
 	$output .= '
 		  </div> <!-- end total days -->
-		  <div class="col-xs-1 mon-col" style="color:blue" id="total-month-doc-' . $doc_id . '"></div>
+		  <div class="col-xs-1 mon-col mon-print" style="color:blue">' . $total_month . '</div>
 	      </div> <!-- end unique doctor row -->
-																				';
+		  <!--</div> end row -->																	';
 }
 
 $output .= '

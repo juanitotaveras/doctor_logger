@@ -126,7 +126,7 @@ h1, h2, h3 {
 }
 .tot-col-cont {
     position:relative;
-    right: 25%;
+    right: 15%;
 
 }
 .month_section {
@@ -248,4 +248,30 @@ h1, h2, h3 {
     left: 10.3em;
     font-size: 140%;
     top: .2em
+}
+.rpan-print {
+    width: 18%;
+    position: fixed;
+    right: 0;
+    top: 68.4%;
+    background-color: white;
+    z-index: 5;
+    border: solid;
+}
+
+.mon-print {
+    width: 5%;
+}
+
+.left-edge-print {
+    width: 4.5%;
+}
+
+#yr_head {
+    position:relative;
+    right: 12%;
+}
+#mon_head {
+    position: relative;
+    right: 18%;
 }
