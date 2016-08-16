@@ -29,8 +29,8 @@ if ($result->num_rows > 0) {
 
 if ($check) {
     // set cookie to logged in
+    setcookie("logged_in", "true", time() + (86400 * 30), "/");
     echo "PASS";
-    setcookie("logged_in", "true", time() + (30*30), "/");
 }
 else {
     echo "FAIL";

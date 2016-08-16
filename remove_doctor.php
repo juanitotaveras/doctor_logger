@@ -32,6 +32,21 @@ if ($result->num_rows > 0) {
 }
 
 
+// also set to null wherever this doc appears
+$sql = 'UPDATE doctor_logger SET DOC1=NULL WHERE DOC1=?;';
+$stmt = mysqli_prepare ($connect, $sql);  // fill in the blank
+mysqli_stmt_bind_param ($stmt, 'i', $id);
+mysqli_stmt_execute($stmt);
+mysqli_stmt_close($stmt);
+
+// also set to null wherever this doc appears
+$sql = 'UPDATE doctor_logger SET DOC2=NULL WHERE DOC2=?;';
+$stmt = mysqli_prepare ($connect, $sql);  // fill in the blank
+mysqli_stmt_bind_param ($stmt, 'i', $id);
+mysqli_stmt_execute($stmt);
+mysqli_stmt_close($stmt);
+
+
 for ($i = 0; $i < count($ids); $i++) {
     // update w/ correct id
     $sql = 'UPDATE doctor_logger SET ID=' . $i . ' WHERE FIRST_NAME=' . $fnames[$i] . ' AND LAST_NAME=' . $lnames[$i] . ';';

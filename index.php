@@ -6,8 +6,6 @@
 session_start();
 ini_set('display_errors', 'On');   // error checking
 error_reporting(E_ALL);    // error checking
-setcookie("logged_in", "true", time() + (30*30), "/");
-// set cookie to detect if first logged in
 $localtime_assoc = localtime(time(), true);
 $localmonth = $localtime_assoc["tm_mon"];
 $localday = $localtime_assoc["tm_mday"];
@@ -15,9 +13,10 @@ $localyear = $localtime_assoc["tm_year"] + 1900;
 if (!isset($_COOKIE["year"])) {
 	setcookie("year", $localyear, time() + (86400 * 30), "/"); // set to direct
 }
+/*
 if (!isset($_COOKIE["logged_in"])) {
     setcookie("logged_in", "false", time() + (86400 * 30 * 30), "/");
-}
+} */
 $year_in = $_COOKIE["year"];
 // connect to DB
 $file = fopen("./db.txt", "r") or die("Error opening file.");
@@ -75,7 +74,7 @@ if ($result->num_rows > 0) {
 
 //fetches docs
 
-$sql = "SELECT * FROM names;";
+$sql = "SELECT * FROM names ORDER BY ID ASC;";
 $result = $connect->query($sql);
 $docs = [];
 if ($result->num_rows > 0) {
@@ -88,8 +87,6 @@ if ($result->num_rows > 0) {
         array_push($docs, $basket);
     }
 }
-//print_r($doc1_list);
-//echo count($doc1_list[0]);
 include("./month_generator_function.php");
 $calendar = "";
 $p = 0;
@@ -101,10 +98,6 @@ for ($i = 0; $i < 3; $i++) {
 	}
 	$calendar .= '</div>';
 }
-
-
-
-
 ?>
 
 <!DOCTYPE html>
@@ -174,12 +167,6 @@ for ($i = 0; $i < 3; $i++) {
                       var st =  "#" + mon + "-" + dox1[mon].length + "-" + cur_year + "-" + "docname-";
                       $(st + "2").remove();
                       $(st + "1").remove();
-                      //window.location.reload(true);
-
-                      // remove all .docnames that are in this month
-
-
-                      //
                   }); // ends post
           }
         // physically update
@@ -250,7 +237,7 @@ for ($i = 0; $i < 3; $i++) {
           ); // ends post
       }
       function remove_doctor() {
-          if (window.confirm("Are you sure you want to remove " + doxnames[$("#r_drop").val()][1] + " " + doxnames[$("#r_drop").val()][2] + "?\n You might have to clear the calendar."))
+          if (window.confirm("Are you sure you want to remove " + doxnames[$("#r_drop").val()][1] + " " + doxnames[$("#r_drop").val()][2] + "?"))
           {
               $.post("./remove_doctor.php", {
                       id: $("#r_drop").val()
@@ -361,7 +348,6 @@ for ($i = 0; $i < 3; $i++) {
 		  // must generate doctor stats
 		  plusoff = false;
           droppy = false;
-          //alert(id.value);
 		  $.post("./doc_add.php", {
 				  date: strr,
 			  	  doc: id.value
@@ -373,8 +359,6 @@ for ($i = 0; $i < 3; $i++) {
                   response = response.split(" ");
                   if (response[0] == "doc_1_added") {
                     // add doc 1 span and update year and month js bins
-
-                      //console.log("pooper");
                       var ident = response[1];
                       // insert first and last name of doc
                       var docid = response[2];
@@ -398,13 +382,10 @@ for ($i = 0; $i < 3; $i++) {
                           // show x
                           $("#" + ident + " span").show();
                       }, function() {
-                          //var id = $(ident).attr("id");
                           $("#" + ident).css("background-color", "transparent");
                           // hide x
                           $("#" + ident + " span").hide();
                       });
-
-
                       var id = ident;
                       $("#" + id).click(function() {
                       $.post("./deletedoc.php", { //changes year cookie
@@ -431,9 +412,7 @@ for ($i = 0; $i < 3; $i++) {
                               //alert(tmp);
                               $(tmp).remove();
                               // now implement colorout to change color back
-
                               tmp = tmp.slice(0, -9) + "box";
-
                               colorout(tmp);
                               // update table on right
                           }); // ends post
@@ -461,7 +440,6 @@ for ($i = 0; $i < 3; $i++) {
                       //console.log(boxid + "pooop");
                       $(boxid).append(elem);
                       $("#" + ident).hover(function() {
-                          //  var id = $(this).attr("id");
                           $("#" + ident).css("background-color", "red");
                           // show x
                           $("#" + ident + " span").show();
@@ -471,19 +449,13 @@ for ($i = 0; $i < 3; $i++) {
                           // hide x
                           $("#" + ident + " span").hide();
                       });
-
-
                       var id = ident;
                       $("#" + id).click(function() {
                           $.post("./deletedoc.php", { //changes year cookie
                                   box : id
                               },
                               function(response) {
-                                  //window.location.reload(true);
-                                  //alert(response);
-                                 // console.log(response);
                                   var tmp = "#" + id;
-                                  //alert(tmp);
                                   var counter = parseInt($("#doc-" + response + "-total-days").text());
                                   counter --;
                                   $("#doc-" + response + "-total-days").text(counter);
@@ -514,43 +486,25 @@ for ($i = 0; $i < 3; $i++) {
                       console.log("already assigned.");
                       alert("Doctor already assigned to this day.");
                   }
-                  // add physical name to cal
-
-                  // now append to our counter
-
 			  }
 		  ); // ends post
 		  // add save button
 	  }
-      // add function that will do all this if same person is clicked
-
 	  function removedrop(dis) {
 		  $(dis).remove();
 	  }
 	  function remove_lyst(dis) {
-		 // alert($(dis).attr("id"));
-
 		  var strr = $(dis).attr("id");
 		  strr = strr.split(" ");
 		  strr = strr[2];
-		//  alert(strr.slice(0, -4) + "box");
 		  $("#" + strr.slice(0, -3) + "box").css("background-color", "white");
-		 // console.log("#" + strr.slice(0, -4) + "box");
-		 // $(dis).remove();
 		  $(".remove-drop, .remove_lyst").remove()
 		  $(".add").hide(); // check this later
 		  droppy = false;
 		  plusoff = false;
-		//  $("#" + strr.slice(0, -3) + "plus").hide();
-
-		  //$(dis).remove();
-
-		  //alert(strr);
 	  }
-
 	  var droppy = false;
 	  var plusoff = false;
-
       function log_out() {
           $.post("./log_out.php", {
 
@@ -574,20 +528,18 @@ for ($i = 0; $i < 3; $i++) {
           }
       });
       function log_me_in() {
+          console.log("log_me_in function implemented");
           $.post("./log_in.php", { //changes year cookie
                   uname : $("#u_input").val(),
                   pass : $("#p_input").val()
               },
               function(response) {
-                  //alert(response);
                   if (response == "PASS") {
                       window.location.reload(true);
                   }
                   else {
                       alert("Incorrect login info");
                   }
-                  //console.log(response);
-                  //window.location.reload(true);
               }); // ends post
       }
 
@@ -668,12 +620,9 @@ for ($i = 0; $i < 3; $i++) {
 	  $('#monthscroll').on('activate.bs.scrollspy', function () {
 		  var activeSection = $(this).find("li.active a").attr("href");
 			// fetch month and year stats
-		  //console.log(activeSection);
           var doc = activeSection.split("-");
           var monc = doc[2]; // gets what month we are currently on
-          // dox1 = docs1, dox2 = docs2
           // fetch doc stats for this month and update table
-
           for (var docid = 0; docid < doxnames.length; docid++) {
               var doccount = 0;
               for (var i = 0; i < (dox1[monc]).length; i++) {  // we're only checking current month
@@ -684,19 +633,13 @@ for ($i = 0; $i < 3; $i++) {
                       doccount ++;
                   }
               }
-              //console.log(doxnames[docid] + doccount);
               $('#total-month-doc-' + docid).text(doccount);
           }
 	  });
-console.log(dox2);
-
 	  $(".add").click(function() {
-		  //this.append("<div></div>");
-		  //alert($(this).attr("class"));
 		  var boxid = $(this).attr("class");
 		  var tempid = boxid;
 		  boxid = boxid.slice(25, -7) + 'box';
-         // alert( (($(this).attr("class")).split(" ")) );
 		  if (!droppy) {
 			  var str = '<div id="add_menu"><select id="' + tempid + 'drop" class="remove-drop" onchange="doc_add(this)" onClick="doc_add(this)">' +
 				  <?php
@@ -704,8 +647,6 @@ console.log(dox2);
                       echo '\'<option value="' . $bin[0] . '">' . $bin[1] . ' ' . $bin[2] . '</option>\' +';
 				  }
 				  ?>
-
-
 				  '</select><span class="glyphicon glyphicon-remove remove_lyst" id="' + tempid + '-rl" onClick="remove_lyst(this)"></div><!--end add menu-->';
 
 			  $("#" + boxid).append(str);
@@ -793,7 +734,7 @@ for ($h = 0; $h < count($docs); $h++) {
 	$doc_id = $docs[$h][0];
 	echo '<div class="row-right-pan">
           <div class="col-xs-8 doc-col-cont" > ' . $docs[$h][2] . '</div>
-	      <div class="col-xs-2 tot-col-cont" style="color:green" id="doc-' . $doc_id . '-total-days">
+	      <div class="col-xs-1 tot-col-cont" style="color:green" id="doc-' . $doc_id . '-total-days">
 	      <!-- fetch how many days for that year -->';
 	$total_year = 0;
 	for ($a = 0; $a < count($docs1); $a++) {
@@ -803,7 +744,6 @@ for ($h = 0; $h < count($docs); $h++) {
 			}
 		}
 	}
-	//echo $total_year;
     // now fetch how many weekends per year
     $total_weekends = 0;
     $week_end = [5, 6, 0];
@@ -823,13 +763,14 @@ for ($h = 0; $h < count($docs); $h++) {
         }
     }
 
-    echo $total_year . "__" . $total_weekends;
-
+    echo $total_year . '__';
+    //echo '</div><div class="col-xs-1 tot-col-cont" style="color:orange" id="doc-' . $doc_id . '-total-days">';
+    echo $total_weekends;
 
 	// now get total for current month
 	echo '
 		  </div> <!-- end total days -->
-		  <div class="col-xs-2 mon-col-cont" style="color:blue" id="total-month-doc-' . $doc_id . '"></div>
+		  <div class="col-xs-1 mon-col-cont" style="color:blue" id="total-month-doc-' . $doc_id . '"></div>
 	      </div> <!-- end unique doctor row -->
 																				';
 }
@@ -837,7 +778,7 @@ for ($h = 0; $h < count($docs); $h++) {
 echo '
   </div> <!-- end right-panel-contract -->';
 
-if (isset($_COOKIE["logged_in"]) && $_COOKIE["logged_in"] == "true") {
+if ($_COOKIE["logged_in"] == "true") {
     //produce admin panel
     echo '<div id="admin_panel" class="container">
       <div class="row">
