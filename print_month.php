@@ -26,12 +26,12 @@ function month_gen_simple($cur_mon, $days, $weekdays, $year, $doc1_list, $doc2_l
 
     $str = '
   <div class="row"> <!-- row with month name -->
-    <div class="col-xs-5"></div>
-    <div class="col-xs-2">
-      <h1>' . $mon_list[$cur_mon] .
+    <div class="col-xs-4"></div>
+    <div class="col-xs-4">
+      <h1>' . $mon_list[$cur_mon] . "    " . $year .
         '</h1>
     </div>
-        <div class="col-xs-5"></div>
+        <div class="col-xs-4"></div>
   </div> <!-- end row with month name -->
   <div class="row">
     <div class="col-xs-1 left-edge-print">
