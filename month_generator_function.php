@@ -19,17 +19,16 @@ $str = '
       <h1 id="mon-name-' . strval($cur_mon) . '">' . $mon_list[$cur_mon] .
     '</h1>
     </div>
-    <!--
     <div class="col-xs-1">
       <button type="button" onClick="autopop(' . strval($cur_mon) . ')" class="btn btn-warning autopopbtn admin-only opts"> Auto-populate </button>
-    </div>-->
+    </div>
     <div class="col-xs-1">
       <button type="button" onClick="clear_month(' . strval($cur_mon) . ')" class="btn btn-danger clearbtn admin-only opts"> Clear </button>
     </div>
     <div class="col-xs-1">
       <button type="button" onClick="print_month(' . strval($cur_mon) . ')" class="btn btn-primary printbtn opts"> Print </button>
     </div>
-        <div class="col-xs-3"></div>
+        <div class="col-xs-2"></div>
   </div> <!-- end row with month name -->
   <div class="row block-' . strval($cur_mon) . '">
     <div class="col-xs-1 left_edge">
