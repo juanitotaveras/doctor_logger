@@ -44,6 +44,7 @@ h1, h2, h3 {
     top: 7%;
     width: 14%;
     background-color: lightblue;
+    z-index:10;
 }
 
 .right-pan {
@@ -187,9 +188,15 @@ h1, h2, h3 {
 }
 #admin_panel {
     position: fixed;
-    top: 80%;
-    right: 0px;
-    /*width: 20%; */
+    top: 69%;
+    right: 0;
+    width: 12%;
     border-radius: 10px;
-    background-color:transparent;
+    background-color:lightblue;
+    padding: 1%;
+}
+
+#autopop-all-btn, #clear-all-btn, #add-remove-btn, #log-out-btn {
+    width: 100%;
+    margin: 2%
 }

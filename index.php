@@ -270,6 +270,26 @@ for ($i = 0; $i < 3; $i++) {
       function autopop(mon) {
         alert(mon);
       }
+      function autopop_all() {
+          if (window.confirm("Are you certain you want auto-populate " + cur_year + "? This will erase all current entrees.")) {
+              $.post("./autopopyear.php", { //changes year cookie
+                      year : cur_year
+                  },
+                  function(response) {
+                      window.location.reload(true);
+                  }); // ends post
+          }
+      }
+      function clear_all() {
+          if (window.confirm("Are you certain you want to clear all days in the year " + cur_year + "?")) {
+              $.post("./clearyear.php", { //changes year cookie
+                      year : cur_year
+                  },
+                  function(response) {
+                      window.location.reload(true);
+                  }); // ends post
+          }
+      }
 
 	function yearswitcher(val) { // if user selects a different year
   		$.post("./changeyear.php", { //changes year cookie
@@ -758,13 +778,25 @@ if (isset($_COOKIE["logged_in"]) && $_COOKIE["logged_in"] == "true") {
     //produce admin panel
     echo '<div id="admin_panel" class="container">
       <div class="row">
-        <div class="col-xs-10">
-
-        </div>
-        <div class="col-xs-2">
-          <button class="btn btn-default" onClick="log_out()">Log out</button>
+        <div class="col-xs-12">
+          <button type="button" class="btn btn-default" id="add-remove-btn">Add / remove doctors</button>
         </div>
       </div>
+      <div class="row">
+        <div class="col-xs-12">
+          <button type="button" class="btn btn-warning" id="autopop-all-btn" onclick="autopop_all()">Auto-populate all</button>
+        </div>
+      </div>
+      <div class="row">
+        <div class="col-xs-12">
+           <button type="button" class="btn btn-danger" id="clear-all-btn" onclick="clear_all()">Clear all</button>
+        </div>
+      </div>
+      <div class="row">
+        <div class="col-xs-12">
+          <button class="btn btn-default" onClick="log_out()" id="log-out-btn">Log out</button>
+        </div>
+      </div> <!-- end row -->
 
     </div><!-- end admin_panel -->
     ';
