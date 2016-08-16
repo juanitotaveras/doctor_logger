@@ -141,13 +141,13 @@ h1, h2, h3 {
 
 .opts {
     position: relative;
-    top: 1.8em;
+    top: 2em;
     left: 6em;
 }
 
 .clearbtn {
     position: relative;
-    left: 9em;
+    left: 19em;
 }
 
 .autopopbtn {
@@ -199,4 +199,53 @@ h1, h2, h3 {
 #autopop-all-btn, #clear-all-btn, #add-remove-btn, #log-out-btn {
     width: 100%;
     margin: 2%
+}
+
+.printbtn {
+    position: relative;
+    left: 16em;
+}
+
+#container-in-modal {
+    width: 100%;
+}
+
+
+#mod-doc-head {
+    font-family: Arial;
+    position: relative;
+    left: 4em;
+}
+
+#user-icon {
+    position: relative;
+    margin-right: 5%;
+}
+
+#fname {
+    position: relative;
+    font-size: 120%;
+    right: 1em;
+
+}
+#lname {
+    position: relative;
+    font-size: 120%;
+    left: 3.8em;;
+}
+#add_button {
+    position: relative;
+    left: 13em;
+    top: -.2em;
+}
+
+#rmv-btn {
+    position: relative;
+    left: 17em;
+}
+#r_drop {
+    position: relative;
+    left: 10.3em;
+    font-size: 140%;
+    top: .2em
 }
