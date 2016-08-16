@@ -596,7 +596,7 @@ for ($i = 0; $i < 3; $i++) {
 		  echo '
 			$.scrollTo( $("#month-head-' . $localmonth . '"), 500);
 			// also color our current current day cell yellow
-			var cur_day_box = "#' . $localmonth . '-' . ($localday - 1) . '-' . $localyear . '-box";
+			var cur_day_box = "#' . $localmonth . '-' . $localday . '-' . $localyear . '-box";
 			$(cur_day_box).delay("fast").css("background-color", "yellow");
 		';
 	  }
@@ -803,7 +803,7 @@ for ($h = 0; $h < count($docs); $h++) {
 			}
 		}
 	}
-	echo $total_year;
+	//echo $total_year;
     // now fetch how many weekends per year
     $total_weekends = 0;
     $week_end = [5, 6, 0];
@@ -823,7 +823,7 @@ for ($h = 0; $h < count($docs); $h++) {
         }
     }
 
-    echo "/" . $total_weekends;
+    echo $total_year . "__" . $total_weekends;
 
 
 	// now get total for current month
