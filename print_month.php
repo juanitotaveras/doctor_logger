@@ -181,7 +181,7 @@ for ($h = 0; $h < count($docs); $h++) {
 	$total_year = 0;
 	for ($a = 0; $a < count($docs1); $a++) {
 		for ($b = 0; $b < count($docs1[$a]); $b++) {
-			if ($doc_id == $docs1[$a][$b] || $doc_id == $docs2[$a][$b]) {
+			if ($doc_id == $docs1[$a][$b]) {
 				$total_year ++;
 			}
 		}
@@ -192,7 +192,7 @@ for ($h = 0; $h < count($docs); $h++) {
     $tab = 0;
     for ($a = 0; $a < count($docs1); $a++) {
         for ($b = 0; $b < count($docs1[$a]); $b++) {
-            if ($doc_id == $docs1[$a][$b] || $doc_id == $docs2[$a][$b]) {
+            if ($doc_id == $docs1[$a][$b]) {
                 if (in_array($weekdays[$a][$b], $week_end)){ // only count if it's three days in a row
                     $tab++;
                 } else {
@@ -208,7 +208,7 @@ for ($h = 0; $h < count($docs); $h++) {
     $total_month = 0;
     $m = $_POST["mon"];
     for ($b = 0; $b < count($docs1[$m]); $b++) {
-        if ($doc_id == $docs1[$m][$b] || $doc_id == $docs2[$m][$b]) {
+        if ($doc_id == $docs1[$m][$b]) {
             $total_month ++;
         }
     }

@@ -149,14 +149,6 @@ for ($i = 0; $i < 3; $i++) {
                               var st2 =  "#" + mon + "-" + c + "-" + cur_year + "-" + "docname-2";
                               $(st).remove();
                               $(st2).remove();
-                              var ident = "#doc-" + dox2[mon][b] + "-total-days";
-                              var counter = parseInt($(ident).text());
-                              counter --;
-                              $(ident).text(counter);
-                              var ident = "#total-month-doc-" + dox1[mon][b];
-                              var counter = parseInt($(ident).text());
-                              counter --;
-                              $(ident).text(counter);
                               dox2[mon][b] = -1;
                           }
                           b++;
@@ -230,19 +222,13 @@ for ($i = 0; $i < 3; $i++) {
           echo 'weekdays.push(bin);';
       }
       ?>
-      for (var x in doxnames) {
-       //   console.log(doxnames[x]);
-         // console.log(doxnames[x].length);
-      }
       function add_doctor() {
-          console.log("test");
           $.post("./add_doctor.php", {
                    first: $("#fname").val(),
                    last: $("#lname").val()
               },
               function (response) {
                   response.trim();
-                  //alert(response);
                   window.location.reload(true);
               }
           ); // ends post
@@ -256,7 +242,6 @@ for ($i = 0; $i < 3; $i++) {
                   function (response) {
                       response.trim();
                       window.location.reload(true);
-                      //alert(response);
                   }
               ); // ends post
           }
@@ -284,10 +269,8 @@ for ($i = 0; $i < 3; $i++) {
 	  }
 	  function colorout(id) {
 		  // if you are not having over plus_link
-		 // if (!$("#plus_link").is(":hover") && !$("#add-icon").is(":hover")) {
 		  $(id).css("background-color", prevcolor);
-		 // console.log("test");
-		 // $(".add").hide();
+
 <?php
 		  if (isset($_COOKIE["logged_in"])) {
 			  if ($_COOKIE["logged_in"] == "true") {
@@ -302,7 +285,9 @@ for ($i = 0; $i < 3; $i++) {
 		  }
 ?>       // } // ends if hover
 	  }
-      function autopop_all() {
+      function autopop() {
+          $("#autopop-modal").modal('show');
+          /*
           if (window.confirm("Are you certain you want auto-populate " + cur_year + "? \n This will erase all current entrees.")) {
               $.post("./autopopyear.php", { //changes year cookie
                       year : cur_year
@@ -311,7 +296,7 @@ for ($i = 0; $i < 3; $i++) {
                       window.location.reload(true);
                      // window.location.reload(true);
                   }); // ends post
-          }
+          } */
       }
       function clear_all() {
           if (window.confirm("Are you certain you want to clear all days in the year " + cur_year + "?")) {
@@ -361,8 +346,6 @@ for ($i = 0; $i < 3; $i++) {
 			  },
 			  function (response) {
 				  response.trim();
-                //  alert(response);
-                  console.log(response);
                   response = response.split(" ");
                   if (response[0] == "doc_1_added") {
                     // add doc 1 span and update year and month js bins
@@ -375,13 +358,11 @@ for ($i = 0; $i < 3; $i++) {
                       var monup = ident.split("-");
                       dox1[monup[0]][monup[1]] = docid; // place4
                       // now physically append to current month counter
-                      console.log($("#total-month-doc-" + docid));
                       var counter = parseInt($("#total-month-doc-" + docid).text());
                       counter ++;
                       $("#total-month-doc-" + docid).text(counter);
                       var elem = '<span class="docname n1" id="' + ident + '" >' + doxnames[docid][1] + " " + doxnames[docid][2]   + '<span class="glyphicon glyphicon-remove deletedoc"></span></span>';
                       var boxid = "#" + ident.slice(0, -9) + "box";
-                      //console.log(boxid + "pooop");
                       $(boxid).append(elem);
                       $("#" + ident).hover(function() {
                         //  var id = $(this).attr("id");
@@ -399,9 +380,6 @@ for ($i = 0; $i < 3; $i++) {
                               box : id
                           },
                           function(response) {
-                              //window.location.reload(true);
-                              //alert(response);
-                              //console.log(id + "variable named id line 318");
                               var counter = parseInt($("#doc-" + response + "-total-days").text());
                               counter --;
                               $("#doc-" + response + "-total-days").text(counter);
@@ -431,7 +409,6 @@ for ($i = 0; $i < 3; $i++) {
                                   $("#doc-" + response + "-total-weekends").text(counter);
                               }  */
                               var tmp = "#" + id;
-                              //alert(tmp);
                               $(tmp).remove();
                               // now implement colorout to change color back
                               tmp = tmp.slice(0, -9) + "box";
@@ -444,23 +421,14 @@ for ($i = 0; $i < 3; $i++) {
                   }
                   if (response[0] == "doc_2_added") {
                       // add doc 1 span and update year and month js bins
-                      //console.log("pooper");
                       var ident = response[1];
                       // insert first and last name of doc
                       var docid = response[2];
-                      var counter = parseInt($("#doc-" + docid + "-total-days").text());
-                      counter ++;
-                      $("#doc-" + docid + "-total-days").text(counter);
-                      var monup = ident.split("-");
-                      dox2[monup[0]][monup[1]] = docid; // place4
-                      // now physically append to current month counter
-                      var counter = parseInt($("#total-month-doc-" + docid).text());
-                      counter ++;
-                      $("#total-month-doc-" + docid).text(counter);
                       var elem = '<span class="docname n2" id="' + ident + '" >' + doxnames[docid][1] + " " + doxnames[docid][2]   + '<span class="glyphicon glyphicon-remove deletedoc"></span></span>';
                       var boxid = "#" + ident.slice(0, -9) + "box";
-                      //console.log(boxid + "pooop");
                       $(boxid).append(elem);
+                      var monup = ident.split("-");
+                      dox2[monup[0]][monup[1]] = docid;
                       $("#" + ident).hover(function() {
                           $("#" + ident).css("background-color", "red");
                           // show x
@@ -478,19 +446,6 @@ for ($i = 0; $i < 3; $i++) {
                               },
                               function(response) {
                                   var tmp = "#" + id;
-                                  var counter = parseInt($("#doc-" + response + "-total-days").text());
-                                  counter --;
-                                  $("#doc-" + response + "-total-days").text(counter);
-                                  // now update month and call month refresh table
-                                  var monup = id.split("-");
-                                  if (dox2[monup[0]][monup[1]] != -1) {
-                                      dox2[monup[0]][monup[1]] = -1; // place4
-                                      console.log("mod");
-                                  }
-                                  // now physically append to current month counter
-                                  var counter = parseInt($("#total-month-doc-" + response).text());
-                                  counter --;
-                                  $("#total-month-doc-" + response).text(counter);
                                   $(tmp).remove();
                                   // now implement colorout to change color back
                                   tmp = tmp.slice(0, -9) + "box";
@@ -501,11 +456,9 @@ for ($i = 0; $i < 3; $i++) {
                       })
                   }
                   if (response[0] == "full") {
-                     // console.log("Doctor already assigned.");
                       alert("This day is full. Delete a doctor.");
                   }
                   if (response[0] == "already_added") {
-                      console.log("already assigned.");
                       alert("Doctor already assigned to this day.");
                   }
 			  }
@@ -537,6 +490,8 @@ for ($i = 0; $i < 3; $i++) {
               }); // ends post
       } // ends log_out function
   $(document).ready(function() {
+
+
       $("#add-remove-btn").click(function() {
         $('#add-remove-modal').modal('show');
       });
@@ -550,7 +505,6 @@ for ($i = 0; $i < 3; $i++) {
           }
       });
       function log_me_in() {
-          console.log("log_me_in function implemented");
           $.post("./log_in.php", { //changes year cookie
                   uname : $("#u_input").val(),
                   pass : $("#p_input").val()
@@ -606,24 +560,23 @@ for ($i = 0; $i < 3; $i++) {
               },
               function(response) {
                   var tmp = "#" + id;
-                  var counter = parseInt($("#doc-" + response + "-total-days").text());
-                  counter --;
-                  $("#doc-" + response +  "-total-days").text(counter);
-                  //alert(tmp);
-                   var monup = id.split("-");
-                 //  alert(monup[0] + " " + monup[1]);
-                   if (dox1[monup[0]][monup[1] - 1] != -1) {
+                  var monup = id.split("-");
+                  var docnum = monup[4];
+                  if (docnum == 1) {
+                      var counter = parseInt($("#doc-" + response + "-total-days").text());
+                      counter --;
+                      $("#doc-" + response +  "-total-days").text(counter);
+                      // now physically append to current month counter
+                      var counter = parseInt($("#total-month-doc-" + response).text());
+                      counter --;
+                      $("#total-month-doc-" + response).text(counter);
+                  }
+                  if (dox1[monup[0]][monup[1] - 1] != -1) {
                       dox1[monup[0]][monup[1] - 1] = -1; // place4
                   }
                   else if (dox2[monup[0]][monup[1] - 1] != -1) {
                       dox2[monup[0]][monup[1] - 1] = -1; // place4
                   }
-                    //alert(dox1[monup[0]][monup[1] - 1]); //DELETE THIS
-                    // dox1[monup[0]][monup[1]] = response; // place4
-                   // now physically append to current month counter
-                   var counter = parseInt($("#total-month-doc-" + response).text());
-                   counter --;
-                    $("#total-month-doc-" + response).text(counter);
                   $(tmp).remove();
                   // now implement colorout to change color back
                   tmp = tmp.slice(0, -9) + "box";
@@ -649,9 +602,7 @@ for ($i = 0; $i < 3; $i++) {
               var doccount = 0;
               for (var i = 0; i < (dox1[monc]).length; i++) {  // we're only checking current month
                   var tmp = dox1[monc][i];
-                  var tmp2 = dox2[monc][i];
-                 // console.log(tmp, tmp2, docid);
-                  if (tmp == docid || tmp2 == docid) {
+                  if (tmp == docid) {
                       doccount ++;
                   }
               }
@@ -688,7 +639,6 @@ for ($i = 0; $i < 3; $i++) {
 
 <body data-spy="scroll" data-target="#monthscroll" data-offset="20">
   <div id="main_container" class="container-fluid">
-
 
 <?php
 	echo $calendar;
@@ -756,7 +706,7 @@ for ($h = 0; $h < count($docs); $h++) {
 	$total_year = 0;
 	for ($a = 0; $a < count($docs1); $a++) {
 		for ($b = 0; $b < count($docs1[$a]); $b++) {
-			if ($doc_id == $docs1[$a][$b] || $doc_id == $docs2[$a][$b]) {
+			if ($doc_id == $docs1[$a][$b]) {
 				$total_year ++;
 			}
 		}
@@ -767,7 +717,7 @@ for ($h = 0; $h < count($docs); $h++) {
     $tab = 0;
     for ($a = 0; $a < count($docs1); $a++) {
         for ($b = 0; $b < count($docs1[$a]); $b++) {
-            if ($doc_id == $docs1[$a][$b] || $doc_id == $docs2[$a][$b]) {
+            if ($doc_id == $docs1[$a][$b]) {
                 if (in_array($weekdays[$a][$b], $week_end)){ // only count if it's three days in a row
                     $tab++;
                 } else {
@@ -805,7 +755,7 @@ if ($_COOKIE["logged_in"] == "true") {
       </div>
       <div class="row">
         <div class="col-xs-12">
-          <button type="button" class="btn btn-warning" id="autopop-all-btn" onclick="autopop_all()">Auto-populate</button>
+          <button type="button" class="btn btn-warning" id="autopop-all-btn" onclick="autopop()">Auto-populate</button>
         </div>
       </div>
       <div class="row">
@@ -897,5 +847,30 @@ else {
           </div> <!-- end modal content -->
       </div>
       <!-- end #add-remove-modal -->
+
+      <!-- add-remove-modal -->
+      <div class="modal fade" id="autopop-modal" role="dialog">
+          <div class="modal-dialog">
+              <!-- Modal content-->
+              <div class="modal-content">
+                  <div class="modal-header" style="padding:35px 50px;">
+                      <button type="button" class="close" data-dismiss="modal">&times;</button>
+                      <h2 id="mod-doc-head"><span class="glyphicon glyphicon-user" id="user-icon"></span>Autopopulate</h2>
+                  </div>
+                  <div class="modal-body" style="padding:40px 50px;">
+                      <div class="container" id="container-in-modal">
+                          <div class="row">
+<script>
+    for (var m = 0; m < months.length; m++) {
+        document.writeln('<input type="checkbox" name="month_select" value="' + m + '">' + months[m] + '<br>');
+    }
+</script>
+                          </div> <!-- end row -->
+                      </div> <!-- end container -->
+
+                  </div> <!-- end modal body -->
+               </div>  end modal header -->
+          </div> <!-- end modal content -->
+      </div>      <!-- end autopop-modal-->
 </body>
 </html>
