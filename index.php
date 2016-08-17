@@ -287,16 +287,6 @@ for ($i = 0; $i < 3; $i++) {
 	  }
       function autopop() {
           $("#autopop-modal").modal('show');
-          /*
-          if (window.confirm("Are you certain you want auto-populate " + cur_year + "? \n This will erase all current entrees.")) {
-              $.post("./autopopyear.php", { //changes year cookie
-                      year : cur_year
-                  },
-                  function(response) {
-                      window.location.reload(true);
-                     // window.location.reload(true);
-                  }); // ends post
-          } */
       }
       function autopop_submit() {
           var poporder = [];
@@ -334,7 +324,6 @@ for ($i = 0; $i < 3; $i++) {
                   alert("You must select at least one month.");
               }
               else {
-                  console.log(selected_months);
                   var mselect = '';
                   mselect += selected_months[0];
                   if (selected_months.length > 1) {
@@ -349,6 +338,7 @@ for ($i = 0; $i < 3; $i++) {
                        year : cur_year
                    },
                    function(response) {
+                       console.log(response);
                        window.location.reload(true);
                    }); // ends post */
               }
@@ -449,21 +439,19 @@ for ($i = 0; $i < 3; $i++) {
                               counter --;
                               $("#total-month-doc-" + response).text(counter);
 
+
                               /*
                               // check if weekend value deleted
                               var enddays = [5, 6, 0];
                               var temp = weekdays[monup[0]][monup[1]]; // what day of the week are we deleting?
                               var todelete = false; // turns true if we want to decrease weekend count
-                              for (var i in enddays) {
-                                  if (temp == i) {
-
-                                  }
-                              }
-                              if ($.inArray(weekdays[monup[0]][monup[1]], enddays)) {
+                              if temp
+                              if ($.inArray(temp, enddays)) {
                                   var counter = parseInt($("#doc-" + response + "-total-weekends").text());
                                   counter--;
                                   $("#doc-" + response + "-total-weekends").text(counter);
-                              }  */
+                              }
+                              */
                               var tmp = "#" + id;
                               $(tmp).remove();
                               // now implement colorout to change color back

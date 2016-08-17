@@ -63,4 +63,4 @@ for ($i = 0; $i < count($mselect); $i++) {
         }
     }
 }
-echo $sql;
+echo "SUCCESS";
