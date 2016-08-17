@@ -298,9 +298,65 @@ for ($i = 0; $i < 3; $i++) {
                   }); // ends post
           } */
       }
+      function autopop_submit() {
+          var poporder = [];
+          var check = true;
+          for (var i = 0; i < doxnames.length; i++) {
+              var v = $('#pop-order-' + i).val();
+              poporder.push(v);
+          }
+          // check if we have duplicates
+          var lyst = poporder.slice(0);
+          for (var j = 0; j < lyst.length; j++) {
+              lyst.sort();
+              if (lyst[j] == lyst[j + 1]) {
+                  check = false;
+              }
+          }
+          if (!check) {
+              alert("You may not have duplicate values.");
+          }
+          else {
+              var ord = '';
+              ord += poporder[0];
+              for (var x = 1; x < poporder.length; x++) {
+                  ord += '-' + poporder[x];
+              }
+              // now get all our months
+              var mon_array = document.getElementsByName("month_select");
+              var selected_months = [];
+              for (var i = 0; i < mon_array.length; i++) {
+                  if (mon_array[i].checked) {
+                      selected_months.push(mon_array[i].value);
+                  }
+              }
+              if (selected_months.length == 0) {
+                  alert("You must select at least one month.");
+              }
+              else {
+                  console.log(selected_months);
+                  var mselect = '';
+                  mselect += selected_months[0];
+                  if (selected_months.length > 1) {
+                      for (var x = 1; x < selected_months.length; x++) {
+                          mselect += '-' + selected_months[x];
+                      }
+                  }
+
+                  $.post("./autopopyear.php", { //changes year cookie
+                       order : ord,
+                       months : mselect,
+                       year : cur_year
+                   },
+                   function(response) {
+                       window.location.reload(true);
+                   }); // ends post */
+              }
+          }
+      }
       function clear_all() {
           if (window.confirm("Are you certain you want to clear all days in the year " + cur_year + "?")) {
-              $.post("./clearyear.php", { //changes year cookie
+              $.post("./clearyear.php", {
                       year : cur_year
                   },
                   function(response) {
@@ -855,21 +911,71 @@ else {
               <div class="modal-content">
                   <div class="modal-header" style="padding:35px 50px;">
                       <button type="button" class="close" data-dismiss="modal">&times;</button>
-                      <h2 id="mod-doc-head"><span class="glyphicon glyphicon-user" id="user-icon"></span>Autopopulate</h2>
+                      <h2 id="mod-doc-head"><span class="glyphicon glyphicon-repeat" id="user-icon"></span>Auto-populate</h2>
                   </div>
                   <div class="modal-body" style="padding:40px 50px;">
                       <div class="container" id="container-in-modal">
-                          <div class="row">
 <script>
-    for (var m = 0; m < months.length; m++) {
-        document.writeln('<input type="checkbox" name="month_select" value="' + m + '">' + months[m] + '<br>');
+    var months_abbr =  ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec'];
+    var head = 0;
+    for (var c = 0; c < 3; c++) {
+        document.writeln('<div class="row">');
+        for (var m = 0; m < 4; m++) {
+            document.writeln('<div class="col-xs-3"><input type="checkbox" name="month_select" value="' + head + '" checked>' + " " + months[head] + '</div>');
+            head++;
+        }
+        document.writeln('</div>');
     }
+
 </script>
-                          </div> <!-- end row -->
+                      <div class="row">
+                         <div class="col-xs-12">
+                           <hr style="padding:0; height: 2px;">
+                        </div>
+                      </div> <!-- end row with line -->
+                      <div class="row"> <!-- start row for doc names -->
+<script>
+    var half = Math.ceil(doxnames.length / 2);
+    var idx = 0;
+
+
+    // we're gonna have two columns. Start inserting into next column when idx = half, append idx each pass
+
+    for (var i = 0; i < doxnames.length; i++) {
+        if (idx == 0 || idx == half) {
+            document.write('<div class="col-xs-6">');
+        }
+        document.write('<div class="row"><div class="col-xs-12"><select id="pop-order-' + i + '">');
+        for (var j = 0; j < doxnames.length; j++) {
+            if (j != i ) {
+                document.write('<option value="' + j + '">' + (j + 1) + '</option>');
+            }
+            else {
+                document.write('<option value="' + j + '"selected>' + (j + 1) + '</option>');
+            }
+        }
+        var str = '</select> ' + (doxnames[i][1]) + ' ' + (doxnames[i][2]) + '</div></div>';
+        document.write(str);
+
+        if (idx == (half - 1) || idx == (doxnames.length - 1)) {
+            document.write('</div> <!-- end col w/ doc names -->');
+        }
+        idx ++;
+    }
+
+
+
+</script>
+                      </div> <!-- end row for doc names -->
+                      <div class="row"> <!-- row for autopop button -->
+                          <div class="col-xs-2 col-xs-offset-9">
+                              <button type="button" class="btn btn-warning" onclick="autopop_submit()">Auto-populate</button>
+                          </div>
+                      </div>
                       </div> <!-- end container -->
 
                   </div> <!-- end modal body -->
-               </div>  end modal header -->
+               </div>  <!-- end modal header -->
           </div> <!-- end modal content -->
       </div>      <!-- end autopop-modal-->
 </body>

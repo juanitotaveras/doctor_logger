@@ -1,4 +1,6 @@
 <?php
+ini_set('display_errors', 'On');   // error checking
+error_reporting(E_ALL);    // error checking
 // connect to DB
 $file = fopen("../../db.txt", "r") or die("Error opening file.");
 $dbinfo = [];
@@ -10,23 +12,11 @@ $connect = mysqli_connect($dbinfo[0], $dbinfo[1], $dbinfo[2], $dbinfo[3], $dbinf
 if (empty($connect)) {
     die ("mysqli_connect failed " . mysqli_connect_error());
 }
-// first get how many doctors there are
-$sql = 'SELECT * from names';
-$result = $connect->query($sql);
-$ids = [];
-if ($result->num_rows > 0) {
-    while ($row = $result->fetch_assoc()) {
-        array_push($ids, $row["ID"]);
-    }
-}
 
 /////////////// fetch stats///////////////////////////////////////////////////////////////////
-$sql = "SELECT * FROM doctor_logger WHERE YEAR = " . $_POST["year"] . " ORDER BY MONTH, DAY";
+$year = $_POST["year"];
+$sql = "SELECT * FROM doctor_logger WHERE YEAR = " . $year. " ORDER BY MONTH, DAY";
 $result = $connect->query($sql);
-$months = [];
-for ($x = 0; $x < 12; $x++) {
-    array_push($months, $x);
-}
 $days = [];
 $weekdays = [];
 if ($result->num_rows > 0) {
@@ -53,20 +43,22 @@ if ($result->num_rows > 0) {
 
 
 //////////////////////////////////////////////////////////////////////////////////////////////////
-//$sql = "";
-$stop = count($ids);
+
+$ord = explode("-", $_POST["order"]);
+$mselect = explode("-", $_POST["months"]);
+$stop = count($ord);
 $idx = 0;
 $week_end = [5, 6];
-for ($i = 0; $i < count($days); $i++) {
-    for ($j = 0; $j < count($days[$i]); $j++) {
+for ($i = 0; $i < count($mselect); $i++) {
+    for ($j = 0; $j < count($days[$mselect[$i]]); $j++) {
         if ($idx == $stop) {
             $idx = 0;
         }
-        $sql = 'UPDATE doctor_logger SET DOC1=' . $ids[$idx] . ', DOC2=NULL WHERE MONTH=' . $i . ' AND YEAR=' . $_POST["year"] . ' AND DAY=' . $days[$i][$j] . ';';
+        $sql = 'UPDATE doctor_logger SET DOC1=' . $ord[$idx] . ', DOC2=NULL WHERE MONTH=' . $mselect[$i] . ' AND YEAR=' . $year . ' AND DAY=' . $days[$mselect[$i]][$j] . ';';
         $stmt = mysqli_prepare ($connect, $sql);  // fill in the blank
         mysqli_stmt_execute($stmt);
         mysqli_stmt_close($stmt);
-        if (!in_array($weekdays[$i][$j], $week_end)) {
+        if (!in_array($weekdays[$mselect[$i]][$j], $week_end)) {
             $idx ++;
         }
     }
