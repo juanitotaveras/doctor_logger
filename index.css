@@ -296,3 +296,39 @@ h1, h2, h3 {
     top: 3px;
     position: relative;
 }
+
+
+#admin-divider {
+    margin-bottom: 4%;
+    margin-top: 4%;
+    width: 110%;
+    position: relative;
+    right: .8em
+}
+
+#print-divide {
+    margin-bottom: 2%;
+    margin-top: 4%;
+    width: 110%;
+    position: relative;
+    right: .8em;
+    height: 2px;
+}
+
+#doc-print-head {
+
+}
+#yr-print-head {
+    position: relative;
+    right: 4%;
+
+}
+#wknd-print-head {
+    position:relative;
+    right: 10%;
+
+}
+#mon-print-head {
+    position: relative;
+    right: 4%;
+}

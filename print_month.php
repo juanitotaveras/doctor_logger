@@ -165,9 +165,10 @@ $output = month_gen_simple($_POST["mon"], $days, $weekdays, $_COOKIE["year"], $d
 $output .= '
 <div class="container rpan-print">
   <div class="row">
-    <div class="col-xs-5 doc-col"><b>Doctor</b></div>
-    <div class="col-xs-3 yr-col"><b>Year</b></div>
-    <div class="col-xs-3 mon-col"><b>Month</b></div>
+    <div class="col-xs-5 doc-col" id="doc-print-head"><b>Doctor</b></div>
+    <div class="col-xs-2 yr-col" id="yr-print-head"><b>Yr</b></div>
+    <div class="col-xs-2 wknd-col" id="wknd-print-head"><b>Wknd</b></div>
+    <div class="col-xs-1 mon-col" id="mon-print-head"><b>Mon</b></div>
 
 </div> <!-- end row with names -->
     <!-- fetch doctors -->';
@@ -176,7 +177,7 @@ for ($h = 0; $h < count($docs); $h++) {
 	$doc_id = $docs[$h][0];
 	$output .= '<div class="row">
           <div class="col-xs-5 doc-col doc-print" > ' . $docs[$h][2] . '</div>
-	      <div class="col-xs-1 tot-col year-print" style="color:green">
+	      <div class="col-xs-1 tot-col year-print" >
 	      <!-- fetch how many days for that year -->';
 	$total_year = 0;
 	for ($a = 0; $a < count($docs1); $a++) {
@@ -215,23 +216,26 @@ for ($h = 0; $h < count($docs); $h++) {
 
 
     $output .= $total_year . '</div>';
-    $output .= '<div class="col-xs-1 tot-col week-print" style="color:orange" >';
+    $output .= '<div class="col-xs-1 tot-col week-print"  >';
     $output .= $total_weekends;
 
 	// now get total for current month
 	$output .= '
 		  </div> <!-- end total days -->
-		  <div class="col-xs-1 mon-col mon-print" style="color:blue">' . $total_month . '</div>
+		  <div class="col-xs-1 mon-col mon-print" >' . $total_month . '</div>
 	      </div> <!-- end unique doctor row -->
 		  <!--</div> end row -->																	';
 }
 
 // get total CCC days
 $total_year_ccc = 0;
-for ($a = 0; $a < count($docs1); $a++) {
-    for ($b = 0; $b < count($docs1[$a]); $b++) {
-        if ($doc_id == $docs1[$a][$b] && $docs[$doc_id][3] == 1) {
-            $total_year_ccc ++;
+for ($h = 0; $h < count($docs); $h++) {
+    $doc_id = $docs[$h][0];
+    for ($a = 0; $a < count($docs1); $a++) {
+        for ($b = 0; $b < count($docs1[$a]); $b++) {
+            if ($doc_id == $docs1[$a][$b] && $docs[$doc_id][3] == 1) {
+                $total_year_ccc++;
+            }
         }
     }
 }
@@ -240,21 +244,23 @@ for ($a = 0; $a < count($docs1); $a++) {
 $total_weekends_ccc = 0;
 $week_end = [5, 6, 0];
 $tab = 0;
-for ($a = 0; $a < count($docs1); $a++) {
-    for ($b = 0; $b < count($docs1[$a]); $b++) {
-        if ($doc_id == $docs1[$a][$b] && $docs[$doc_id][3] == 1) {
-            if (in_array($weekdays[$a][$b], $week_end)){ // only count if it's three days in a row
-                $tab++;
-            } else {
-                $tab = 0;
-            }
-            if ($tab > 2) {
-                $total_weekends_ccc ++;
+for ($h = 0; $h < count($docs); $h++) {
+    $doc_id = $docs[$h][0];
+    for ($a = 0; $a < count($docs1); $a++) {
+        for ($b = 0; $b < count($docs1[$a]); $b++) {
+            if ($doc_id == $docs1[$a][$b] && $docs[$doc_id][3] == 1) {
+                if (in_array($weekdays[$a][$b], $week_end)) { // only count if it's three days in a row
+                    $tab++;
+                } else {
+                    $tab = 0;
+                }
+                if ($tab > 2) {
+                    $total_weekends_ccc++;
+                }
             }
         }
     }
 }
-
 // get total for month
 $monc = $_POST["month"];
 for ($docid = 0; $docid < count($docs); $docid++) {
@@ -268,11 +274,12 @@ for ($docid = 0; $docid < count($docs); $docid++) {
 
 }
 $output .= '
+          <hr id="print-divide">
 	      <div class="row">
-            <div class="col-xs-6 doc-col-cont" id="doc_head"><b>CCC</b></div>
-            <div class="col-xs-2 tot-col-cont" style="color:green" id="ccc-year">' . $total_year_ccc . '</div>
-            <div class="col-xs-2 tot-col-cont" style="color:darkred" id="ccc-weekend">' . $total_weekends_ccc . '</div>
-            <div class="col-xs-2 mon-col-cont" style="color:blue" id="ccc-month">' . $doccount . '</div>
+            <div class="col-xs-5 doc-col doc-print" id="doc_head"><b>CCC</b></div>
+            <div class="col-xs-2 tot-col year-print" style="color:green" id="ccc-year">' . $total_year_ccc . '</div>
+            <div class="col-xs-2 tot-col week-print" style="color:darkred" id="ccc-weekend">' . $total_weekends_ccc . '</div>
+            <div class="col-xs-1 mon-col mon-print" style="color:blue" id="ccc-month">' . $doccount . '</div>
           </div>
 
   </div> <!-- end right-panel-contract -->';

@@ -448,6 +448,16 @@ for ($i = 0; $i < 3; $i++) {
                       var counter = parseInt($("#total-month-doc-" + docid).text());
                       counter ++;
                       $("#total-month-doc-" + docid).text(counter);
+                      // now check if doc is CCC; if so, increment
+                      if (doxnames[docid][3] == 1) {
+                          var counter = parseInt($("#ccc-year").text());
+                          counter ++;
+                          $("#ccc-year").text(counter);
+                          var counter = parseInt($("#ccc-month").text());
+                          counter ++;
+                          $("#ccc-month").text(counter);
+
+                      }
                       var elem = '<span class="docname n1" id="' + ident + '" >' + doxnames[docid][1] + " " + doxnames[docid][2]   + '<span class="glyphicon glyphicon-remove deletedoc"></span></span>';
                       var boxid = "#" + ident.slice(0, -9) + "box";
                       $(boxid).append(elem);
@@ -479,7 +489,12 @@ for ($i = 0; $i < 3; $i++) {
                               var counter = parseInt($("#total-month-doc-" + response).text());
                               counter --;
                               $("#total-month-doc-" + response).text(counter);
-
+                              // check if ccc
+                              if (doxnames[response][3] == 1) {
+                                  var counter = parseInt($("#ccc-year").text());
+                                  counter --;
+                                  $("#ccc-year").text(counter);
+                              }
 
                               /*
                               // check if weekend value deleted
@@ -653,6 +668,14 @@ for ($i = 0; $i < 3; $i++) {
                       var counter = parseInt($("#total-month-doc-" + response).text());
                       counter --;
                       $("#total-month-doc-" + response).text(counter);
+                      if (doxnames[response][3] == 1) {
+                          var counter = parseInt($("#ccc-year").text());
+                          counter --;
+                          $("#ccc-year").text(counter);
+                          var counter = parseInt($("#ccc-month").text());
+                          counter --;
+                          $("#ccc-month").text(counter);
+                      }
                   }
                   if (dox1[monup[0]][monup[1] - 1] != -1) {
                       dox1[monup[0]][monup[1] - 1] = -1; // place4
@@ -691,8 +714,8 @@ for ($i = 0; $i < 3; $i++) {
               }
               $('#total-month-doc-' + docid).text(doccount);
           }
+          var doccount = 0;
           for (var docid = 0; docid < doxnames.length; docid++) {
-              var doccount = 0;
               for (var i = 0; i < (dox1[monc]).length; i++) {  // we're only checking current month
                   var tmp = dox1[monc][i];    // doc info for that day
                   if (tmp == docid && doxnames[docid][3] == 1) {
@@ -700,6 +723,7 @@ for ($i = 0; $i < 3; $i++) {
                   }
               }
           }
+          console.log(doccount);
           $("#ccc-month").text(doccount);
 	  });
 	  $(".add").click(function() {
@@ -838,10 +862,13 @@ for ($h = 0; $h < count($docs); $h++) {
 
 // get total CCC days
 $total_year_ccc = 0;
-for ($a = 0; $a < count($docs1); $a++) {
-    for ($b = 0; $b < count($docs1[$a]); $b++) {
-        if ($doc_id == $docs1[$a][$b] && $docs[$doc_id][3] == 1) {
-            $total_year_ccc ++;
+for ($h = 0; $h < count($docs); $h++) {
+    $doc_id = $docs[$h][0];
+    for ($a = 0; $a < count($docs1); $a++) {
+        for ($b = 0; $b < count($docs1[$a]); $b++) {
+            if ($doc_id == $docs1[$a][$b] && $docs[$doc_id][3] == 1) {
+                $total_year_ccc++;
+            }
         }
     }
 }
@@ -850,28 +877,31 @@ for ($a = 0; $a < count($docs1); $a++) {
 $total_weekends_ccc = 0;
 $week_end = [5, 6, 0];
 $tab = 0;
-for ($a = 0; $a < count($docs1); $a++) {
-    for ($b = 0; $b < count($docs1[$a]); $b++) {
-        if ($doc_id == $docs1[$a][$b] && $docs[$doc_id][3] == 1) {
-            if (in_array($weekdays[$a][$b], $week_end)){ // only count if it's three days in a row
-                $tab++;
-            } else {
-                $tab = 0;
-            }
-            if ($tab > 2) {
-                $total_weekends_ccc ++;
+for ($h = 0; $h < count($docs); $h++) {
+    $doc_id = $docs[$h][0];
+    for ($a = 0; $a < count($docs1); $a++) {
+        for ($b = 0; $b < count($docs1[$a]); $b++) {
+            if ($doc_id == $docs1[$a][$b] && $docs[$doc_id][3] == 1) {
+                if (in_array($weekdays[$a][$b], $week_end)) { // only count if it's three days in a row
+                    $tab++;
+                } else {
+                    $tab = 0;
+                }
+                if ($tab > 2) {
+                    $total_weekends_ccc++;
+                }
             }
         }
     }
 }
 
 echo '
-          <hr>
-	      <div class="row">
+          <hr id="admin-divider">
+	      <div class="row" id="ccc-row">
             <div class="col-xs-6 doc-col-cont" id="doc_head"><b>CCC</b></div>
             <div class="col-xs-2 tot-col-cont" style="color:green" id="ccc-year">' . $total_year_ccc . '</div>
             <div class="col-xs-2 tot-col-cont" style="color:darkred" id="ccc-weekend">' . $total_weekends_ccc . '</div>
-            <div class="col-xs-2 mon-col-cont" style="color:blue" id="ccc-month">Month</div>
+            <div class="col-xs-2 mon-col-cont" style="color:blue" id="ccc-month"></div>
           </div>
 
   </div> <!-- end right-panel-contract -->';
