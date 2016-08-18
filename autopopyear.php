@@ -49,8 +49,8 @@ $mselect = explode("-", $_POST["months"]);
 $stop = count($ord);
 $idx = 0;
 $week_end = [5, 6];
-for ($i = 0; $i < count($mselect); $i++) {
-    for ($j = 0; $j < count($days[$mselect[$i]]); $j++) {
+for ($i = 0; $i < count($mselect); $i++) { // for every month in our list
+    for ($j = 0; $j < count($days[$mselect[$i]]); $j++) {   // for every day in that month
         if ($idx == $stop) {
             $idx = 0;
         }
@@ -58,7 +58,7 @@ for ($i = 0; $i < count($mselect); $i++) {
         $stmt = mysqli_prepare ($connect, $sql);  // fill in the blank
         mysqli_stmt_execute($stmt);
         mysqli_stmt_close($stmt);
-        if (!in_array($weekdays[$mselect[$i]][$j], $week_end)) {
+        if (!in_array($weekdays[$mselect[$i]][$j], $week_end)) { // if our current day is not in the weekend, switch to next doctor
             $idx ++;
         }
     }

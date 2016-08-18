@@ -269,7 +269,7 @@ h1, h2, h3 {
 
 #yr_head {
     position:relative;
-    right: 12%;
+    right: 23%;
 }
 #mon_head {
     position: relative;
@@ -282,4 +282,12 @@ h1, h2, h3 {
     left: 82% !important;
     top: 8%;
     font-size: 150%;
+}
+
+.mod-icon {
+    font-size: 140%;
+    cursor: pointer;
+}
+.close {
+    font-size:290%;
 }

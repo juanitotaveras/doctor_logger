@@ -246,6 +246,70 @@ for ($i = 0; $i < 3; $i++) {
               ); // ends post
           }
       }
+      function del_row(id) {
+          $(id).closest( $(".doc-row")).remove();
+      }
+
+      function add_mod_row() {
+          // mod-modal-body
+          // set all to visible, then append row to mod-modal-body
+          $(".fname-mod, .lname-mod, .ccc-mod").css("visibility", "visible");
+          $(".mod-icon").attr("class", "glyphicon glyphicon-remove mod-icon rmv").css("color", "darkred").attr("onclick", "del_row(this)");
+          $("#update-btn-row").remove();
+          var row = '<div class="row doc-row">'+
+              '<div class="col-xs-4 col-xs-offset-1 fname-mod" style="visibility:hidden">' +
+              '<input type="text" class="fname-mod-input" placeholder="First Name">'+
+              '</div>'+
+              '<div class="col-xs-4 lname-mod" style="visibility:hidden">'+
+              '<input class="lname-mod-input" type="text"  placeholder="Last Name">'+
+              '</div>'+
+              '<div class="col-xs-1 ccc-mod" style="visibility:hidden">'+
+              '<input class="ccc-mod-input" type="checkbox" style="" >'+
+              '</div>'+
+              '<div class="col-xs-1">'+
+              '<span style="color:green" class="glyphicon glyphicon-plus mod-icon rmv" onclick="add_mod_row()"></span>'+
+              '</div>'+
+              '</div> <!-- end row -->';
+          var btn = '<div class="row" id="update-btn-row">'+
+                       '<div class="col-xs-2 col-xs-offset-9">'+
+                         '<button type="button" class="btn btn-info" onclick="update_docs()" id="update-btn">Update</button>'+
+                        '</div>'+
+                        '</div>';
+
+          $(".container-in-modal-mod").append(row).append(btn);
+      }
+
+      function update_docs() {
+          var fnames = $(".fname-mod-input");
+          var lnames = $(".lname-mod-input");
+          var checks = $(".ccc-mod-input");
+          var fnames_str = '';
+          var lnames_str = '';
+          var checks_str = '';
+          var c = 0;
+          for (var i = 0; i < (fnames.length - 1); i++) {
+              if (i == 0) {
+                  fnames_str += fnames[i].value;
+                  lnames_str += lnames[i].value;
+                  checks_str += $(checks[i]).prop("checked");
+              }
+              else {
+                  fnames_str += ',' + fnames[i].value;
+                  lnames_str += ',' + lnames[i].value;
+                  checks_str += ',' + $(checks[i]).prop("checked");
+              }
+          }
+          $.post("./doc_mod.php", {
+                  fnames : fnames_str,
+                  lnames : lnames_str,
+                  checks : checks_str
+              },
+              function(response) {
+                 // alert(response);
+                  //console.log("wut");
+                  window.location.reload(true);
+              }); // ends post
+      }
 	  var prevcolor;
 	  function colorin(id) {
 		  prevcolor = $(id).css("background-color");
@@ -534,8 +598,6 @@ for ($i = 0; $i < 3; $i++) {
               }); // ends post
       } // ends log_out function
   $(document).ready(function() {
-
-
       $("#add-remove-btn").click(function() {
         $('#add-remove-modal').modal('show');
       });
@@ -652,6 +714,16 @@ for ($i = 0; $i < 3; $i++) {
               }
               $('#total-month-doc-' + docid).text(doccount);
           }
+          for (var docid = 0; docid < doxnames.length; docid++) {
+              var doccount = 0;
+              for (var i = 0; i < (dox1[monc]).length; i++) {  // we're only checking current month
+                  var tmp = dox1[monc][i];    // doc info for that day
+                  if (tmp == docid && doxnames[docid][3] == 1) {
+                      doccount ++;
+                  }
+              }
+          }
+          $("#ccc-month").text(doccount);
 	  });
 	  $(".add").click(function() {
 		  var boxid = $(this).attr("class");
@@ -735,7 +807,8 @@ echo '
   <div class="container right-pan" id="right-panel-contract">
   <div class="row">
     <div class="col-xs-6 doc-col-cont" id="doc_head"><b>Doctor</b></div>
-    <div class="col-xs-4 tot-col-cont" id="yr_head"><b>Year</b></div>
+    <div class="col-xs-2 tot-col-cont" id="yr_head"><b>Year</b></div>
+    <div class="col-xs-2 tot-col-cont" id="yr_head"><b>Wknd</b></div>
     <div class="col-xs-1 mon-col-cont" id="mon_head"><b>Month</b></div>
 
 </div>
@@ -786,7 +859,44 @@ for ($h = 0; $h < count($docs); $h++) {
 																				';
 }
 
+// get total CCC days
+$total_year_ccc = 0;
+for ($a = 0; $a < count($docs1); $a++) {
+    for ($b = 0; $b < count($docs1[$a]); $b++) {
+        if ($doc_id == $docs1[$a][$b] && $docs[$doc_id][3] == 1) {
+            $total_year_ccc ++;
+        }
+    }
+}
+
+// get total ccc weekends
+$total_weekends_ccc = 0;
+$week_end = [5, 6, 0];
+$tab = 0;
+for ($a = 0; $a < count($docs1); $a++) {
+    for ($b = 0; $b < count($docs1[$a]); $b++) {
+        if ($doc_id == $docs1[$a][$b] && $docs[$doc_id][3] == 1) {
+            if (in_array($weekdays[$a][$b], $week_end)){ // only count if it's three days in a row
+                $tab++;
+            } else {
+                $tab = 0;
+            }
+            if ($tab > 2) {
+                $total_weekends_ccc ++;
+            }
+        }
+    }
+}
+
 echo '
+          <hr>
+	      <div class="row">
+            <div class="col-xs-6 doc-col-cont" id="doc_head"><b>CCC</b></div>
+            <div class="col-xs-2 tot-col-cont" style="color:green" id="ccc-year">' . $total_year_ccc . '</div>
+            <div class="col-xs-2 tot-col-cont" style="color:darkred" id="ccc-weekend">' . $total_weekends_ccc . '</div>
+            <div class="col-xs-2 mon-col-cont" style="color:blue" id="ccc-month">Month</div>
+          </div>
+
   </div> <!-- end right-panel-contract -->';
 
 if ($_COOKIE["logged_in"] == "true") {
@@ -812,6 +922,7 @@ if ($_COOKIE["logged_in"] == "true") {
           <button class="btn btn-default" onClick="log_out()" id="log-out-btn">Log out</button>
         </div>
       </div> <!-- end row -->
+
 
     </div><!-- end admin_panel -->
     ';
@@ -852,38 +963,77 @@ else {
                       <button type="button" class="close" data-dismiss="modal">&times;</button>
                       <h2 id="mod-doc-head"><span class="glyphicon glyphicon-user" id="user-icon"></span>Modify Doctors</h2>
                   </div>
-                  <div class="modal-body" style="padding:40px 50px;">
-                    <div class="container" id="container-in-modal">
-                        <div clas="row">
-                            <div class="col-xs-3 offset-xs-3">
-                                <input type="text" placeholder="First name" id="fname" name="fname">
-                            </div>
-                            <div class="col-xs-3">
-                                <input type="text" placeholder="Last name" id="lname" name="lname">
-                            </div>
-                            <div class="col-xs-3">
-                                <button type="button" onclick="add_doctor()" class="btn btn-primary" id="add_button">Add</button>
-                            </div>
-                        </div>     <!-- end row -->
+                  <div class="modal-body" id="mod-modal-body" style="padding:40px 50px;">
+                    <div class="container container-in-modal-mod" id="container-in-modal">
                         <div class="row">
-                            <div class="col-xs-12">
-                              <hr style="padding:0; height: 2px;">
+                            <div class="col-xs-4 col-xs-offset-1">
+                                <b>First Name</b>
+                            </div>
+                            <div class="col-xs-4">
+                               <b> Last Name</b>
+                            </div>
+                            <div class="col-xs-1">
+                                <b>CCC</b>
+                            </div>
+                            <div class="col-xs-1">
+
                             </div>
                         </div>
+                        <!--
                         <div class="row">
-                            <div class="col-xs-4">
-                                <select id="r_drop">
-                                <?php
-                                foreach ($docs as $bin) {
-                                    echo '\'<option value="' . $bin[0] . '">' . $bin[1] . ' ' . $bin[2] . '</option>\' +';
-                                }
-                                ?>
-                                </select>
+                            <div class="col-xs-12">
+                              <hr style="padding:0; height: 1px;">
                             </div>
-                            <div class="col-xs-4">
-                                <button type="button" id="rmv-btn" onclick="remove_doctor()" class="btn btn-danger">Remove</button>
-                            </div>
-                        </div> <!-- end row -->
+                        </div> -->
+
+                        <?php
+                        for ($x = 0; $x < count($docs); $x++) {
+
+                            echo '
+
+                        <div class="row doc-row">
+                          <div class="col-xs-4 col-xs-offset-1 fname-mod">
+                          <input class="fname-mod-input" type="text" value="' . $docs[$x][1] . '">
+                           </div>
+                          <div class="col-xs-4 lname-mod">
+                           <input class="lname-mod-input" type="text" value="' . $docs[$x][2] . '">
+                          </div>
+                          <div class="col-xs-1 ccc-mod">';
+                          if ($docs[$x][3] == 1) {
+                              echo '
+                           <input class="ccc-mod-input" type="checkbox" value="' . '" checked>';
+                          }
+                            else {
+                                echo '
+                           <input class="ccc-mod-input" type="checkbox" value="' . '">';
+                            }
+                           echo '
+                          </div>
+                          <div class="col-xs-1">
+                            <span style="color:darkred" onclick="del_row(this)" class="glyphicon glyphicon-remove mod-icon rmv"></span>
+                          </div>
+                        </div>';
+                        }
+                        ?>
+                        <div class="row doc-row">
+                      <div class="col-xs-4 col-xs-offset-1 fname-mod" style="visibility:hidden">
+                          <input type="text" class="fname-mod-input" value="" placeholder="First Name">
+                      </div>
+                      <div class="col-xs-4 lname-mod" style="visibility:hidden">
+                          <input type="text" class="lname-mod-input" value="" placeholder="Last Name">
+                      </div>
+                      <div class="col-xs-1 ccc-mod" style="visibility:hidden">
+                          <input type="checkbox" class="checks-mod-input" style="" value="">
+                      </div>
+                      <div class="col-xs-1">
+                          <span style="color:green" class="glyphicon glyphicon-plus mod-icon" onclick="add_mod_row()"></span>
+                      </div>
+                  </div> <!-- end row -->
+                       <div class="row" id="update-btn-row">
+                         <div class="col-xs-2 col-xs-offset-9">
+                             <button type="button" class="btn btn-info" onclick="update_docs()" id="update-btn">Update</button>
+                         </div>
+                       </div>
                      </div> <!-- end container -->
 
                   </div> <!-- end modal body -->
