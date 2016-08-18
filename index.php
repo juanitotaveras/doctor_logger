@@ -222,30 +222,7 @@ for ($i = 0; $i < 3; $i++) {
           echo 'weekdays.push(bin);';
       }
       ?>
-      function add_doctor() {
-          $.post("./add_doctor.php", {
-                   first: $("#fname").val(),
-                   last: $("#lname").val()
-              },
-              function (response) {
-                  response.trim();
-                  window.location.reload(true);
-              }
-          ); // ends post
-      }
-      function remove_doctor() {
-          if (window.confirm("Are you sure you want to remove " + doxnames[$("#r_drop").val()][1] + " " + doxnames[$("#r_drop").val()][2] + "?"))
-          {
-              $.post("./remove_doctor.php", {
-                      id: $("#r_drop").val()
-                  },
-                  function (response) {
-                      response.trim();
-                      window.location.reload(true);
-                  }
-              ); // ends post
-          }
-      }
+
       function del_row(id) {
           $(id).closest( $(".doc-row")).remove();
       }

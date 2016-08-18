@@ -226,8 +226,57 @@ for ($h = 0; $h < count($docs); $h++) {
 		  <!--</div> end row -->																	';
 }
 
+// get total CCC days
+$total_year_ccc = 0;
+for ($a = 0; $a < count($docs1); $a++) {
+    for ($b = 0; $b < count($docs1[$a]); $b++) {
+        if ($doc_id == $docs1[$a][$b] && $docs[$doc_id][3] == 1) {
+            $total_year_ccc ++;
+        }
+    }
+}
+
+// get total ccc weekends
+$total_weekends_ccc = 0;
+$week_end = [5, 6, 0];
+$tab = 0;
+for ($a = 0; $a < count($docs1); $a++) {
+    for ($b = 0; $b < count($docs1[$a]); $b++) {
+        if ($doc_id == $docs1[$a][$b] && $docs[$doc_id][3] == 1) {
+            if (in_array($weekdays[$a][$b], $week_end)){ // only count if it's three days in a row
+                $tab++;
+            } else {
+                $tab = 0;
+            }
+            if ($tab > 2) {
+                $total_weekends_ccc ++;
+            }
+        }
+    }
+}
+
+// get total for month
+$monc = $_POST["month"];
+for ($docid = 0; $docid < count($docs); $docid++) {
+    $doccount = 0;
+    for ($i = 0; $i < count($docs1[$monc]); $i++) {  // we're only checking current month
+        $tmp = $docs1[$monc][$i];    // doc info for that day
+        if ($tmp == $docid && $docs[$docid][3] == 1) {
+            $doccount ++;
+        }
+    }
+
+}
 $output .= '
+	      <div class="row">
+            <div class="col-xs-6 doc-col-cont" id="doc_head"><b>CCC</b></div>
+            <div class="col-xs-2 tot-col-cont" style="color:green" id="ccc-year">' . $total_year_ccc . '</div>
+            <div class="col-xs-2 tot-col-cont" style="color:darkred" id="ccc-weekend">' . $total_weekends_ccc . '</div>
+            <div class="col-xs-2 mon-col-cont" style="color:blue" id="ccc-month">' . $doccount . '</div>
+          </div>
+
   </div> <!-- end right-panel-contract -->';
+
 
 ////////////////// END PANEL MAKER //////////////////////////
 $_SESSION["print_info"] = $output;

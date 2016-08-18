@@ -253,7 +253,7 @@ h1, h2, h3 {
     width: 18%;
     position: fixed;
     right: 0;
-    top: 68.4%;
+    top: 17%;
     background-color: white;
     z-index: 5;
     border: solid;
@@ -290,4 +290,9 @@ h1, h2, h3 {
 }
 .close {
     font-size:290%;
+}
+
+.ccc-mod-input {
+    top: 3px;
+    position: relative;
 }
