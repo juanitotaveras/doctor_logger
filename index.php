@@ -494,6 +494,9 @@ for ($i = 0; $i < 3; $i++) {
                                   var counter = parseInt($("#ccc-year").text());
                                   counter --;
                                   $("#ccc-year").text(counter);
+                                  var counter = parseInt($("#ccc-month").text());
+                                  counter --;
+                                  $("#ccc-month").text(counter);
                               }
 
                               /*
