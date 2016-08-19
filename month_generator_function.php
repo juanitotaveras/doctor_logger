@@ -4,9 +4,9 @@
  * User: juanito
  * Date: 8/8/16
  * Time: 3:21 PM
- */
+ 
 ini_set('display_errors', 'On');   // error checking
-error_reporting(E_ALL);    // error checking
+error_reporting(E_ALL);    // error checking */
 
 function month_generator($cur_mon, $days, $weekdays, $year, $doc1_list, $doc2_list, $docs) {
     $week = ['Sun', 'Mon', 'Tues', 'Wed', 'Thurs', 'Fri', 'Sat'];

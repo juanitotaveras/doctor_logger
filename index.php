@@ -4,8 +4,8 @@
  //Date: 8/3/16
  //Time: 1:19 PM
 session_start();
-ini_set('display_errors', 'On');   // error checking
-error_reporting(E_ALL);    // error checking
+//ini_set('display_errors', 'On');   // error checking
+//error_reporting(E_ALL);    // error checking
 $localtime_assoc = localtime(time(), true);
 $localmonth = $localtime_assoc["tm_mon"];
 $localday = $localtime_assoc["tm_mday"];
@@ -490,7 +490,7 @@ for ($i = 0; $i < 3; $i++) {
                               counter --;
                               $("#total-month-doc-" + response).text(counter);
                               // check if ccc
-                              if (doxnames[response][3] == 1) {
+                              if (doxnames[response][3] == 1) {  // if doc is CCC, alter them
                                   var counter = parseInt($("#ccc-year").text());
                                   counter --;
                                   $("#ccc-year").text(counter);
@@ -498,19 +498,6 @@ for ($i = 0; $i < 3; $i++) {
                                   counter --;
                                   $("#ccc-month").text(counter);
                               }
-
-                              /*
-                              // check if weekend value deleted
-                              var enddays = [5, 6, 0];
-                              var temp = weekdays[monup[0]][monup[1]]; // what day of the week are we deleting?
-                              var todelete = false; // turns true if we want to decrease weekend count
-                              if temp
-                              if ($.inArray(temp, enddays)) {
-                                  var counter = parseInt($("#doc-" + response + "-total-weekends").text());
-                                  counter--;
-                                  $("#doc-" + response + "-total-weekends").text(counter);
-                              }
-                              */
                               var tmp = "#" + id;
                               $(tmp).remove();
                               // now implement colorout to change color back
@@ -518,9 +505,7 @@ for ($i = 0; $i < 3; $i++) {
                               colorout(tmp);
                               // update table on right
                           }); // ends post
-
                       })
-
                   }
                   if (response[0] == "doc_2_added") {
                       // add doc 1 span and update year and month js bins
@@ -686,6 +671,41 @@ for ($i = 0; $i < 3; $i++) {
                   else if (dox2[monup[0]][monup[1] - 1] != -1) {
                       dox2[monup[0]][monup[1] - 1] = -1; // place4
                   }
+
+                               // check if weekend value deleted
+                               //monup[1] = monup[1] - 1;
+                              /*
+                               var temp = weekdays[monup[0]][monup[1]]; // what day of the week are we deleting?
+                              console.log("temp ", temp, dox1[monup[0]][monup[1] - 1], dox1[monup[0]][monup[1]], dox1[monup[0]][monup[1] + 1]);
+                               var todelete = false; // turns true if we want to decrease weekend count
+                               if (temp == 5) { // if on Friday
+                                   if (dox1[monup[0]][monup[1] + 1] == response && dox1[monup[0]][monup[1] + 2] == response) {
+                                       todelete = true;
+                                   }
+                               }
+                               else if (temp == 6) { // if on Saturday
+                                   if (dox1[monup[0]][monup[1] - 1] == response && dox1[monup[0]][monup[1] + 1] == response) {
+                                       todelete = true;
+                                       console.log("pass test");
+                                   }
+                               }
+                               else if (temp == 0) { // if on Sunday
+                                   if (dox1[monup[0]][monup[1] -1] == response && dox1[monup[0]][monup[1] - 2] == response) {
+                                       todelete = true;
+                                   }
+                               }
+                              console.log("test");
+                               if (todelete) {
+                                   console.log("to delete returns true");
+                                   var counter = parseInt($("#doc-" + response + "-total-weekends").text());
+                                   counter--;
+                                   $("#doc-" + response + "-total-weekends").text(counter);
+                                   if (doxnames[response][3] == 1) {  // if doc is CCC, alter them
+                                       var counter = parseInt($("#ccc-weekend").text());
+                                       counter --;
+                                       $("#ccc-weekend").text(counter);
+                                   }
+                               } */
                   $(tmp).remove();
                   // now implement colorout to change color back
                   tmp = tmp.slice(0, -9) + "box";
@@ -697,9 +717,6 @@ for ($i = 0; $i < 3; $i++) {
               ';
           }
 	  }
-
-
-
 	  ?>
 	  $('#monthscroll').on('activate.bs.scrollspy', function () {
 		  var activeSection = $(this).find("li.active a").attr("href");
@@ -789,7 +806,6 @@ for ($c = 0; $c < count($yrs_list); $c++) {
 		echo '<option value="' . $y . '">' . $y . '</option>';
 	}
 }
-
 echo '
 </select></li>';
 
@@ -805,8 +821,6 @@ echo '
   </div> <! -- end container -->
 
 </div> <!-- end left panel -->
-
-
   </div> <!-- end main container -->
   <div class="container right-pan" id="right-panel-contract">
   <div class="row">
@@ -814,7 +828,6 @@ echo '
     <div class="col-xs-2 tot-col-cont" id="yr_head"><b>Year</b></div>
     <div class="col-xs-2 tot-col-cont" id="yr_head"><b>Wknd</b></div>
     <div class="col-xs-1 mon-col-cont" id="mon_head"><b>Month</b></div>
-
 </div>
     <!-- fetch doctors -->';
 
@@ -989,13 +1002,6 @@ else {
 
                             </div>
                         </div>
-                        <!--
-                        <div class="row">
-                            <div class="col-xs-12">
-                              <hr style="padding:0; height: 1px;">
-                            </div>
-                        </div> -->
-
                         <?php
                         for ($x = 0; $x < count($docs); $x++) {
 
@@ -1110,9 +1116,6 @@ else {
         }
         idx ++;
     }
-
-
-
 </script>
                       </div> <!-- end row for doc names -->
                       <div class="row"> <!-- row for autopop button -->
