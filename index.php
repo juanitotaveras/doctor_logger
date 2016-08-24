@@ -948,6 +948,17 @@ if ($_COOKIE["logged_in"] == "true") {
 
 
     </div><!-- end admin_panel -->
+
+    <!-- turn off clear button -->
+    <style>
+        .adminonly {
+            display: none;
+        }
+        .printbtn {
+            position: relative;
+	    left: 500px;
+        }
+    </style>
     ';
 }
 else {
