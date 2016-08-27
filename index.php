@@ -15,7 +15,7 @@ if (!isset($_COOKIE["year"])) {
 }
 $year_in = $_COOKIE["year"];
 // connect to DB
-$file = fopen("../../db.txt", "r") or die("Error opening file.");
+$file = fopen("../../../db.txt", "r") or die("Error opening file.");
 $dbinfo = [];
 while (!feof($file)) {
 	$info = trim(fgets($file));
