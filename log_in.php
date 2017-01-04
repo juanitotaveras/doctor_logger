@@ -35,5 +35,5 @@ if ($check) {
 }
 else {
     //echo "FAIL";
-    echo $_POST["uname"] . " " . $_POST["pass"] . " " . md5($pass) . " " . $empty;
+    echo $_POST["uname"] . " " . $_POST["pass"] . " " . md5($pass) . " " . $empty . " ". $u . " " . $p;
 }
