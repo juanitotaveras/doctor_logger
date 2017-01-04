@@ -7,6 +7,7 @@ while (!feof($file)) {
 }
 $connect = mysqli_connect($dbinfo[0], $dbinfo[1], $dbinfo[2], $dbinfo[3], $dbinfo[4]);
 if (empty($connect)) {
+    $empty = "empty";
     die ("mysqli_connect failed " . mysqli_connect_error());
 }
 
@@ -34,5 +35,5 @@ if ($check) {
 }
 else {
     //echo "FAIL";
-    echo $_POST["uname"] . " " . $_POST["pass"];
+    echo $_POST["uname"] . " " . $_POST["pass"] . " " . md5($pass) . " " . $empty;
 }
