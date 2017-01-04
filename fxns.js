@@ -1,9 +1,14 @@
 /**
  * Created by juanito on 1/3/17.
  */
+
+/* Makes autopopulate modal appear when button is clicked
+ (admin must be logged in */
 function autopop() {
     $("#autopop-modal").modal('show');
 }
+
+/* opens new window to print out a particular month's schedule */
 function print_month(mon) {
     alert("When you print, make sure to set orientation to \"landscape\".");
     $.post("./print_month.php", {
@@ -78,6 +83,8 @@ function autopop_submit() {
         }
     }
 }
+
+/* clears all days out of selected year */
 function clear_all() {
     if (window.confirm("Are you certain you want to clear all days in the year " + cur_year + "?")) {
         $.post("./clearyear.php", {
@@ -89,6 +96,7 @@ function clear_all() {
     }
 }
 
+/* changes currently selected year when dropdown is used */
 function yearswitcher(val) { // if user selects a different year
     $.post("./changeyear.php", { //changes year cookie
             year : val
@@ -249,9 +257,11 @@ function doc_add(id) {
     ); // ends post
     // add save button
 }
+
 function removedrop(dis) {
     $(dis).remove();
 }
+
 function remove_lyst(dis) {
     var strr = $(dis).attr("id");
     strr = strr.split(" ");
@@ -262,8 +272,8 @@ function remove_lyst(dis) {
     droppy = false;
     plusoff = false;
 }
-var droppy = false;
-var plusoff = false;
+
+/* logs user out */
 function log_out() {
     $.post("./log_out.php", {
 
