@@ -1,11 +1,11 @@
 <?php
- // Created by PhpStorm.
- //User: juanito
- //Date: 8/3/16
- //Time: 1:19 PM
+ /* Author: Juanito Taveras
+ Created: 8/3/16 1:19 PM
+ Modified: 1/3/2017
+ */
 session_start();
-ini_set('display_errors', 'On');   // error checking
-error_reporting(E_ALL);    // error checking
+//ini_set('display_errors', 'On');   // error checking
+//error_reporting(E_ALL);    // error checking
 $localtime_assoc = localtime(time(), true);
 $localmonth = $localtime_assoc["tm_mon"];
 $localday = $localtime_assoc["tm_mday"];
@@ -104,14 +104,15 @@ for ($i = 0; $i < 3; $i++) {
   <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.5/css/bootstrap-theme.min.css">
   <link rel="stylesheet" href="./index.css">
 
-
-
   <!-- JQuery -->
   <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.3/jquery.min.js"></script>
   <!-- Latest compiled and minified JavaScript -->
   <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.5/js/bootstrap.min.js"></script>
   <script src="//cdn.jsdelivr.net/jquery.scrollto/2.1.2/jquery.scrollTo.min.js"></script> <!-- scroll to function -->
   <!-- scrollto plugin -->
+
+  <!-- Main Javascript functions -->
+  <script src="./index.js"></script>
   <script>
       <?php
           echo 'var cur_year =' . $_COOKIE["year"] . ';';
@@ -326,9 +327,11 @@ for ($i = 0; $i < 3; $i++) {
 		  }
 ?>       // } // ends if hover
 	  }
+      /*
       function autopop() {
           $("#autopop-modal").modal('show');
       }
+      */
       function autopop_submit() {
           var poporder = [];
           var check = true;
