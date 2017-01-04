@@ -507,7 +507,7 @@ for ($i = 0; $i < 3; $i++) {
                           }); // ends post
                       })
                   }
-                  if (response[0] == "doc_2_added") {
+                  else if (response[0] == "doc_2_added") {
                       // add doc 1 span and update year and month js bins
                       var ident = response[1];
                       // insert first and last name of doc
@@ -543,11 +543,14 @@ for ($i = 0; $i < 3; $i++) {
 
                       })
                   }
-                  if (response[0] == "full") {
+                  else if (response[0] == "full") {
                       alert("This day is full. Delete a doctor.");
                   }
-                  if (response[0] == "already_added") {
+                  else if (response[0] == "already_added") {
                       alert("Doctor already assigned to this day.");
+                  }
+                  else {
+                      alert(response);
                   }
 			  }
 		  ); // ends post
