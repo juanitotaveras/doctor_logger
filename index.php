@@ -960,7 +960,7 @@ if ($_COOKIE["logged_in"] == "true") {
         }
         .printbtn {
             position: relative;
-	    left: 500px;
+	    /*left: 500px;*/
         }
     </style>
     ';
