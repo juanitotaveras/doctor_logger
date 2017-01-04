@@ -33,5 +33,6 @@ if ($check) {
     echo "PASS";
 }
 else {
-    echo "FAIL";
+    //echo "FAIL";
+    echo $_POST["uname"] . " " . $_POST["pass"];
 }
