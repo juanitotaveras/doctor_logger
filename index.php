@@ -112,7 +112,7 @@ for ($i = 0; $i < 3; $i++) {
   <!-- scrollto plugin -->
 
   <!-- Main Javascript functions -->
-  <script src="./index.js"></script>
+  <script src="./fxns.js"></script>
   <script>
       <?php
           echo 'var cur_year =' . $_COOKIE["year"] . ';';
