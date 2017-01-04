@@ -114,11 +114,10 @@ for ($i = 0; $i < 3; $i++) {
   <!-- Main Javascript functions -->
   <script src="./fxns.js"></script>
   <script>
+      alert (str);
       <?php
           echo 'var cur_year =' . $_COOKIE["year"] . ';';
       ?>
-      var droppy = false;
-      var plusoff = false;
       var months = ['January', 'February', 'March', 'April', 'May', 'June', 'July', 'August', 'September', 'October', 'November', 'December'];
       function clear_month(mon) {
           // first ask user if they are sure

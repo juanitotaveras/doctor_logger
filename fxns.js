@@ -2,6 +2,9 @@
  * Created by juanito on 1/3/17.
  */
 
+var droppy = false;
+var plusoff = false;
+var str = "pooper";
 /* Makes autopopulate modal appear when button is clicked
  (admin must be logged in */
 function autopop() {
