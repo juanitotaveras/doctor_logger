@@ -33,6 +33,5 @@ if ($check) {
     echo "PASS";
 }
 else {
-    //echo "FAIL";
-    echo $uname . " " . $pass . " " . md5($pass) . " " . $u . " " . $p;
+    echo "Incorrect login info";
 }

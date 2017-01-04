@@ -602,7 +602,6 @@ for ($i = 0; $i < 3; $i++) {
                   }
                   else {
                       alert(response);
-                      //alert("Incorrect login info");
                   }
               }); // ends post
       }
