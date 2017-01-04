@@ -825,7 +825,6 @@ else {
         }
         document.writeln('</div>');
     }
-
 </script>
                       <div class="row">
                          <div class="col-xs-12">
@@ -833,39 +832,7 @@ else {
                         </div>
                       </div> <!-- end row with line -->
                       <div class="row"> <!-- start row for doc names -->
-<script>
-    /* generates list of doctors that appear when admin clicks "Modify Doctors" */
-    function generate_doclist() {
-        var half = Math.ceil(doxnames.length / 2);
-        var idx = 0;
-
-
-        // we're gonna have two columns. Start inserting into next column when idx = half, append idx each pass
-
-        for (var i = 0; i < doxnames.length; i++) {
-            if (idx == 0 || idx == half) {
-                document.write('<div class="col-xs-6">');
-            }
-            document.write('<div class="row"><div class="col-xs-12"><select id="pop-order-' + i + '">');
-            for (var j = 0; j < doxnames.length; j++) {
-                if (j != i) {
-                    document.write('<option value="' + j + '">' + (j + 1) + '</option>');
-                }
-                else {
-                    document.write('<option value="' + j + '"selected>' + (j + 1) + '</option>');
-                }
-            }
-            var str = '</select> ' + (doxnames[i][1]) + ' ' + (doxnames[i][2]) + '</div></div>';
-            document.write(str);
-
-            if (idx == (half - 1) || idx == (doxnames.length - 1)) {
-                document.write('</div> <!-- end col w/ doc names -->');
-            }
-            idx++;
-        }
-    }
-    generate_doclist();
-</script>
+                        <script>  generate_doclist(); </script>
                       </div> <!-- end row for doc names -->
                       <div class="row"> <!-- row for autopop button -->
                           <div class="col-xs-2 col-xs-offset-9">
