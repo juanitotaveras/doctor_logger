@@ -577,6 +577,7 @@ for ($i = 0; $i < 3; $i++) {
                   window.location.reload(true);
               }); // ends post
       } // ends log_out function
+
   $(document).ready(function() {
       $("#add-remove-btn").click(function() {
         $('#add-remove-modal').modal('show');
@@ -600,7 +601,8 @@ for ($i = 0; $i < 3; $i++) {
                       window.location.reload(true);
                   }
                   else {
-                      alert("Incorrect login info");
+                      alert(response);
+                      //alert("Incorrect login info");
                   }
               }); // ends post
       }
