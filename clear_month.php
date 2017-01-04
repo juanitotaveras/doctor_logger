@@ -1,4 +1,4 @@
-<php
+<?php
 // connect to DB
 $file = fopen("../../../db.txt", "r") or die("Error opening file.");
 $dbinfo = [];
