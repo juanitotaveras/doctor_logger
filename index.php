@@ -114,7 +114,6 @@ for ($i = 0; $i < 3; $i++) {
   <!-- Main Javascript functions -->
   <script src="./fxns.js"></script>
   <script>
-      alert (str);
       <?php
           echo 'var cur_year =' . $_COOKIE["year"] . ';';
       ?>
@@ -835,33 +834,37 @@ else {
                       </div> <!-- end row with line -->
                       <div class="row"> <!-- start row for doc names -->
 <script>
-    var half = Math.ceil(doxnames.length / 2);
-    var idx = 0;
+    /* generates list of doctors that appear when admin clicks "Modify Doctors" */
+    function generate_doclist() {
+        var half = Math.ceil(doxnames.length / 2);
+        var idx = 0;
 
 
-    // we're gonna have two columns. Start inserting into next column when idx = half, append idx each pass
+        // we're gonna have two columns. Start inserting into next column when idx = half, append idx each pass
 
-    for (var i = 0; i < doxnames.length; i++) {
-        if (idx == 0 || idx == half) {
-            document.write('<div class="col-xs-6">');
-        }
-        document.write('<div class="row"><div class="col-xs-12"><select id="pop-order-' + i + '">');
-        for (var j = 0; j < doxnames.length; j++) {
-            if (j != i ) {
-                document.write('<option value="' + j + '">' + (j + 1) + '</option>');
+        for (var i = 0; i < doxnames.length; i++) {
+            if (idx == 0 || idx == half) {
+                document.write('<div class="col-xs-6">');
             }
-            else {
-                document.write('<option value="' + j + '"selected>' + (j + 1) + '</option>');
+            document.write('<div class="row"><div class="col-xs-12"><select id="pop-order-' + i + '">');
+            for (var j = 0; j < doxnames.length; j++) {
+                if (j != i) {
+                    document.write('<option value="' + j + '">' + (j + 1) + '</option>');
+                }
+                else {
+                    document.write('<option value="' + j + '"selected>' + (j + 1) + '</option>');
+                }
             }
-        }
-        var str = '</select> ' + (doxnames[i][1]) + ' ' + (doxnames[i][2]) + '</div></div>';
-        document.write(str);
+            var str = '</select> ' + (doxnames[i][1]) + ' ' + (doxnames[i][2]) + '</div></div>';
+            document.write(str);
 
-        if (idx == (half - 1) || idx == (doxnames.length - 1)) {
-            document.write('</div> <!-- end col w/ doc names -->');
+            if (idx == (half - 1) || idx == (doxnames.length - 1)) {
+                document.write('</div> <!-- end col w/ doc names -->');
+            }
+            idx++;
         }
-        idx ++;
     }
+    generate_doclist();
 </script>
                       </div> <!-- end row for doc names -->
                       <div class="row"> <!-- row for autopop button -->
@@ -877,6 +880,3 @@ else {
       </div>      <!-- end autopop-modal-->
 </body>
 </html>
-<?php
-print_r($_COOKIE);
-?>
