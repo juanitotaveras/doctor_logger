@@ -4,8 +4,8 @@
  //Date: 8/3/16
  //Time: 1:19 PM
 session_start();
-//ini_set('display_errors', 'On');   // error checking
-//error_reporting(E_ALL);    // error checking
+ini_set('display_errors', 'On');   // error checking
+error_reporting(E_ALL);    // error checking
 $localtime_assoc = localtime(time(), true);
 $localmonth = $localtime_assoc["tm_mon"];
 $localday = $localtime_assoc["tm_mday"];
