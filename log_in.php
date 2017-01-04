@@ -34,5 +34,5 @@ if ($check) {
 }
 else {
     //echo "FAIL";
-    echo $uname . " " . $pass . " " . md5($pass) . " " . $u . " " . md5($p);
+    echo $uname . " " . $pass . " " . md5($pass) . " " . $u . " " . $p;
 }
