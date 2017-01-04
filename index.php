@@ -6,7 +6,6 @@
 session_start();
 ini_set('display_errors', 'On');   // error checking
 error_reporting(E_ALL);    // error checking
-print_r($_COOKIE);
 $localtime_assoc = localtime(time(), true);
 $localmonth = $localtime_assoc["tm_mon"];
 $localday = $localtime_assoc["tm_mday"];
@@ -1143,3 +1142,6 @@ else {
       </div>      <!-- end autopop-modal-->
 </body>
 </html>
+<?php
+print_r($_COOKIE);
+?>
