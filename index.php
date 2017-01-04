@@ -161,6 +161,7 @@ for ($i = 0; $i < 3; $i++) {
           }
         // physically update
       }
+      /*
       function print_month(mon) {
           alert("When you print, make sure to set orientation to \"landscape\".");
           $.post("./print_month.php", {
@@ -177,7 +178,7 @@ for ($i = 0; $i < 3; $i++) {
                   }
               }
           ); // ends post
-      }
+      } */
       // make local month count for docs
       var dox1 = [];
       var dox2 = [];
